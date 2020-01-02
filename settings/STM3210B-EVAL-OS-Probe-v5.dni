@@ -1,0 +1,49 @@
+[Stack]
+FillEnabled=0
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[JLinkDriver]
+CStepIntDis=_ 0
+[StLinkDriver]
+stlinkserialNo=USB0
+stlinkfoundProbes=
+CStepIntDis=_ 0
+LeaveTargetRunning=_ 0
+[DebugChecksum]
+Checksum=-1183551177
+[Exceptions]
+StopOnUncaught=_ 0
+StopOnThrow=_ 0
+[CallStack]
+ShowArgs=0
+[Disassembly]
+MixedMode=1
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\BSP\bsp.c}.739.1" 0 0 1 "" 0 "" 0
+Bp1=_ 0 "EMUL_CODE" "{$PROJ_DIR$\app.c}.747.1" 0 0 1 "" 0 "" 0
+Count=2
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[Aliases]
+A0=_ "C:\stm32f100\Micrium\Software\uCOS-II\Ports\ARM-Cortex-M3\Generic\IAR\os_dbg.c" ""
+A1=_ "C:\stm32f100\Micrium\Software\uCOS-II\Source\os_task.c" ""
+A2=_ "C:\stm32f100\Micrium\Software\uCOS-II\Source\os_time.c" ""
+Count=3
+SuppressDialog=0
+[CallStackLog]
+Enabled=0
+[CallStackStripe]
+ShowTiming=1

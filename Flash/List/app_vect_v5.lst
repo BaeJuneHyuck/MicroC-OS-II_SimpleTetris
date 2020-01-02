@@ -1,0 +1,486 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.40.2.214/W32 for ARM         23/Dec/2019  21:46:47
+# Copyright 1999-2019 IAR Systems AB.
+#
+#    Cpu mode     =  
+#    Endian       =  little
+#    Source file  =
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\app_vect_v5.c
+#    Command line =
+#        -f C:\Users\hn829\AppData\Local\Temp\EW8910.tmp
+#        (C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\app_vect_v5.c
+#        -lCN
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List
+#        -o
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj
+#        --debug --endian=little --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.3\arm\inc\c\DLib_Config_Normal.h" -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\ports\arm-cortex-m3\generic\iar\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-lib\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\ARM-Cortex-M3\IAR\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\cpu\st\stm32\inc\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\BSP\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Ports\ST\STM32\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\Source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Plugins\uCOS-II\
+#        -Ohz --use_c++_inline)
+#    Locale       =  C
+#    List file    =
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List\app_vect_v5.lst
+#    Object file  =
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj\app_vect_v5.o
+#
+###############################################################################
+
+C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\app_vect_v5.c
+      1          /*
+      2          *********************************************************************************************************
+      3          *                                              EXAMPLE CODE
+      4          *
+      5          *                          (c) Copyright 2003-2006; Micrium, Inc.; Weston, FL
+      6          *
+      7          *               All rights reserved.  Protected by international copyright laws.
+      8          *               Knowledge of the source code may NOT be used to develop a similar product.
+      9          *               Please help us continue to provide the Embedded community with the finest
+     10          *               software available.  Your honesty is greatly appreciated.
+     11          *********************************************************************************************************
+     12          */
+     13          
+     14          /*
+     15          *********************************************************************************************************
+     16          *
+     17          *                                         EXCEPTION VECTORS
+     18          *
+     19          *                                     ST Microelectronics STM32
+     20          *                                              with the
+     21          *                                   STM3210B-EVAL Evaluation Board
+     22          *
+     23          * Filename      : app_vect-v5.c
+     24          * Version       : V1.10
+     25          * Programmer(s) : BAN
+     26          *********************************************************************************************************
+     27          */
+     28          
+     29          #include <includes.h>
+     30          
+     31          
+     32          /*
+     33          *********************************************************************************************************
+     34          *                                            LOCAL DEFINES
+     35          *********************************************************************************************************
+     36          */
+     37          
+     38          
+     39          /*
+     40          *********************************************************************************************************
+     41          *                                          LOCAL DATA TYPES
+     42          *********************************************************************************************************
+     43          */
+     44          
+     45          typedef  union {
+     46              CPU_FNCT_VOID   Fnct;
+     47              void           *Ptr;
+     48          } APP_INTVECT_ELEM;
+     49          
+     50          /*
+     51          *********************************************************************************************************
+     52          *                                            LOCAL TABLES
+     53          *********************************************************************************************************
+     54          */
+     55          
+     56          
+     57          /*
+     58          *********************************************************************************************************
+     59          *                                       LOCAL GLOBAL VARIABLES
+     60          *********************************************************************************************************
+     61          */
+     62          
+     63          
+     64          /*
+     65          *********************************************************************************************************
+     66          *                                      LOCAL FUNCTION PROTOTYPES
+     67          *********************************************************************************************************
+     68          */
+     69          
+     70          #pragma language=extended
+     71          #pragma segment="CSTACK"
+     72          
+     73          static  void  App_NMI_ISR        (void);
+     74          
+     75          static  void  App_Fault_ISR      (void);
+     76          
+     77          static  void  App_BusFault_ISR   (void);
+     78          
+     79          static  void  App_UsageFault_ISR (void);
+     80          
+     81          static  void  App_MemFault_ISR   (void);
+     82          
+     83          static  void  App_Spurious_ISR   (void);
+     84          
+     85          extern  void  __iar_program_start(void);
+     86          
+     87          /*
+     88          *********************************************************************************************************
+     89          *                                     LOCAL CONFIGURATION ERRORS
+     90          *********************************************************************************************************
+     91          */
+     92          
+     93          /*
+     94          *********************************************************************************************************
+     95          *                                  EXCEPTION / INTERRUPT VECTOR TABLE
+     96          *
+     97          * Note(s) : (1) The Cortex-M3 may have up to 256 external interrupts, which are the final entries in the
+     98          *               vector table.  The STM32 has 48 external interrupt vectors.
+     99          *********************************************************************************************************
+    100          */
+    101          
+
+   \                                 In section .intvec, align 4, root
+    102          __root  const  APP_INTVECT_ELEM  __vector_table[] @ ".intvec" = {
+   \                     __vector_table:
+   \        0x0   0x....'....        DC32 SFE(CSTACK), __iar_program_start, App_NMI_ISR, App_Fault_ISR
+   \              0x....'....  
+   \              0x....'....  
+   \              0x....'....  
+   \       0x10   0x....'....        DC32 App_MemFault_ISR, App_BusFault_ISR, App_UsageFault_ISR
+   \              0x....'....  
+   \              0x....'....  
+   \       0x1C   0x....'....        DC32 App_Spurious_ISR, App_Spurious_ISR, App_Spurious_ISR
+   \              0x....'....  
+   \              0x....'....  
+   \       0x28   0x....'....        DC32 App_Spurious_ISR, App_Spurious_ISR, App_Spurious_ISR
+   \              0x....'....  
+   \              0x....'....  
+   \       0x34   0x....'....        DC32 App_Spurious_ISR, OS_CPU_PendSVHandler, OS_CPU_SysTickHandler
+   \              0x....'....  
+   \              0x....'....  
+   \       0x40   0x....'....        DC32 BSP_IntHandlerWWDG, BSP_IntHandlerPVD, BSP_IntHandlerTAMPER
+   \              0x....'....  
+   \              0x....'....  
+   \       0x4C   0x....'....        DC32 BSP_IntHandlerRTC, BSP_IntHandlerFLASH, BSP_IntHandlerRCC
+   \              0x....'....  
+   \              0x....'....  
+   \       0x58   0x....'....        DC32 BSP_IntHandlerEXTI0, BSP_IntHandlerEXTI1, BSP_IntHandlerEXTI2
+   \              0x....'....  
+   \              0x....'....  
+   \       0x64   0x....'....        DC32 BSP_IntHandlerEXTI3, BSP_IntHandlerEXTI4, BSP_IntHandlerDMA1_CH1
+   \              0x....'....  
+   \              0x....'....  
+   \       0x70   0x....'....        DC32 BSP_IntHandlerDMA1_CH2, BSP_IntHandlerDMA1_CH3
+   \              0x....'....  
+   \       0x78   0x....'....        DC32 BSP_IntHandlerDMA1_CH4, BSP_IntHandlerDMA1_CH5
+   \              0x....'....  
+   \       0x80   0x....'....        DC32 BSP_IntHandlerDMA1_CH6, BSP_IntHandlerDMA1_CH7
+   \              0x....'....  
+   \       0x88   0x....'....        DC32 BSP_IntHandlerADC1_2, BSP_IntHandlerUSB_HP_CAN_TX
+   \              0x....'....  
+   \       0x90   0x....'....        DC32 BSP_IntHandlerUSB_LP_CAN_RX0, BSP_IntHandlerCAN_RX1
+   \              0x....'....  
+   \       0x98   0x....'....        DC32 BSP_IntHandlerCAN_SCE, BSP_IntHandlerEXTI9_5
+   \              0x....'....  
+   \       0xA0   0x....'....        DC32 BSP_IntHandlerTIM1_BRK, BSP_IntHandlerTIM1_UP
+   \              0x....'....  
+   \       0xA8   0x....'....        DC32 BSP_IntHandlerTIM1_TRG_COM, BSP_IntHandlerTIM1_CC
+   \              0x....'....  
+   \       0xB0   0x....'....        DC32 BSP_IntHandlerTIM2, BSP_IntHandlerTIM3, BSP_IntHandlerTIM4
+   \              0x....'....  
+   \              0x....'....  
+   \       0xBC   0x....'....        DC32 BSP_IntHandlerI2C1_EV, BSP_IntHandlerI2C1_ER
+   \              0x....'....  
+   \       0xC4   0x....'....        DC32 BSP_IntHandlerI2C2_EV, BSP_IntHandlerI2C2_ER, BSP_IntHandlerSPI1
+   \              0x....'....  
+   \              0x....'....  
+   \       0xD0   0x....'....        DC32 BSP_IntHandlerSPI2, BSP_IntHandlerUSART1, BSP_IntHandlerUSART2
+   \              0x....'....  
+   \              0x....'....  
+   \       0xDC   0x....'....        DC32 BSP_IntHandlerUSART3, BSP_IntHandlerEXTI15_10
+   \              0x....'....  
+   \       0xE4   0x....'....        DC32 BSP_IntHandlerRTCAlarm, BSP_IntHandlerUSBWakeUp
+   \              0x....'....  
+    103              { .Ptr = (void *)__sfe( "CSTACK" )},                        /*  0, SP start value.                                  */
+    104              __iar_program_start,                                        /*  1, PC start value.                                  */
+    105              App_NMI_ISR,                                                /*  2, NMI.                                             */
+    106              App_Fault_ISR,                                              /*  3, Hard Fault.                                      */
+    107              App_MemFault_ISR,                                           /*  4, Memory Management.                               */
+    108              App_BusFault_ISR,                                           /*  5, Bus Fault.                                       */
+    109              App_UsageFault_ISR,                                         /*  6, Usage Fault.                                     */
+    110              App_Spurious_ISR,                                           /*  7, Reserved.                                        */
+    111              App_Spurious_ISR,                                           /*  8, Reserved.                                        */
+    112              App_Spurious_ISR,                                           /*  9, Reserved.                                        */
+    113              App_Spurious_ISR,                                           /* 10, Reserved.                                        */
+    114              App_Spurious_ISR,                                           /* 11, SVCall.                                          */
+    115              App_Spurious_ISR,                                           /* 12, Debug Monitor.                                   */
+    116              App_Spurious_ISR,                                           /* 13, Reserved.                                        */
+    117              OS_CPU_PendSVHandler,                                       /* 14, PendSV Handler.                                  */
+    118              OS_CPU_SysTickHandler,                                      /* 15, uC/OS-II Tick ISR Handler                        */
+    119          
+    120              BSP_IntHandlerWWDG,                                         /* 16, INTISR[  0]  Window Watchdog.                    */
+    121              BSP_IntHandlerPVD,                                          /* 17, INTISR[  1]  PVD through EXTI Line Detection.    */
+    122              BSP_IntHandlerTAMPER,                                       /* 18, INTISR[  2]  Tamper Interrupt.                   */
+    123              BSP_IntHandlerRTC,                                          /* 19, INTISR[  3]  RTC Global Interrupt.               */
+    124              BSP_IntHandlerFLASH,                                        /* 20, INTISR[  4]  FLASH Global Interrupt.             */
+    125              BSP_IntHandlerRCC,                                          /* 21, INTISR[  5]  RCC Global Interrupt.               */
+    126              BSP_IntHandlerEXTI0,                                        /* 22, INTISR[  6]  EXTI Line0 Interrupt.               */
+    127              BSP_IntHandlerEXTI1,                                        /* 23, INTISR[  7]  EXTI Line1 Interrupt.               */
+    128              BSP_IntHandlerEXTI2,                                        /* 24, INTISR[  8]  EXTI Line2 Interrupt.               */
+    129              BSP_IntHandlerEXTI3,                                        /* 25, INTISR[  9]  EXTI Line3 Interrupt.               */
+    130              BSP_IntHandlerEXTI4,                                        /* 26, INTISR[ 10]  EXTI Line4 Interrupt.               */
+    131              BSP_IntHandlerDMA1_CH1,                                     /* 27, INTISR[ 11]  DMA Channel1 Global Interrupt.      */
+    132              BSP_IntHandlerDMA1_CH2,                                     /* 28, INTISR[ 12]  DMA Channel2 Global Interrupt.      */
+    133              BSP_IntHandlerDMA1_CH3,                                     /* 29, INTISR[ 13]  DMA Channel3 Global Interrupt.      */
+    134              BSP_IntHandlerDMA1_CH4,                                     /* 30, INTISR[ 14]  DMA Channel4 Global Interrupt.      */
+    135              BSP_IntHandlerDMA1_CH5,                                     /* 31, INTISR[ 15]  DMA Channel5 Global Interrupt.      */
+    136          
+    137              BSP_IntHandlerDMA1_CH6,                                     /* 32, INTISR[ 16]  DMA Channel6 Global Interrupt.      */
+    138              BSP_IntHandlerDMA1_CH7,                                     /* 33, INTISR[ 17]  DMA Channel7 Global Interrupt.      */
+    139              BSP_IntHandlerADC1_2,                                       /* 34, INTISR[ 18]  ADC1 & ADC2 Global Interrupt.       */
+    140              BSP_IntHandlerUSB_HP_CAN_TX,                                /* 35, INTISR[ 19]  USB High Prio / CAN TX  Interrupts. */
+    141              BSP_IntHandlerUSB_LP_CAN_RX0,                               /* 36, INTISR[ 20]  USB Low  Prio / CAN RX0 Interrupts. */
+    142              BSP_IntHandlerCAN_RX1,                                      /* 37, INTISR[ 21]  CAN RX1 Interrupt.                  */
+    143              BSP_IntHandlerCAN_SCE,                                      /* 38, INTISR[ 22]  CAN SCE Interrupt.                  */
+    144              BSP_IntHandlerEXTI9_5,                                      /* 39, INTISR[ 23]  EXTI Line[9:5] Interrupt.           */
+    145              BSP_IntHandlerTIM1_BRK,                                     /* 40, INTISR[ 24]  TIM1 Break  Interrupt.              */
+    146              BSP_IntHandlerTIM1_UP,                                      /* 41, INTISR[ 25]  TIM1 Update Interrupt.              */
+    147              BSP_IntHandlerTIM1_TRG_COM,                                 /* 42, INTISR[ 26]  TIM1 Trig & Commutation Interrupts. */
+    148              BSP_IntHandlerTIM1_CC,                                      /* 43, INTISR[ 27]  TIM1 Capture Compare Interrupt.     */
+    149              BSP_IntHandlerTIM2,                                         /* 44, INTISR[ 28]  TIM2 Global Interrupt.              */
+    150              BSP_IntHandlerTIM3,                                         /* 45, INTISR[ 29]  TIM3 Global Interrupt.              */
+    151              BSP_IntHandlerTIM4,                                         /* 46, INTISR[ 30]  TIM4 Global Interrupt.              */
+    152              BSP_IntHandlerI2C1_EV,                                      /* 47, INTISR[ 31]  I2C1 Event  Interrupt.              */
+    153          
+    154              BSP_IntHandlerI2C1_ER,                                      /* 48, INTISR[ 32]  I2C1 Error  Interrupt.              */
+    155              BSP_IntHandlerI2C2_EV,                                      /* 49, INTISR[ 33]  I2C2 Event  Interrupt.              */
+    156              BSP_IntHandlerI2C2_ER,                                      /* 50, INTISR[ 34]  I2C2 Error  Interrupt.              */
+    157              BSP_IntHandlerSPI1,                                         /* 51, INTISR[ 35]  SPI1 Global Interrupt.              */
+    158              BSP_IntHandlerSPI2,                                         /* 52, INTISR[ 36]  SPI2 Global Interrupt.              */
+    159              BSP_IntHandlerUSART1,                                       /* 53, INTISR[ 37]  USART1 Global Interrupt.            */
+    160              BSP_IntHandlerUSART2,                                       /* 54, INTISR[ 38]  USART2 Global Interrupt.            */
+    161              BSP_IntHandlerUSART3,                                       /* 55, INTISR[ 39]  USART3 Global Interrupt.            */
+    162              BSP_IntHandlerEXTI15_10,                                    /* 56, INTISR[ 40]  EXTI Line [15:10] Interrupts.       */
+    163              BSP_IntHandlerRTCAlarm,                                     /* 57, INTISR[ 41]  RTC Alarm EXT Line Interrupt.       */
+    164              BSP_IntHandlerUSBWakeUp,                                    /* 58, INTISR[ 42]  USB Wakeup from Suspend EXTI Int.   */
+    165          };
+    166          
+    167          /*
+    168          *********************************************************************************************************
+    169          *                                            App_NMI_ISR()
+    170          *
+    171          * Description : Handle Non-Maskable Interrupt (NMI).
+    172          *
+    173          * Argument(s) : none.
+    174          *
+    175          * Return(s)   : none.
+    176          *
+    177          * Caller(s)   : This is an ISR.
+    178          *
+    179          * Note(s)     : (1) Since the NMI is not being used, this serves merely as a catch for a spurious
+    180          *                   exception.
+    181          *********************************************************************************************************
+    182          */
+    183          
+
+   \                                 In section .text, align 2, keep-with-next
+    184          static  void  App_NMI_ISR (void)
+    185          {
+    186              while (DEF_TRUE) {
+   \                     App_NMI_ISR: (+1)
+   \                     ??App_NMI_ISR_0: (+1)
+   \        0x0   0xE7FE             B.N      ??App_NMI_ISR_0
+    187                  ;
+    188              }
+    189          }
+    190          
+    191          /*
+    192          *********************************************************************************************************
+    193          *                                             App_Fault_ISR()
+    194          *
+    195          * Description : Handle hard fault.
+    196          *
+    197          * Argument(s) : none.
+    198          *
+    199          * Return(s)   : none.
+    200          *
+    201          * Caller(s)   : This is an ISR.
+    202          *
+    203          * Note(s)     : none.
+    204          *********************************************************************************************************
+    205          */
+    206          
+
+   \                                 In section .text, align 2, keep-with-next
+    207          static  void  App_Fault_ISR (void)
+    208          {
+    209              while (DEF_TRUE) {
+   \                     App_Fault_ISR: (+1)
+   \                     ??App_Fault_ISR_0: (+1)
+   \        0x0   0xE7FE             B.N      ??App_Fault_ISR_0
+    210                  ;
+    211              }
+    212          }
+    213          
+    214          
+    215          /*
+    216          *********************************************************************************************************
+    217          *                                           App_BusFault_ISR()
+    218          *
+    219          * Description : Handle bus fault.
+    220          *
+    221          * Argument(s) : none.
+    222          *
+    223          * Return(s)   : none.
+    224          *
+    225          * Caller(s)   : This is an ISR.
+    226          *
+    227          * Note(s)     : none.
+    228          *********************************************************************************************************
+    229          */
+    230          
+
+   \                                 In section .text, align 2, keep-with-next
+    231          static  void  App_BusFault_ISR (void)
+    232          {
+    233              while (DEF_TRUE) {
+   \                     App_BusFault_ISR: (+1)
+   \                     ??App_BusFault_ISR_0: (+1)
+   \        0x0   0xE7FE             B.N      ??App_BusFault_ISR_0
+    234                  ;
+    235              }
+    236          }
+    237          
+    238          
+    239          /*
+    240          *********************************************************************************************************
+    241          *                                          App_UsageFault_ISR()
+    242          *
+    243          * Description : Handle usage fault.
+    244          *
+    245          * Argument(s) : none.
+    246          *
+    247          * Return(s)   : none.
+    248          *
+    249          * Caller(s)   : This is an ISR.
+    250          *
+    251          * Note(s)     : none.
+    252          *********************************************************************************************************
+    253          */
+    254          
+
+   \                                 In section .text, align 2, keep-with-next
+    255          static  void  App_UsageFault_ISR (void)
+    256          {
+    257              while (DEF_TRUE) {
+   \                     App_UsageFault_ISR: (+1)
+   \                     ??App_UsageFault_ISR_0: (+1)
+   \        0x0   0xE7FE             B.N      ??App_UsageFault_ISR_0
+    258                  ;
+    259              }
+    260          }
+    261          
+    262          
+    263          /*
+    264          *********************************************************************************************************
+    265          *                                           App_MemFault_ISR()
+    266          *
+    267          * Description : Handle memory fault.
+    268          *
+    269          * Argument(s) : none.
+    270          *
+    271          * Return(s)   : none.
+    272          *
+    273          * Caller(s)   : This is an ISR.
+    274          *
+    275          * Note(s)     : none.
+    276          *********************************************************************************************************
+    277          */
+    278          
+
+   \                                 In section .text, align 2, keep-with-next
+    279          static  void  App_MemFault_ISR (void)
+    280          {
+    281              while (DEF_TRUE) {
+   \                     App_MemFault_ISR: (+1)
+   \                     ??App_MemFault_ISR_0: (+1)
+   \        0x0   0xE7FE             B.N      ??App_MemFault_ISR_0
+    282                  ;
+    283              }
+    284          }
+    285          
+    286          
+    287          /*
+    288          *********************************************************************************************************
+    289          *                                           App_Spurious_ISR()
+    290          *
+    291          * Description : Handle spurious interrupt.
+    292          *
+    293          * Argument(s) : none.
+    294          *
+    295          * Return(s)   : none.
+    296          *
+    297          * Caller(s)   : This is an ISR.
+    298          *
+    299          * Note(s)     : none.
+    300          *********************************************************************************************************
+    301          */
+    302          
+
+   \                                 In section .text, align 2, keep-with-next
+    303          static  void  App_Spurious_ISR (void)
+    304          {
+    305              while (DEF_TRUE) {
+   \                     App_Spurious_ISR: (+1)
+   \                     ??App_Spurious_ISR_0: (+1)
+   \        0x0   0xE7FE             B.N      ??App_Spurious_ISR_0
+    306                  ;
+    307              }
+    308          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   App_BusFault_ISR
+       0   App_Fault_ISR
+       0   App_MemFault_ISR
+       0   App_NMI_ISR
+       0   App_Spurious_ISR
+       0   App_UsageFault_ISR
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  App_BusFault_ISR
+       2  App_Fault_ISR
+       2  App_MemFault_ISR
+       2  App_NMI_ISR
+       2  App_Spurious_ISR
+       2  App_UsageFault_ISR
+     236  __vector_table
+
+ 
+ 236 bytes in section .intvec
+  12 bytes in section .text
+ 
+  12 bytes of CODE  memory
+ 236 bytes of CONST memory
+
+Errors: none
+Warnings: none

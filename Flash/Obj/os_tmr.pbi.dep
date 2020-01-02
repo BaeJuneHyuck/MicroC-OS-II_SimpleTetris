@@ -1,0 +1,6 @@
+os_tmr.pbi: \
+  C:\Baby\test02\exam\ett\Micrium\Software\uCOS-II\Source\os_tmr.c \
+  C:\Baby\test02\exam\ett\Micrium\Software\uCOS-II\Source\ucos_ii.h \
+  C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\app_cfg.h \
+  C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\os_cfg.h \
+  C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\ports\arm-cortex-m3\generic\iar\os_cpu.h

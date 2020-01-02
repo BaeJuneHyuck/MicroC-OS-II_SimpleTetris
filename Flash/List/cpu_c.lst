@@ -1,0 +1,1206 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.40.2.214/W32 for ARM         23/Dec/2019  14:43:38
+# Copyright 1999-2019 IAR Systems AB.
+#
+#    Cpu mode     =  
+#    Endian       =  little
+#    Source file  =
+#        C:\Baby\test02\exam\ett\Micrium\Software\uC-CPU\ARM-Cortex-M3\IAR\cpu_c.c
+#    Command line =
+#        -f C:\Users\hn829\AppData\Local\Temp\EW217E.tmp
+#        (C:\Baby\test02\exam\ett\Micrium\Software\uC-CPU\ARM-Cortex-M3\IAR\cpu_c.c
+#        -lCN
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List
+#        -o
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj
+#        --debug --endian=little --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.3\arm\inc\c\DLib_Config_Normal.h" -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\ports\arm-cortex-m3\generic\iar\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-lib\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\ARM-Cortex-M3\IAR\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\cpu\st\stm32\inc\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\BSP\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Ports\ST\STM32\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\Source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Plugins\uCOS-II\
+#        -Ohz --use_c++_inline)
+#    Locale       =  C
+#    List file    =
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List\cpu_c.lst
+#    Object file  =
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj\cpu_c.o
+#
+###############################################################################
+
+C:\Baby\test02\exam\ett\Micrium\Software\uC-CPU\ARM-Cortex-M3\IAR\cpu_c.c
+      1          /*
+      2          *********************************************************************************************************
+      3          *                                               uC/CPU
+      4          *                                    CPU CONFIGURATION & PORT LAYER
+      5          *
+      6          *                          (c) Copyright 2004-2008; Micrium, Inc.; Weston, FL
+      7          *
+      8          *               All rights reserved.  Protected by international copyright laws.
+      9          *
+     10          *               uC/CPU is provided in source form for FREE evaluation, for educational
+     11          *               use or peaceful research.  If you plan on using uC/CPU in a commercial
+     12          *               product you need to contact Micrium to properly license its use in your
+     13          *               product.  We provide ALL the source code for your convenience and to
+     14          *               help you experience uC/CPU.  The fact that the source code is provided
+     15          *               does NOT mean that you can use it without paying a licensing fee.
+     16          *
+     17          *               Knowledge of the source code may NOT be used to develop a similar product.
+     18          *
+     19          *               Please help us continue to provide the Embedded community with the finest
+     20          *               software available.  Your honesty is greatly appreciated.
+     21          *********************************************************************************************************
+     22          */
+     23          
+     24          /*
+     25          *********************************************************************************************************
+     26          *
+     27          *                                            CPU PORT FILE
+     28          *
+     29          *                                            ARM-Cortex-M3
+     30          *                                            IAR C Compiler
+     31          *
+     32          * Filename      : cpu_c.c
+     33          * Version       : V1.19
+     34          * Programmer(s) : JJL
+     35          *                 BAN
+     36          *********************************************************************************************************
+     37          */
+     38          
+     39          /*
+     40          *********************************************************************************************************
+     41          *                                              INCLUDE FILES
+     42          *********************************************************************************************************
+     43          */
+     44          
+     45          #include  <cpu.h>
+     46          #include  <lib_def.h>
+     47          
+     48          
+     49          /*
+     50          *********************************************************************************************************
+     51          *                                              LOCAL DEFINES
+     52          *********************************************************************************************************
+     53          */
+     54          
+     55          #define  CPU_INT_SRC_POS_MAX      ((((CPU_REG_NVIC_NVIC + 1) & 0x1F) * 32) + 1)
+     56          
+     57          #define  CPU_BIT_BAND_SRAM_REG_LO       0x20000000
+     58          #define  CPU_BIT_BAND_SRAM_REG_HI       0x200FFFFF
+     59          #define  CPU_BIT_BAND_SRAM_BASE         0x22000000
+     60          
+     61          
+     62          #define  CPU_BIT_BAND_PERIPH_REG_LO     0x40000000
+     63          #define  CPU_BIT_BAND_PERIPH_REG_HI     0x400FFFFF
+     64          #define  CPU_BIT_BAND_PERIPH_BASE       0x42000000
+     65          
+     66          
+     67          /*
+     68          *********************************************************************************************************
+     69          *                                             LOCAL CONSTANTS
+     70          *********************************************************************************************************
+     71          */
+     72          
+     73          
+     74          /*
+     75          *********************************************************************************************************
+     76          *                                            LOCAL DATA TYPES
+     77          *********************************************************************************************************
+     78          */
+     79          
+     80          
+     81          /*
+     82          *********************************************************************************************************
+     83          *                                              LOCAL TABLES
+     84          *********************************************************************************************************
+     85          */
+     86          
+     87          
+     88          /*
+     89          *********************************************************************************************************
+     90          *                                         LOCAL GLOBAL VARIABLES
+     91          *********************************************************************************************************
+     92          */
+     93          
+     94          
+     95          /*
+     96          *********************************************************************************************************
+     97          *                                        LOCAL FUNCTION PROTOTYPES
+     98          *********************************************************************************************************
+     99          */
+    100          
+    101          
+    102          /*
+    103          *********************************************************************************************************
+    104          *                                       LOCAL CONFIGURATION ERRORS
+    105          *********************************************************************************************************
+    106          */
+    107          
+    108          /*
+    109          *********************************************************************************************************
+    110          *                                           CPU_BitBandClr()
+    111          *
+    112          * Description : Clear bit in bit-band region.
+    113          *
+    114          * Argument(s) : addr            Byte address in memory space.
+    115          *
+    116          *               bit_nbr         Bit number in byte.
+    117          *
+    118          * Return(s)   : none.
+    119          *
+    120          * Caller(s)   : Application.
+    121          *
+    122          * Note(s)     : none.
+    123          *********************************************************************************************************
+    124          */
+    125          
+
+   \                                 In section .text, align 2, keep-with-next
+    126          void  CPU_BitBandClr (CPU_ADDR    addr,
+    127                                CPU_INT08U  bit_nbr)
+    128          {
+    129              CPU_ADDR  bit_word_off;
+    130              CPU_ADDR  bit_word_addr;
+    131          
+    132          
+    133              if ((addr >= CPU_BIT_BAND_SRAM_REG_LO) &&
+    134                  (addr <= CPU_BIT_BAND_SRAM_REG_HI)) {
+   \                     CPU_BitBandClr: (+1)
+   \        0x0   0xF100 0x4260      ADD      R2,R0,#-536870912
+   \        0x4   0x0089             LSLS     R1,R1,#+2
+   \        0x6   0xF5B2 0x1F80      CMP      R2,#+1048576
+   \        0xA   0xEB01 0x1140      ADD      R1,R1,R0, LSL #+5
+   \        0xE   0xD203             BCS.N    ??CPU_BitBandClr_0
+    135                  bit_word_off  = ((addr - CPU_BIT_BAND_SRAM_REG_LO) * 32) + (bit_nbr * 4);
+    136                  bit_word_addr = CPU_BIT_BAND_SRAM_BASE + bit_word_off;
+    137          
+    138                 *(volatile CPU_INT32U *)(bit_word_addr) = 0;
+   \       0x10   0x2000             MOVS     R0,#+0
+   \       0x12   0xF101 0x5108      ADD      R1,R1,#+570425344
+   \       0x16   0xE007             B.N      ??CPU_BitBandClr_1
+    139          
+    140              } else if ((addr >= CPU_BIT_BAND_PERIPH_REG_LO) &&
+    141                         (addr <= CPU_BIT_BAND_PERIPH_REG_HI)) {
+   \                     ??CPU_BitBandClr_0: (+1)
+   \       0x18   0xF100 0x4040      ADD      R0,R0,#-1073741824
+   \       0x1C   0xF5B0 0x1F80      CMP      R0,#+1048576
+   \       0x20   0xD203             BCS.N    ??CPU_BitBandClr_2
+    142                  bit_word_off  = ((addr - CPU_BIT_BAND_PERIPH_REG_LO) * 32) + (bit_nbr * 4);
+    143                  bit_word_addr = CPU_BIT_BAND_PERIPH_BASE + bit_word_off;
+    144          
+    145                 *(volatile CPU_INT32U *)(bit_word_addr) = 0;
+   \       0x22   0x2000             MOVS     R0,#+0
+   \       0x24   0xF101 0x4184      ADD      R1,R1,#+1107296256
+   \                     ??CPU_BitBandClr_1: (+1)
+   \       0x28   0x6008             STR      R0,[R1, #+0]
+    146              }
+    147          }
+   \                     ??CPU_BitBandClr_2: (+1)
+   \       0x2A   0x4770             BX       LR               ;; return
+    148          
+    149          
+    150          /*
+    151          *********************************************************************************************************
+    152          *                                           CPU_BitBandClr()
+    153          *
+    154          * Description : Set bit in bit-band region.
+    155          *
+    156          * Argument(s) : addr            Byte address in memory space.
+    157          *
+    158          *               bit_nbr         Bit number in byte.
+    159          *
+    160          * Return(s)   : none.
+    161          *
+    162          * Caller(s)   : Application.
+    163          *
+    164          * Note(s)     : none.
+    165          *********************************************************************************************************
+    166          */
+    167          
+
+   \                                 In section .text, align 2, keep-with-next
+    168          void  CPU_BitBandSet (CPU_ADDR    addr,
+    169                                CPU_INT08U  bit_nbr)
+    170          {
+    171              CPU_ADDR  bit_word_off;
+    172              CPU_ADDR  bit_word_addr;
+    173          
+    174          
+    175              if ((addr >= CPU_BIT_BAND_SRAM_REG_LO) &&
+    176                  (addr <= CPU_BIT_BAND_SRAM_REG_HI)) {
+   \                     CPU_BitBandSet: (+1)
+   \        0x0   0xF100 0x4260      ADD      R2,R0,#-536870912
+   \        0x4   0x0089             LSLS     R1,R1,#+2
+   \        0x6   0xF5B2 0x1F80      CMP      R2,#+1048576
+   \        0xA   0xEB01 0x1140      ADD      R1,R1,R0, LSL #+5
+   \        0xE   0xD203             BCS.N    ??CPU_BitBandSet_0
+    177                  bit_word_off  = ((addr - CPU_BIT_BAND_SRAM_REG_LO) * 32) + (bit_nbr * 4);
+    178                  bit_word_addr = CPU_BIT_BAND_SRAM_BASE + bit_word_off;
+    179          
+    180                 *(volatile CPU_INT32U *)(bit_word_addr) = 1;
+   \       0x10   0x2001             MOVS     R0,#+1
+   \       0x12   0xF101 0x5108      ADD      R1,R1,#+570425344
+   \       0x16   0xE007             B.N      ??CPU_BitBandSet_1
+    181          
+    182              } else if ((addr >= CPU_BIT_BAND_PERIPH_REG_LO) &&
+    183                         (addr <= CPU_BIT_BAND_PERIPH_REG_HI)) {
+   \                     ??CPU_BitBandSet_0: (+1)
+   \       0x18   0xF100 0x4040      ADD      R0,R0,#-1073741824
+   \       0x1C   0xF5B0 0x1F80      CMP      R0,#+1048576
+   \       0x20   0xD203             BCS.N    ??CPU_BitBandSet_2
+    184                  bit_word_off  = ((addr - CPU_BIT_BAND_PERIPH_REG_LO) * 32) + (bit_nbr * 4);
+    185                  bit_word_addr = CPU_BIT_BAND_PERIPH_BASE + bit_word_off;
+    186          
+    187                 *(volatile CPU_INT32U *)(bit_word_addr) = 1;
+   \       0x22   0x2001             MOVS     R0,#+1
+   \       0x24   0xF101 0x4184      ADD      R1,R1,#+1107296256
+   \                     ??CPU_BitBandSet_1: (+1)
+   \       0x28   0x6008             STR      R0,[R1, #+0]
+    188              }
+    189          }
+   \                     ??CPU_BitBandSet_2: (+1)
+   \       0x2A   0x4770             BX       LR               ;; return
+    190          
+    191          
+    192          /*
+    193          *********************************************************************************************************
+    194          *                                           CPU_IntSrcDis()
+    195          *
+    196          * Description : Disable an interrupt source.
+    197          *
+    198          * Argument(s) : pos     Position of interrupt vector in interrupt table :
+    199          *
+    200          *                           0       Invalid (see Note #1a).
+    201          *                           1       Invalid (see Note #1b).
+    202          *                           2       Non-maskable interrupt.
+    203          *                           3       Hard Fault.
+    204          *                           4       Memory Management.
+    205          *                           5       Bus Fault.
+    206          *                           6       Usage Fault.
+    207          *                           7-10    Reserved.
+    208          *                           11      SVCall
+    209          *                           12      Debug monitor.
+    210          *                           13      Reserved
+    211          *                           14      PendSV.
+    212          *                           15      SysTick.
+    213          *                           16+     External Interrupt.
+    214          *
+    215          * Return(s)   : none.
+    216          *
+    217          * Caller(s)   : Application.
+    218          *
+    219          * Note(s)     : (1) Several table positions do not contain interrupt sources :
+    220          *
+    221          *                   (a) Position 0 contains the stack pointer.
+    222          *                   (b) Positions 7-10, 13 are reserved.
+    223          *
+    224          *               (2) Several interrupts cannot be disabled/enabled :
+    225          *
+    226          *                   (a) Reset.
+    227          *                   (b) NMI.
+    228          *                   (c) Hard fault.
+    229          *                   (d) SVCall.
+    230          *                   (e) Debug monitor.
+    231          *                   (f) PendSV.
+    232          *
+    233          *               (3) The maximum Cortex-M3 table position is 256.  A particular Cortex-M3 may have fewer
+    234          *                   than 240 external exceptions and, consequently, fewer than 256 table positions.
+    235          *                   This function assumes that the specified table position is valid if the interrupt
+    236          *                   controller type register's INTLINESNUM field is large enough so that the position
+    237          *                   COULD be valid.
+    238          *********************************************************************************************************
+    239          */
+    240          
+
+   \                                 In section .text, align 2, keep-with-next
+    241          void  CPU_IntSrcDis (CPU_INT08U  pos)
+    242          {
+   \                     CPU_IntSrcDis: (+1)
+   \        0x0   0xB570             PUSH     {R4-R6,LR}
+    243          #if (CPU_CFG_CRITICAL_METHOD == CPU_CRITICAL_METHOD_STATUS_LOCAL)
+    244              CPU_SR      cpu_sr;
+    245          #endif
+    246              CPU_INT08U  group;
+    247              CPU_INT08U  pos_max;
+    248              CPU_INT08U  nbr;
+    249          
+    250          
+    251              switch (pos) {
+   \        0x2   0x....'....        BL       ?Subroutine1
+   \                     ??CrossCallReturnLabel_0: (+1)
+   \        0x6   0xD930             BLS.N    ??CPU_IntSrcDis_0
+   \        0x8   0x1F00             SUBS     R0,R0,#+4
+   \        0xA   0xD009             BEQ.N    ??CPU_IntSrcDis_1
+   \        0xC   0x1E40             SUBS     R0,R0,#+1
+   \        0xE   0xD00D             BEQ.N    ??CPU_IntSrcDis_2
+   \       0x10   0x1E40             SUBS     R0,R0,#+1
+   \       0x12   0xD011             BEQ.N    ??CPU_IntSrcDis_3
+   \       0x14   0x1E40             SUBS     R0,R0,#+1
+   \       0x16   0x2807             CMP      R0,#+7
+   \       0x18   0xD927             BLS.N    ??CPU_IntSrcDis_0
+   \       0x1A   0x3808             SUBS     R0,R0,#+8
+   \       0x1C   0xD013             BEQ.N    ??CPU_IntSrcDis_4
+   \       0x1E   0xE019             B.N      ??CPU_IntSrcDis_5
+    252                  case CPU_INT_STK_PTR:                                   /* ---------------- INVALID OR RESERVED --------------- */
+    253                  case CPU_INT_RSVD_07:
+    254                  case CPU_INT_RSVD_08:
+    255                  case CPU_INT_RSVD_09:
+    256                  case CPU_INT_RSVD_10:
+    257                  case CPU_INT_RSVD_13:
+    258                       break;
+    259          
+    260          
+    261                                                                          /* ----------------- SYSTEM EXCEPTIONS ---------------- */
+    262                  case CPU_INT_RESET:                                     /* Reset (see Note #2).                                 */
+    263                  case CPU_INT_NMI:                                       /* Non-maskable interrupt (see Note #2).                */
+    264                  case CPU_INT_HFAULT:                                    /* Hard fault (see Note #2).                            */
+    265                  case CPU_INT_SVCALL:                                    /* SVCall (see Note #2).                                */
+    266                  case CPU_INT_DBGMON:                                    /* Debug monitor (see Note #2).                         */
+    267                  case CPU_INT_PENDSV:                                    /* PendSV (see Note #2).                                */
+    268                       break;
+    269          
+    270                  case CPU_INT_MEM:                                       /* Memory management.                                   */
+    271                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcDis_1: (+1)
+   \       0x20   0x....'....        BL       CPU_SR_Save
+    272                       CPU_REG_NVIC_SHCSR &= ~CPU_REG_NVIC_SHCSR_MEMFAULTENA;
+   \       0x24   0x6821             LDR      R1,[R4, #+0]
+   \       0x26   0xF421 0x3180      BIC      R1,R1,#0x10000
+   \       0x2A   0xE00A             B.N      ??CPU_IntSrcDis_6
+    273                       CPU_CRITICAL_EXIT();
+    274                       break;
+    275          
+    276                  case CPU_INT_BUSFAULT:                                  /* Bus fault.                                           */
+    277                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcDis_2: (+1)
+   \       0x2C   0x....'....        BL       CPU_SR_Save
+    278                       CPU_REG_NVIC_SHCSR &= ~CPU_REG_NVIC_SHCSR_BUSFAULTENA;
+   \       0x30   0x6821             LDR      R1,[R4, #+0]
+   \       0x32   0xF421 0x3100      BIC      R1,R1,#0x20000
+   \       0x36   0xE004             B.N      ??CPU_IntSrcDis_6
+    279                       CPU_CRITICAL_EXIT();
+    280                       break;
+    281          
+    282                  case CPU_INT_USAGEFAULT:                                /* Usage fault.                                         */
+    283                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcDis_3: (+1)
+   \       0x38   0x....'....        BL       CPU_SR_Save
+    284                       CPU_REG_NVIC_SHCSR &= ~CPU_REG_NVIC_SHCSR_USGFAULTENA;
+   \       0x3C   0x6821             LDR      R1,[R4, #+0]
+   \       0x3E   0xF421 0x2180      BIC      R1,R1,#0x40000
+   \                     ??CPU_IntSrcDis_6: (+1)
+   \       0x42   0x6021             STR      R1,[R4, #+0]
+    285                       CPU_CRITICAL_EXIT();
+   \       0x44   0xE010             B.N      ??CrossCallReturnLabel_4
+    286                       break;
+    287          
+    288                  case CPU_INT_SYSTICK:                                   /* SysTick.                                             */
+    289                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcDis_4: (+1)
+   \       0x46   0x....'....        BL       CPU_SR_Save
+    290                       CPU_REG_NVIC_ST_CTRL &= ~CPU_REG_NVIC_ST_CTRL_ENABLE;
+   \       0x4A   0x68F1             LDR      R1,[R6, #+12]
+   \       0x4C   0x0849             LSRS     R1,R1,#+1
+   \       0x4E   0x0049             LSLS     R1,R1,#+1
+   \       0x50   0x60F1             STR      R1,[R6, #+12]
+    291                       CPU_CRITICAL_EXIT();
+   \       0x52   0xE009             B.N      ??CrossCallReturnLabel_4
+    292                       break;
+    293          
+    294          
+    295                                                                          /* ---------------- EXTERNAL INTERRUPT ---------------- */
+    296                  default:
+    297                      pos_max = CPU_INT_SRC_POS_MAX;
+   \                     ??CPU_IntSrcDis_5: (+1)
+   \       0x54   0x....'....        BL       ?Subroutine2
+    298                      if (pos < pos_max) {                                /* See Note #3.                                         */
+   \                     ??CrossCallReturnLabel_2: (+1)
+   \       0x58   0xD207             BCS.N    ??CPU_IntSrcDis_0
+    299                           group = (pos - 16) / 32;
+    300                           nbr   = (pos - 16) % 32;
+    301          
+    302                           CPU_CRITICAL_ENTER();
+   \       0x5A   0x....'....        BL       CPU_SR_Save
+   \       0x5E   0x....'....        BL       ?Subroutine5
+    303                           CPU_REG_NVIC_CLREN(group) = DEF_BIT(nbr);
+   \                     ??CrossCallReturnLabel_8: (+1)
+   \       0x62   0x....             LDR.N    R3,??DataTable6  ;; 0xe000e180
+   \       0x64   0x....'....        BL       ?Subroutine3
+    304                           CPU_CRITICAL_EXIT();
+    305                       }
+    306                       break;
+    307              }
+   \                     ??CrossCallReturnLabel_4: (+1)
+   \       0x68   0x....             B.N      ?Subroutine0
+    308          }
+   \                     ??CPU_IntSrcDis_0: (+1)
+   \       0x6A   0xBD70             POP      {R4-R6,PC}       ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine5: (+1)
+   \        0x0   0x3D10             SUBS     R5,R5,#+16
+   \        0x2   0x1129             ASRS     R1,R5,#+4
+   \        0x4   0xEB05 0x61D1      ADD      R1,R5,R1, LSR #+27
+   \        0x8   0x1149             ASRS     R1,R1,#+5
+   \        0xA   0x4770             BX       LR
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine3: (+1)
+   \        0x0   0x2201             MOVS     R2,#+1
+   \        0x2   0xEBA5 0x1541      SUB      R5,R5,R1, LSL #+5
+   \        0x6   0xB2C9             UXTB     R1,R1
+   \        0x8   0xEB03 0x0381      ADD      R3,R3,R1, LSL #+2
+   \        0xC   0xFA02 0xF505      LSL      R5,R2,R5
+   \       0x10   0x601D             STR      R5,[R3, #+0]
+   \       0x12   0x4770             BX       LR
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine2: (+1)
+   \        0x0   0x6830             LDR      R0,[R6, #+0]
+   \        0x2   0x0140             LSLS     R0,R0,#+5
+   \        0x4   0x3021             ADDS     R0,R0,#+33
+   \        0x6   0xB2C0             UXTB     R0,R0
+   \        0x8   0x4285             CMP      R5,R0
+   \        0xA   0x4770             BX       LR
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine1: (+1)
+   \        0x0   0x2803             CMP      R0,#+3
+   \        0x2   0x4605             MOV      R5,R0
+   \        0x4   0x....             LDR.N    R6,??DataTable6_2  ;; 0xe000e004
+   \        0x6   0x....             LDR.N    R4,??DataTable6_3  ;; 0xe000ed24
+   \        0x8   0x4770             BX       LR
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine0: (+1)
+   \        0x0   0xE8BD 0x4070      POP      {R4-R6,LR}
+   \        0x4   0x....'....        B.W      CPU_SR_Restore
+    309          
+    310          
+    311          /*
+    312          *********************************************************************************************************
+    313          *                                           CPU_IntSrcEn()
+    314          *
+    315          * Description : Enable an interrupt source.
+    316          *
+    317          * Argument(s) : pos     Position of interrupt vector in interrupt table (see 'CPU_IntSrcDis()').
+    318          *
+    319          * Return(s)   : none.
+    320          *
+    321          * Caller(s)   : Application.
+    322          *
+    323          * Note(s)     : (1) See 'CPU_IntSrcDis() Note #1'.
+    324          *
+    325          *               (2) See 'CPU_IntSrcDis() Note #2'.
+    326          *
+    327          *               (3) See 'CPU_IntSrcDis() Note #3'.
+    328          *********************************************************************************************************
+    329          */
+    330          
+
+   \                                 In section .text, align 2, keep-with-next
+    331          void  CPU_IntSrcEn (CPU_INT08U  pos)
+    332          {
+   \                     CPU_IntSrcEn: (+1)
+   \        0x0   0xB570             PUSH     {R4-R6,LR}
+    333          #if (CPU_CFG_CRITICAL_METHOD == CPU_CRITICAL_METHOD_STATUS_LOCAL)
+    334              CPU_SR      cpu_sr;
+    335          #endif
+    336              CPU_INT08U  group;
+    337              CPU_INT08U  nbr;
+    338              CPU_INT08U  pos_max;
+    339          
+    340          
+    341              switch (pos) {
+   \        0x2   0x....'....        BL       ?Subroutine1
+   \                     ??CrossCallReturnLabel_1: (+1)
+   \        0x6   0xD930             BLS.N    ??CPU_IntSrcEn_0
+   \        0x8   0x1F00             SUBS     R0,R0,#+4
+   \        0xA   0xD009             BEQ.N    ??CPU_IntSrcEn_1
+   \        0xC   0x1E40             SUBS     R0,R0,#+1
+   \        0xE   0xD00D             BEQ.N    ??CPU_IntSrcEn_2
+   \       0x10   0x1E40             SUBS     R0,R0,#+1
+   \       0x12   0xD011             BEQ.N    ??CPU_IntSrcEn_3
+   \       0x14   0x1E40             SUBS     R0,R0,#+1
+   \       0x16   0x2807             CMP      R0,#+7
+   \       0x18   0xD927             BLS.N    ??CPU_IntSrcEn_0
+   \       0x1A   0x3808             SUBS     R0,R0,#+8
+   \       0x1C   0xD013             BEQ.N    ??CPU_IntSrcEn_4
+   \       0x1E   0xE019             B.N      ??CPU_IntSrcEn_5
+    342                  case CPU_INT_STK_PTR:                                   /* ---------------- INVALID OR RESERVED --------------- */
+    343                  case CPU_INT_RSVD_07:
+    344                  case CPU_INT_RSVD_08:
+    345                  case CPU_INT_RSVD_09:
+    346                  case CPU_INT_RSVD_10:
+    347                  case CPU_INT_RSVD_13:
+    348                       break;
+    349          
+    350          
+    351                                                                          /* ----------------- SYSTEM EXCEPTIONS ---------------- */
+    352                  case CPU_INT_RESET:                                     /* Reset (see Note #2).                                 */
+    353                  case CPU_INT_NMI:                                       /* Non-maskable interrupt (see Note #2).                */
+    354                  case CPU_INT_HFAULT:                                    /* Hard fault (see Note #2).                            */
+    355                  case CPU_INT_SVCALL:                                    /* SVCall (see Note #2).                                */
+    356                  case CPU_INT_DBGMON:                                    /* Debug monitor (see Note #2).                         */
+    357                  case CPU_INT_PENDSV:                                    /* PendSV (see Note #2).                                */
+    358                       break;
+    359          
+    360                  case CPU_INT_MEM:                                       /* Memory management.                                   */
+    361                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcEn_1: (+1)
+   \       0x20   0x....'....        BL       CPU_SR_Save
+    362                       CPU_REG_NVIC_SHCSR |= CPU_REG_NVIC_SHCSR_MEMFAULTENA;
+   \       0x24   0x6821             LDR      R1,[R4, #+0]
+   \       0x26   0xF441 0x3180      ORR      R1,R1,#0x10000
+   \       0x2A   0xE00A             B.N      ??CPU_IntSrcEn_6
+    363                       CPU_CRITICAL_EXIT();
+    364                       break;
+    365          
+    366                  case CPU_INT_BUSFAULT:                                  /* Bus fault.                                           */
+    367                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcEn_2: (+1)
+   \       0x2C   0x....'....        BL       CPU_SR_Save
+    368                       CPU_REG_NVIC_SHCSR |= CPU_REG_NVIC_SHCSR_BUSFAULTENA;
+   \       0x30   0x6821             LDR      R1,[R4, #+0]
+   \       0x32   0xF441 0x3100      ORR      R1,R1,#0x20000
+   \       0x36   0xE004             B.N      ??CPU_IntSrcEn_6
+    369                       CPU_CRITICAL_EXIT();
+    370                       break;
+    371          
+    372                  case CPU_INT_USAGEFAULT:                                /* Usage fault.                                         */
+    373                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcEn_3: (+1)
+   \       0x38   0x....'....        BL       CPU_SR_Save
+    374                       CPU_REG_NVIC_SHCSR |= CPU_REG_NVIC_SHCSR_USGFAULTENA;
+   \       0x3C   0x6821             LDR      R1,[R4, #+0]
+   \       0x3E   0xF441 0x2180      ORR      R1,R1,#0x40000
+   \                     ??CPU_IntSrcEn_6: (+1)
+   \       0x42   0x6021             STR      R1,[R4, #+0]
+    375                       CPU_CRITICAL_EXIT();
+   \       0x44   0xE010             B.N      ??CrossCallReturnLabel_5
+    376                       break;
+    377          
+    378                  case CPU_INT_SYSTICK:                                   /* SysTick.                                             */
+    379                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcEn_4: (+1)
+   \       0x46   0x....'....        BL       CPU_SR_Save
+    380                       CPU_REG_NVIC_ST_CTRL |= CPU_REG_NVIC_ST_CTRL_ENABLE;
+   \       0x4A   0x68F1             LDR      R1,[R6, #+12]
+   \       0x4C   0xF041 0x0101      ORR      R1,R1,#0x1
+   \       0x50   0x60F1             STR      R1,[R6, #+12]
+    381                       CPU_CRITICAL_EXIT();
+   \       0x52   0xE009             B.N      ??CrossCallReturnLabel_5
+    382                       break;
+    383          
+    384          
+    385                                                                          /* ---------------- EXTERNAL INTERRUPT ---------------- */
+    386                  default:
+    387                      pos_max = CPU_INT_SRC_POS_MAX;
+   \                     ??CPU_IntSrcEn_5: (+1)
+   \       0x54   0x....'....        BL       ?Subroutine2
+    388                      if (pos < pos_max) {                                /* See Note #3.                                         */
+   \                     ??CrossCallReturnLabel_3: (+1)
+   \       0x58   0xD207             BCS.N    ??CPU_IntSrcEn_0
+    389                           group = (pos - 16) / 32;
+    390                           nbr   = (pos - 16) % 32;
+    391          
+    392                           CPU_CRITICAL_ENTER();
+   \       0x5A   0x....'....        BL       CPU_SR_Save
+   \       0x5E   0x....'....        BL       ?Subroutine5
+    393                           CPU_REG_NVIC_SETEN(group) = DEF_BIT(nbr);
+   \                     ??CrossCallReturnLabel_9: (+1)
+   \       0x62   0x....             LDR.N    R3,??DataTable6_1  ;; 0xe000e100
+   \       0x64   0x....'....        BL       ?Subroutine3
+    394                           CPU_CRITICAL_EXIT();
+    395                       }
+    396                       break;
+    397              }
+   \                     ??CrossCallReturnLabel_5: (+1)
+   \       0x68   0x....             B.N      ?Subroutine0
+    398          }
+   \                     ??CPU_IntSrcEn_0: (+1)
+   \       0x6A   0xBD70             POP      {R4-R6,PC}       ;; return
+    399          
+    400          
+    401          /*
+    402          *********************************************************************************************************
+    403          *                                           CPU_IntSrcPrioSet()
+    404          *
+    405          * Description : Set priority of an interrupt source.
+    406          *
+    407          * Argument(s) : pos     Position of interrupt vector in interrupt table (see 'CPU_IntSrcDis()').
+    408          *
+    409          *               prio    Priority.  Use a lower priority number for a higher priority.
+    410          *
+    411          * Return(s)   : none.
+    412          *
+    413          * Caller(s)   : Application.
+    414          *
+    415          * Note(s)     : (1) See 'CPU_IntSrcDis() Note #1'.
+    416          *
+    417          *               (2) Several interrupts priorities CANNOT be set :
+    418          *
+    419          *                   (a) Reset (always -3).
+    420          *                   (b) NMI (always -2).
+    421          *                   (c) Hard fault (always -1).
+    422          *
+    423          *               (3) See 'CPU_IntSrcDis() Note #3'.
+    424          *********************************************************************************************************
+    425          */
+    426          
+
+   \                                 In section .text, align 4, keep-with-next
+    427          void  CPU_IntSrcPrioSet (CPU_INT08U  pos,
+    428                                   CPU_INT08U  prio)
+    429          {
+   \                     CPU_IntSrcPrioSet: (+1)
+   \        0x0   0xB5F8             PUSH     {R3-R7,LR}
+   \        0x2   0x4606             MOV      R6,R0
+    430          #if (CPU_CFG_CRITICAL_METHOD == CPU_CRITICAL_METHOD_STATUS_LOCAL)
+    431              CPU_SR      cpu_sr;
+    432          #endif
+    433              CPU_INT08U  group;
+    434              CPU_INT08U  nbr;
+    435              CPU_INT08U  pos_max;
+    436              CPU_INT32U  prio_32;
+    437              CPU_INT32U  temp;
+    438          
+    439          
+    440              prio_32 = CPU_RevBits((CPU_INT08U)prio);
+    441              prio    = (CPU_INT08U)(prio_32 >> (3 * DEF_OCTET_NBR_BITS));
+   \        0x4   0x4608             MOV      R0,R1
+   \        0x6   0x....'....        BL       CPU_RevBits
+   \        0xA   0x0E05             LSRS     R5,R0,#+24
+    442          
+    443              switch (pos) {
+   \        0xC   0x2E0F             CMP      R6,#+15
+   \        0xE   0x....             LDR.N    R4,??DataTable6_4  ;; 0xe000ed18
+   \       0x10   0xD845             BHI.N    ??CPU_IntSrcPrioSet_1
+   \       0x12   0xE8DF 0xF006      TBB      [PC, R6]
+   \                     ??CPU_IntSrcPrioSet_0:
+   \       0x16   0x63 0x63          DC8      0x63,0x63,0x63,0x63
+   \              0x63 0x63    
+   \       0x1A   0x08 0x10          DC8      0x8,0x10,0x18,0x63
+   \              0x18 0x63    
+   \       0x1E   0x63 0x63          DC8      0x63,0x63,0x63,0x21
+   \              0x63 0x21    
+   \       0x22   0x2A 0x63          DC8      0x2A,0x63,0x32,0x3B
+   \              0x32 0x3B    
+    444                  case CPU_INT_STK_PTR:                                   /* ---------------- INVALID OR RESERVED --------------- */
+    445                  case CPU_INT_RSVD_07:
+    446                  case CPU_INT_RSVD_08:
+    447                  case CPU_INT_RSVD_09:
+    448                  case CPU_INT_RSVD_10:
+    449                  case CPU_INT_RSVD_13:
+    450                       break;
+    451          
+    452          
+    453                                                                          /* ----------------- SYSTEM EXCEPTIONS ---------------- */
+    454                  case CPU_INT_RESET:                                     /* Reset (see Note #2).                                 */
+    455                  case CPU_INT_NMI:                                       /* Non-maskable interrupt (see Note #2).                */
+    456                  case CPU_INT_HFAULT:                                    /* Hard fault (see Note #2).                            */
+    457                       break;
+    458          
+    459                  case CPU_INT_MEM:                                       /* Memory management.                                   */
+    460                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcPrioSet_2: (+1)
+   \       0x26   0x....'....        BL       CPU_SR_Save
+    461                       temp                 = CPU_REG_NVIC_SHPRI1;
+   \       0x2A   0x6821             LDR      R1,[R4, #+0]
+    462                       temp                &= ~(DEF_OCTET_MASK << (0 * DEF_OCTET_NBR_BITS));
+    463                       temp                |=  (prio           << (0 * DEF_OCTET_NBR_BITS));
+    464                       CPU_REG_NVIC_SHPRI1  = temp;
+   \       0x2C   0x0A09             LSRS     R1,R1,#+8
+   \       0x2E   0xEA45 0x2501      ORR      R5,R5,R1, LSL #+8
+   \       0x32   0x6025             STR      R5,[R4, #+0]
+    465                       CPU_CRITICAL_EXIT();
+   \       0x34   0xE04E             B.N      ??CPU_IntSrcPrioSet_3
+    466                       break;
+    467          
+    468                  case CPU_INT_BUSFAULT:                                  /* Bus fault.                                           */
+    469                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcPrioSet_4: (+1)
+   \       0x36   0x....'....        BL       CPU_SR_Save
+    470                       temp                 = CPU_REG_NVIC_SHPRI1;
+   \       0x3A   0x6821             LDR      R1,[R4, #+0]
+    471                       temp                &= ~(DEF_OCTET_MASK << (1 * DEF_OCTET_NBR_BITS));
+    472                       temp                |=  (prio           << (1 * DEF_OCTET_NBR_BITS));
+    473                       CPU_REG_NVIC_SHPRI1  = temp;
+   \       0x3C   0xF421 0x417F      BIC      R1,R1,#0xFF00
+   \       0x40   0xEA41 0x2105      ORR      R1,R1,R5, LSL #+8
+   \       0x44   0xE006             B.N      ??CPU_IntSrcPrioSet_5
+    474                       CPU_CRITICAL_EXIT();
+    475                       break;
+    476          
+    477                  case CPU_INT_USAGEFAULT:                                /* Usage fault.                                         */
+    478                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcPrioSet_6: (+1)
+   \       0x46   0x....'....        BL       CPU_SR_Save
+    479                       temp                 = CPU_REG_NVIC_SHPRI1;
+   \       0x4A   0x6821             LDR      R1,[R4, #+0]
+    480                       temp                &= ~(DEF_OCTET_MASK << (2 * DEF_OCTET_NBR_BITS));
+    481                       temp                |=  (prio           << (2 * DEF_OCTET_NBR_BITS));
+    482                       CPU_REG_NVIC_SHPRI1  = temp;
+   \       0x4C   0xF421 0x017F      BIC      R1,R1,#0xFF0000
+   \       0x50   0xEA41 0x4105      ORR      R1,R1,R5, LSL #+16
+   \                     ??CPU_IntSrcPrioSet_5: (+1)
+   \       0x54   0x6021             STR      R1,[R4, #+0]
+    483                       CPU_CRITICAL_EXIT();
+   \       0x56   0xE03D             B.N      ??CPU_IntSrcPrioSet_3
+    484                       break;
+    485          
+    486                  case CPU_INT_SVCALL:                                    /* SVCall.                                              */
+    487                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcPrioSet_7: (+1)
+   \       0x58   0x....'....        BL       CPU_SR_Save
+    488                       temp                 = CPU_REG_NVIC_SHPRI2;
+   \       0x5C   0x6861             LDR      R1,[R4, #+4]
+    489                       temp                &= ~((CPU_INT32U)DEF_OCTET_MASK << (3 * DEF_OCTET_NBR_BITS));
+    490                       temp                |=  (prio                       << (3 * DEF_OCTET_NBR_BITS));
+    491                       CPU_REG_NVIC_SHPRI2  = temp;
+   \       0x5E   0xF021 0x417F      BIC      R1,R1,#0xFF000000
+   \       0x62   0xEA51 0x6705      ORRS     R7,R1,R5, LSL #+24
+   \       0x66   0x6067             STR      R7,[R4, #+4]
+    492                       CPU_CRITICAL_EXIT();
+   \       0x68   0xE034             B.N      ??CPU_IntSrcPrioSet_3
+    493                       break;
+    494          
+    495                  case CPU_INT_DBGMON:                                    /* Debug monitor.                                       */
+    496                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcPrioSet_8: (+1)
+   \       0x6A   0x....'....        BL       CPU_SR_Save
+    497                       temp                = CPU_REG_NVIC_SHPRI3;
+   \       0x6E   0x68A1             LDR      R1,[R4, #+8]
+    498                       temp                &= ~(DEF_OCTET_MASK << (0 * DEF_OCTET_NBR_BITS));
+    499                       temp                |=  (prio           << (0 * DEF_OCTET_NBR_BITS));
+    500                       CPU_REG_NVIC_SHPRI3  = temp;
+   \       0x70   0x0A09             LSRS     R1,R1,#+8
+   \       0x72   0xEA45 0x2501      ORR      R5,R5,R1, LSL #+8
+   \       0x76   0x60A5             STR      R5,[R4, #+8]
+    501                       CPU_CRITICAL_EXIT();
+   \       0x78   0xE02C             B.N      ??CPU_IntSrcPrioSet_3
+    502                       break;
+    503          
+    504                  case CPU_INT_PENDSV:                                    /* PendSV.                                              */
+    505                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcPrioSet_9: (+1)
+   \       0x7A   0x....'....        BL       CPU_SR_Save
+    506                       temp                 = CPU_REG_NVIC_SHPRI3;
+   \       0x7E   0x68A1             LDR      R1,[R4, #+8]
+    507                       temp                &= ~(DEF_OCTET_MASK << (2 * DEF_OCTET_NBR_BITS));
+    508                       temp                |=  (prio           << (2 * DEF_OCTET_NBR_BITS));
+    509                       CPU_REG_NVIC_SHPRI3  = temp;
+   \       0x80   0xF421 0x017F      BIC      R1,R1,#0xFF0000
+   \       0x84   0xEA41 0x4105      ORR      R1,R1,R5, LSL #+16
+   \       0x88   0x60A1             STR      R1,[R4, #+8]
+    510                       CPU_CRITICAL_EXIT();
+   \       0x8A   0xE023             B.N      ??CPU_IntSrcPrioSet_3
+    511                       break;
+    512          
+    513                  case CPU_INT_SYSTICK:                                   /* SysTick.                                             */
+    514                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcPrioSet_10: (+1)
+   \       0x8C   0x....'....        BL       CPU_SR_Save
+    515                       temp                 = CPU_REG_NVIC_SHPRI3;
+   \       0x90   0x68A1             LDR      R1,[R4, #+8]
+    516                       temp                &= ~((CPU_INT32U)DEF_OCTET_MASK << (3 * DEF_OCTET_NBR_BITS));
+    517                       temp                |=  (prio                       << (3 * DEF_OCTET_NBR_BITS));
+    518                       CPU_REG_NVIC_SHPRI3  = temp;
+   \       0x92   0xF021 0x417F      BIC      R1,R1,#0xFF000000
+   \       0x96   0xEA51 0x6705      ORRS     R7,R1,R5, LSL #+24
+   \       0x9A   0x60A7             STR      R7,[R4, #+8]
+    519                       CPU_CRITICAL_EXIT();
+   \       0x9C   0xE01A             B.N      ??CPU_IntSrcPrioSet_3
+    520                       break;
+    521          
+    522          
+    523                                                                          /* ---------------- EXTERNAL INTERRUPT ---------------- */
+    524                  default:
+    525                      pos_max = CPU_INT_SRC_POS_MAX;
+   \                     ??CPU_IntSrcPrioSet_1: (+1)
+   \       0x9E   0x....'....        BL       ?Subroutine4
+    526                      if (pos < pos_max) {                                /* See Note #3.                                         */
+   \                     ??CrossCallReturnLabel_6: (+1)
+   \       0xA2   0x4296             CMP      R6,R2
+   \       0xA4   0xD21A             BCS.N    ??CPU_IntSrcPrioSet_11
+    527                           group                    = (pos - 16) / 4;
+   \       0xA6   0x3E10             SUBS     R6,R6,#+16
+   \       0xA8   0x1070             ASRS     R0,R6,#+1
+   \       0xAA   0xEB06 0x7090      ADD      R0,R6,R0, LSR #+30
+   \       0xAE   0x1080             ASRS     R0,R0,#+2
+   \       0xB0   0xB2C4             UXTB     R4,R0
+    528                           nbr                      = (pos - 16) % 4;
+   \       0xB2   0xEBA6 0x0680      SUB      R6,R6,R0, LSL #+2
+    529          
+    530                           CPU_CRITICAL_ENTER();
+   \       0xB6   0x....'....        BL       CPU_SR_Save
+    531                           temp                     = CPU_REG_NVIC_PRIO(group);
+   \       0xBA   0x....             LDR.N    R1,??DataTable6_5  ;; 0xe000e400
+   \       0xBC   0xEB01 0x0184      ADD      R1,R1,R4, LSL #+2
+   \       0xC0   0x0636             LSLS     R6,R6,#+24
+   \       0xC2   0x680A             LDR      R2,[R1, #+0]
+    532                           temp                    &= ~(DEF_OCTET_MASK << (nbr * DEF_OCTET_NBR_BITS));
+    533                           temp                    |=  (prio           << (nbr * DEF_OCTET_NBR_BITS));
+    534                           CPU_REG_NVIC_PRIO(group) = temp;
+   \       0xC4   0x0D73             LSRS     R3,R6,#+21
+   \       0xC6   0x24FF             MOVS     R4,#+255
+   \       0xC8   0x409C             LSLS     R4,R4,R3
+   \       0xCA   0x43A2             BICS     R2,R2,R4
+   \       0xCC   0xFA05 0xF303      LSL      R3,R5,R3
+   \       0xD0   0x431A             ORRS     R2,R3,R2
+   \       0xD2   0x600A             STR      R2,[R1, #+0]
+    535                           CPU_CRITICAL_EXIT();
+   \                     ??CPU_IntSrcPrioSet_3: (+1)
+   \       0xD4   0xE8BD 0x40F2      POP      {R1,R4-R7,LR}
+   \       0xD8   0x....'....        B.W      CPU_SR_Restore
+    536                       }
+    537                       break;
+    538              }
+    539          }
+   \                     ??CPU_IntSrcPrioSet_11: (+1)
+   \       0xDC   0xBDF1             POP      {R0,R4-R7,PC}    ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine4: (+1)
+   \        0x0   0x....             LDR.N    R0,??DataTable6_2  ;; 0xe000e004
+   \        0x2   0x6800             LDR      R0,[R0, #+0]
+   \        0x4   0x0142             LSLS     R2,R0,#+5
+   \        0x6   0x3221             ADDS     R2,R2,#+33
+   \        0x8   0xB2D2             UXTB     R2,R2
+   \        0xA   0x4770             BX       LR
+    540          
+    541          
+    542          /*
+    543          *********************************************************************************************************
+    544          *                                           CPU_IntSrcPrioGet()
+    545          *
+    546          * Description : Get priority of an interrupt source.
+    547          *
+    548          * Argument(s) : pos     Position of interrupt vector in interrupt table (see 'CPU_IntSrcDis()').
+    549          *
+    550          * Return(s)   : Priority of interrupt source.  If the interrupt source specified is invalid, then
+    551          *               DEF_INT_16S_MIN_VAL is returned.
+    552          *
+    553          * Caller(s)   : Application.
+    554          *
+    555          * Note(s)     : (1) See 'CPU_IntSrcDis() Note #1'.
+    556          *
+    557          *               (2) See 'CPU_IntSrcPrioSet() Note #2'.
+    558          *
+    559          *               (3) See 'CPU_IntSrcDis() Note #3'.
+    560          *********************************************************************************************************
+    561          */
+    562          
+
+   \                                 In section .text, align 4, keep-with-next
+    563          CPU_INT16S  CPU_IntSrcPrioGet (CPU_INT08U  pos)
+    564          {
+   \                     CPU_IntSrcPrioGet: (+1)
+   \        0x0   0xB570             PUSH     {R4-R6,LR}
+    565          #if (CPU_CFG_CRITICAL_METHOD == CPU_CRITICAL_METHOD_STATUS_LOCAL)
+    566              CPU_SR      cpu_sr;
+    567          #endif
+    568              CPU_INT08U  group;
+    569              CPU_INT08U  nbr;
+    570              CPU_INT08U  pos_max;
+    571              CPU_INT16S  prio;
+    572              CPU_INT32U  prio_32;
+    573              CPU_INT32U  temp;
+    574          
+    575          
+    576              switch (pos) {
+   \        0x2   0x280F             CMP      R0,#+15
+   \        0x4   0x4605             MOV      R5,R0
+   \        0x6   0x....             LDR.N    R4,??DataTable6_4  ;; 0xe000ed18
+   \        0x8   0xD840             BHI.N    ??CPU_IntSrcPrioGet_1
+   \        0xA   0xE8DF 0xF000      TBB      [PC, R0]
+   \                     ??CPU_IntSrcPrioGet_0:
+   \        0xE   0x56 0x08          DC8      0x56,0x8,0xB,0xE
+   \              0x0B 0x0E    
+   \       0x12   0x11 0x20          DC8      0x11,0x20,0x26,0x56
+   \              0x26 0x56    
+   \       0x16   0x56 0x56          DC8      0x56,0x56,0x56,0x2D
+   \              0x56 0x2D    
+   \       0x1A   0x32 0x56          DC8      0x32,0x56,0x36,0x3B
+   \              0x36 0x3B    
+    577                  case CPU_INT_STK_PTR:                                   /* ---------------- INVALID OR RESERVED --------------- */
+    578                  case CPU_INT_RSVD_07:
+    579                  case CPU_INT_RSVD_08:
+    580                  case CPU_INT_RSVD_09:
+    581                  case CPU_INT_RSVD_10:
+    582                  case CPU_INT_RSVD_13:
+    583                       prio = DEF_INT_16S_MIN_VAL;
+    584                       break;
+    585          
+    586          
+    587                                                                          /* ----------------- SYSTEM EXCEPTIONS ---------------- */
+    588                  case CPU_INT_RESET:                                     /* Reset (see Note #2).                                 */
+    589                       prio = -3;
+   \                     ??CPU_IntSrcPrioGet_2: (+1)
+   \       0x1E   0xF06F 0x0402      MVN      R4,#+2
+    590                       break;
+   \       0x22   0xE012             B.N      ??CPU_IntSrcPrioGet_3
+    591          
+    592                  case CPU_INT_NMI:                                       /* Non-maskable interrupt (see Note #2).                */
+    593                       prio = -2;
+   \                     ??CPU_IntSrcPrioGet_4: (+1)
+   \       0x24   0xF06F 0x0401      MVN      R4,#+1
+    594                       break;
+   \       0x28   0xE00F             B.N      ??CPU_IntSrcPrioGet_3
+    595          
+    596                  case CPU_INT_HFAULT:                                    /* Hard fault (see Note #2).                            */
+    597                       prio = -1;
+   \                     ??CPU_IntSrcPrioGet_5: (+1)
+   \       0x2A   0xF04F 0x34FF      MOV      R4,#-1
+    598                       break;
+   \       0x2E   0xE00C             B.N      ??CPU_IntSrcPrioGet_3
+    599          
+    600          
+    601                  case CPU_INT_MEM:                                       /* Memory management.                                   */
+    602                       CPU_CRITICAL_ENTER();
+   \                     ??CPU_IntSrcPrioGet_6: (+1)
+   \       0x30   0x....'....        BL       CPU_SR_Save
+    603                       temp = CPU_REG_NVIC_SHPRI1;
+   \       0x34   0x6824             LDR      R4,[R4, #+0]
+    604                       prio = (temp >> (0 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+   \                     ??CPU_IntSrcPrioGet_7: (+1)
+   \       0x36   0xF004 0x04FF      AND      R4,R4,#0xFF
+    605                       CPU_CRITICAL_EXIT();
+   \                     ??CPU_IntSrcPrioGet_8: (+1)
+   \       0x3A   0x....'....        BL       CPU_SR_Restore
+    606                       break;
+    607          
+    608          
+    609                  case CPU_INT_BUSFAULT:                                  /* Bus fault.                                           */
+    610                       CPU_CRITICAL_ENTER();
+    611                       temp = CPU_REG_NVIC_SHPRI1;
+    612                       prio = (temp >> (1 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+    613                       CPU_CRITICAL_EXIT();
+    614                       break;
+    615          
+    616          
+    617                  case CPU_INT_USAGEFAULT:                                /* Usage fault.                                         */
+    618                       CPU_CRITICAL_ENTER();
+    619                       temp = CPU_REG_NVIC_SHPRI1;
+    620                       prio = (temp >> (2 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+    621                       break;
+    622          
+    623                  case CPU_INT_SVCALL:                                    /* SVCall.                                              */
+    624                       CPU_CRITICAL_ENTER();
+    625                       temp = CPU_REG_NVIC_SHPRI2;
+    626                       prio = (temp >> (3 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+    627                       CPU_CRITICAL_EXIT();
+    628                       break;
+    629          
+    630                  case CPU_INT_DBGMON:                                    /* Debug monitor.                                       */
+    631                       CPU_CRITICAL_ENTER();
+    632                       temp = CPU_REG_NVIC_SHPRI3;
+    633                       prio = (temp >> (0 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+    634                       CPU_CRITICAL_EXIT();
+    635                       break;
+    636          
+    637                  case CPU_INT_PENDSV:                                    /* PendSV.                                              */
+    638                       CPU_CRITICAL_ENTER();
+    639                       temp = CPU_REG_NVIC_SHPRI3;
+    640                       prio = (temp >> (2 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+    641                       CPU_CRITICAL_EXIT();
+    642                       break;
+    643          
+    644                  case CPU_INT_SYSTICK:                                   /* SysTick.                                             */
+    645                       CPU_CRITICAL_ENTER();
+    646                       temp = CPU_REG_NVIC_SHPRI3;
+    647                       prio = (temp >> (3 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+    648                       CPU_CRITICAL_EXIT();
+    649                       break;
+    650          
+    651          
+    652                                                                          /* ---------------- EXTERNAL INTERRUPT ---------------- */
+    653                  default:
+    654                      pos_max = CPU_INT_SRC_POS_MAX;
+    655                      if (pos < pos_max) {                                /* See Note #3.                                         */
+    656                           group = (pos - 16) / 4;
+    657                           nbr   = (pos - 16) % 4;
+    658          
+    659                           CPU_CRITICAL_ENTER();
+    660                           temp  = CPU_REG_NVIC_PRIO(group);
+    661                           CPU_CRITICAL_EXIT();
+    662          
+    663                           prio  = (temp >> (nbr * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+    664                       } else {
+    665                           prio  = DEF_INT_16S_MIN_VAL;
+    666                       }
+    667                       break;
+    668              }
+    669          
+    670              if (prio >= 0) {
+   \                     ??CPU_IntSrcPrioGet_9: (+1)
+   \       0x3E   0xB220             SXTH     R0,R4
+   \       0x40   0x2800             CMP      R0,#+0
+   \       0x42   0xD402             BMI.N    ??CPU_IntSrcPrioGet_3
+    671                  prio_32 = CPU_RevBits((CPU_INT32U)prio);
+    672                  prio    = (CPU_INT16S)(prio_32 >> (3 * DEF_OCTET_NBR_BITS));
+   \       0x44   0x....'....        BL       CPU_RevBits
+   \       0x48   0x0E04             LSRS     R4,R0,#+24
+    673              }
+    674          
+    675              return (prio);
+   \                     ??CPU_IntSrcPrioGet_3: (+1)
+   \       0x4A   0xB220             SXTH     R0,R4
+   \       0x4C   0xBD70             POP      {R4-R6,PC}       ;; return
+   \                     ??CPU_IntSrcPrioGet_10: (+1)
+   \       0x4E   0x....'....        BL       CPU_SR_Save
+   \       0x52   0x6821             LDR      R1,[R4, #+0]
+   \       0x54   0xF3C1 0x2407      UBFX     R4,R1,#+8,#+8
+   \       0x58   0xE7EF             B.N      ??CPU_IntSrcPrioGet_8
+   \                     ??CPU_IntSrcPrioGet_11: (+1)
+   \       0x5A   0x....'....        BL       CPU_SR_Save
+   \       0x5E   0x6824             LDR      R4,[R4, #+0]
+   \       0x60   0x0C24             LSRS     R4,R4,#+16
+   \                     ??CPU_IntSrcPrioGet_12: (+1)
+   \       0x62   0xF004 0x04FF      AND      R4,R4,#0xFF
+   \       0x66   0xE7EA             B.N      ??CPU_IntSrcPrioGet_9
+   \                     ??CPU_IntSrcPrioGet_13: (+1)
+   \       0x68   0x....'....        BL       CPU_SR_Save
+   \       0x6C   0x6864             LDR      R4,[R4, #+4]
+   \                     ??CPU_IntSrcPrioGet_14: (+1)
+   \       0x6E   0x0E24             LSRS     R4,R4,#+24
+   \       0x70   0xE7E3             B.N      ??CPU_IntSrcPrioGet_8
+   \                     ??CPU_IntSrcPrioGet_15: (+1)
+   \       0x72   0x....'....        BL       CPU_SR_Save
+   \       0x76   0x68A4             LDR      R4,[R4, #+8]
+   \       0x78   0xE7DD             B.N      ??CPU_IntSrcPrioGet_7
+   \                     ??CPU_IntSrcPrioGet_16: (+1)
+   \       0x7A   0x....'....        BL       CPU_SR_Save
+   \       0x7E   0x68A4             LDR      R4,[R4, #+8]
+   \       0x80   0x0C24             LSRS     R4,R4,#+16
+   \       0x82   0xE7D8             B.N      ??CPU_IntSrcPrioGet_7
+   \                     ??CPU_IntSrcPrioGet_17: (+1)
+   \       0x84   0x....'....        BL       CPU_SR_Save
+   \       0x88   0x68A4             LDR      R4,[R4, #+8]
+   \       0x8A   0xE7F0             B.N      ??CPU_IntSrcPrioGet_14
+   \                     ??CPU_IntSrcPrioGet_1: (+1)
+   \       0x8C   0x....'....        BL       ?Subroutine4
+   \                     ??CrossCallReturnLabel_7: (+1)
+   \       0x90   0x4295             CMP      R5,R2
+   \       0x92   0xD212             BCS.N    ??CPU_IntSrcPrioGet_18
+   \       0x94   0x....'....        BL       CPU_SR_Save
+   \       0x98   0x3D10             SUBS     R5,R5,#+16
+   \       0x9A   0x1069             ASRS     R1,R5,#+1
+   \       0x9C   0xEB05 0x7691      ADD      R6,R5,R1, LSR #+30
+   \       0xA0   0x10B6             ASRS     R6,R6,#+2
+   \       0xA2   0xB2F2             UXTB     R2,R6
+   \       0xA4   0x....             LDR.N    R1,??DataTable6_5  ;; 0xe000e400
+   \       0xA6   0xEB01 0x0182      ADD      R1,R1,R2, LSL #+2
+   \       0xAA   0xEBA5 0x0586      SUB      R5,R5,R6, LSL #+2
+   \       0xAE   0x680C             LDR      R4,[R1, #+0]
+   \       0xB0   0x....'....        BL       CPU_SR_Restore
+   \       0xB4   0x00ED             LSLS     R5,R5,#+3
+   \       0xB6   0x40EC             LSRS     R4,R4,R5
+   \       0xB8   0xE7D3             B.N      ??CPU_IntSrcPrioGet_12
+   \                     ??CPU_IntSrcPrioGet_18: (+1)
+   \       0xBA   0x....             LDR.N    R4,??DataTable6_6  ;; 0xffff8000
+   \       0xBC   0xE7C5             B.N      ??CPU_IntSrcPrioGet_3
+    676          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6:
+   \        0x0   0xE000'E180        DC32     0xe000e180
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6_1:
+   \        0x0   0xE000'E100        DC32     0xe000e100
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6_2:
+   \        0x0   0xE000'E004        DC32     0xe000e004
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6_3:
+   \        0x0   0xE000'ED24        DC32     0xe000ed24
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6_4:
+   \        0x0   0xE000'ED18        DC32     0xe000ed18
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6_5:
+   \        0x0   0xE000'E400        DC32     0xe000e400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable6_6:
+   \        0x0   0xFFFF'8000        DC32     0xffff8000
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   CPU_BitBandClr
+       0   CPU_BitBandSet
+      16   CPU_IntSrcDis
+         0   -> CPU_SR_Restore
+        16   -> CPU_SR_Save
+      16   CPU_IntSrcEn
+         0   -> CPU_SR_Restore
+        16   -> CPU_SR_Save
+      16   CPU_IntSrcPrioGet
+        16   -> CPU_RevBits
+        16   -> CPU_SR_Restore
+        16   -> CPU_SR_Save
+      24   CPU_IntSrcPrioSet
+        24   -> CPU_RevBits
+         0   -> CPU_SR_Restore
+        24   -> CPU_SR_Save
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable6
+       4  ??DataTable6_1
+       4  ??DataTable6_2
+       4  ??DataTable6_3
+       4  ??DataTable6_4
+       4  ??DataTable6_5
+       4  ??DataTable6_6
+       8  ?Subroutine0
+      10  ?Subroutine1
+      12  ?Subroutine2
+      20  ?Subroutine3
+      12  ?Subroutine4
+      12  ?Subroutine5
+      44  CPU_BitBandClr
+      44  CPU_BitBandSet
+     108  CPU_IntSrcDis
+     108  CPU_IntSrcEn
+     190  CPU_IntSrcPrioGet
+     222  CPU_IntSrcPrioSet
+
+ 
+ 818 bytes in section .text
+ 
+ 818 bytes of CODE memory
+
+Errors: none
+Warnings: none

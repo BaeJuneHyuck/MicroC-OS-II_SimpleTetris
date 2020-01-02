@@ -1,0 +1,2050 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.40.2.214/W32 for ARM         23/Dec/2019  21:46:50
+# Copyright 1999-2019 IAR Systems AB.
+#
+#    Cpu mode     =  
+#    Endian       =  little
+#    Source file  =
+#        C:\Baby\test02\exam\ett\Micrium\Software\uCOS-II\Source\os_task.c
+#    Command line =
+#        -f C:\Users\hn829\AppData\Local\Temp\EW9545.tmp
+#        (C:\Baby\test02\exam\ett\Micrium\Software\uCOS-II\Source\os_task.c
+#        -lCN
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List
+#        -o
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj
+#        --debug --endian=little --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.3\arm\inc\c\DLib_Config_Normal.h" -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\ports\arm-cortex-m3\generic\iar\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-lib\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\ARM-Cortex-M3\IAR\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\cpu\st\stm32\inc\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\BSP\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Ports\ST\STM32\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\Source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Plugins\uCOS-II\
+#        -Ohz --use_c++_inline)
+#    Locale       =  C
+#    List file    =
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List\os_task.lst
+#    Object file  =
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj\os_task.o
+#
+###############################################################################
+
+C:\Baby\test02\exam\ett\Micrium\Software\uCOS-II\Source\os_task.c
+      1          /*
+      2          *********************************************************************************************************
+      3          *                                                uC/OS-II
+      4          *                                          The Real-Time Kernel
+      5          *                                            TASK MANAGEMENT
+      6          *
+      7          *                              (c) Copyright 1992-2007, Micrium, Weston, FL
+      8          *                                           All Rights Reserved
+      9          *
+     10          * File    : OS_TASK.C
+     11          * By      : Jean J. Labrosse
+     12          * Version : V2.86
+     13          *
+     14          * LICENSING TERMS:
+     15          * ---------------
+     16          *   uC/OS-II is provided in source form for FREE evaluation, for educational use or for peaceful research.  
+     17          * If you plan on using  uC/OS-II  in a commercial product you need to contact Micriµm to properly license 
+     18          * its use in your product. We provide ALL the source code for your convenience and to help you experience 
+     19          * uC/OS-II.   The fact that the  source is provided does  NOT  mean that you can use it without  paying a 
+     20          * licensing fee.
+     21          *********************************************************************************************************
+     22          */
+     23          
+     24          #ifndef  OS_MASTER_FILE
+     25          #include <ucos_ii.h>
+     26          #endif
+     27          
+     28          /*$PAGE*/
+     29          /*
+     30          *********************************************************************************************************
+     31          *                                        CHANGE PRIORITY OF A TASK
+     32          *
+     33          * Description: This function allows you to change the priority of a task dynamically.  Note that the new
+     34          *              priority MUST be available.
+     35          *
+     36          * Arguments  : oldp     is the old priority
+     37          *
+     38          *              newp     is the new priority
+     39          *
+     40          * Returns    : OS_ERR_NONE            is the call was successful
+     41          *              OS_ERR_PRIO_INVALID    if the priority you specify is higher that the maximum allowed
+     42          *                                     (i.e. >= OS_LOWEST_PRIO)
+     43          *              OS_ERR_PRIO_EXIST      if the new priority already exist.
+     44          *              OS_ERR_PRIO            there is no task with the specified OLD priority (i.e. the OLD task does
+     45          *                                     not exist.
+     46          *              OS_ERR_TASK_NOT_EXIST  if the task is assigned to a Mutex PIP.
+     47          *********************************************************************************************************
+     48          */
+     49          
+     50          #if OS_TASK_CHANGE_PRIO_EN > 0
+
+   \                                 In section .text, align 2, keep-with-next
+     51          INT8U  OSTaskChangePrio (INT8U oldprio, INT8U newprio)
+     52          {
+   \                     OSTaskChangePrio: (+1)
+   \        0x0   0xE92D 0x4FF8      PUSH     {R3-R11,LR}
+   \        0x4   0x4682             MOV      R10,R0
+   \        0x6   0x4688             MOV      R8,R1
+     53          #if (OS_EVENT_EN)
+     54              OS_EVENT  *pevent;
+     55          #if (OS_EVENT_MULTI_EN > 0)
+     56              OS_EVENT **pevents;
+     57          #endif
+     58          #endif
+     59              OS_TCB    *ptcb;
+     60              INT8U      y_new;
+     61              INT8U      x_new;
+     62              INT8U      y_old;
+     63          #if OS_LOWEST_PRIO <= 63
+     64              INT8U      bity_new;
+     65              INT8U      bitx_new;
+     66              INT8U      bity_old;
+     67              INT8U      bitx_old;
+     68          #else
+     69              INT16U     bity_new;
+     70              INT16U     bitx_new;
+     71              INT16U     bity_old;
+     72              INT16U     bitx_old;
+     73          #endif
+     74          #if OS_CRITICAL_METHOD == 3
+     75              OS_CPU_SR  cpu_sr = 0;                                  /* Storage for CPU status register         */
+     76          #endif
+     77          
+     78          
+     79          /*$PAGE*/
+     80          #if OS_ARG_CHK_EN > 0
+     81              if (oldprio >= OS_LOWEST_PRIO) {
+     82                  if (oldprio != OS_PRIO_SELF) {
+     83                      return (OS_ERR_PRIO_INVALID);
+     84                  }
+     85              }
+     86              if (newprio >= OS_LOWEST_PRIO) {
+     87                  return (OS_ERR_PRIO_INVALID);
+     88              }
+     89          #endif
+     90              OS_ENTER_CRITICAL();
+   \        0x8   0x....'....        BL       OS_CPU_SR_Save
+     91              if (OSTCBPrioTbl[newprio] != (OS_TCB *)0) {             /* New priority must not already exist     */
+   \        0xC   0x....'....        LDR.W    R5,??DataTable12
+   \       0x10   0x46C3             MOV      R11,R8
+   \       0x12   0xF855 0x102B      LDR      R1,[R5, R11, LSL #+2]
+   \       0x16   0xB119             CBZ.N    R1,??OSTaskChangePrio_0
+     92                  OS_EXIT_CRITICAL();
+   \       0x18   0x....'....        BL       OS_CPU_SR_Restore
+     93                  return (OS_ERR_PRIO_EXIST);
+   \       0x1C   0x2028             MOVS     R0,#+40
+   \       0x1E   0xE09F             B.N      ??OSTaskChangePrio_1
+     94              }
+     95              if (oldprio == OS_PRIO_SELF) {                          /* See if changing self                    */
+   \                     ??OSTaskChangePrio_0: (+1)
+   \       0x20   0xF1BA 0x0FFF      CMP      R10,#+255
+   \       0x24   0xD103             BNE.N    ??OSTaskChangePrio_2
+     96                  oldprio = OSTCBCur->OSTCBPrio;                      /* Yes, get priority                       */
+   \       0x26   0x....'....        BL       ?Subroutine4
+     97              }
+   \                     ??CrossCallReturnLabel_10: (+1)
+   \       0x2A   0xF892 0xA032      LDRB     R10,[R2, #+50]
+     98              ptcb = OSTCBPrioTbl[oldprio];
+   \                     ??OSTaskChangePrio_2: (+1)
+   \       0x2E   0x4653             MOV      R3,R10
+   \       0x30   0xF855 0xE023      LDR      LR,[R5, R3, LSL #+2]
+     99              if (ptcb == (OS_TCB *)0) {                              /* Does task to change exist?              */
+   \       0x34   0xF1BE 0x0F00      CMP      LR,#+0
+   \       0x38   0xD103             BNE.N    ??OSTaskChangePrio_3
+    100                  OS_EXIT_CRITICAL();                                 /* No, can't change its priority!          */
+   \       0x3A   0x....'....        BL       OS_CPU_SR_Restore
+    101                  return (OS_ERR_PRIO);
+   \       0x3E   0x2029             MOVS     R0,#+41
+   \       0x40   0xE08E             B.N      ??OSTaskChangePrio_1
+    102              }
+    103              if (ptcb == OS_TCB_RESERVED) {                          /* Is task assigned to Mutex               */
+   \                     ??OSTaskChangePrio_3: (+1)
+   \       0x42   0xF1BE 0x0F01      CMP      LR,#+1
+   \       0x46   0xD103             BNE.N    ??OSTaskChangePrio_4
+    104                  OS_EXIT_CRITICAL();                                 /* No, can't change its priority!          */
+   \       0x48   0x....'....        BL       OS_CPU_SR_Restore
+    105                  return (OS_ERR_TASK_NOT_EXIST);
+   \       0x4C   0x2043             MOVS     R0,#+67
+   \       0x4E   0xE087             B.N      ??OSTaskChangePrio_1
+    106              }
+    107          #if OS_LOWEST_PRIO <= 63
+    108              y_new                 = (INT8U)(newprio >> 3);          /* Yes, compute new TCB fields             */
+    109              x_new                 = (INT8U)(newprio & 0x07);
+    110              bity_new              = (INT8U)(1 << y_new);
+    111              bitx_new              = (INT8U)(1 << x_new);
+    112          #else
+    113              y_new                 = (INT8U)((newprio >> 4) & 0x0F);
+    114              x_new                 = (INT8U)( newprio & 0x0F);
+    115              bity_new              = (INT16U)(1 << y_new);
+    116              bitx_new              = (INT16U)(1 << x_new);
+    117          #endif
+    118          
+    119              OSTCBPrioTbl[oldprio] = (OS_TCB *)0;                    /* Remove TCB from old priority            */
+   \                     ??OSTaskChangePrio_4: (+1)
+   \       0x50   0x2400             MOVS     R4,#+0
+   \       0x52   0xF845 0x4023      STR      R4,[R5, R3, LSL #+2]
+    120              OSTCBPrioTbl[newprio] =  ptcb;                          /* Place pointer to TCB @ new priority     */
+   \       0x56   0xF845 0xE02B      STR      LR,[R5, R11, LSL #+2]
+   \       0x5A   0xEA4F 0x01D8      LSR      R1,R8,#+3
+    121              y_old                 =  ptcb->OSTCBY;
+    122              bity_old              =  ptcb->OSTCBBitY;
+    123              bitx_old              =  ptcb->OSTCBBitX;
+    124              if ((OSRdyTbl[y_old] &   bitx_old) != 0) {              /* If task is ready make it not            */
+   \       0x5E   0x....'....        LDR.W    R7,??DataTable12_1
+   \       0x62   0x2601             MOVS     R6,#+1
+   \       0x64   0xF00B 0x0A07      AND      R10,R11,#0x7
+   \       0x68   0xF10E 0x0B32      ADD      R11,LR,#+50
+   \       0x6C   0xFA06 0xF201      LSL      R2,R6,R1
+   \       0x70   0xF89B 0x9003      LDRB     R9,[R11, #+3]
+   \       0x74   0xF89B 0xC002      LDRB     R12,[R11, #+2]
+   \       0x78   0xF89B 0x5004      LDRB     R5,[R11, #+4]
+   \       0x7C   0xEA6F 0x0409      MVN      R4,R9
+   \       0x80   0xF88D 0x4001      STRB     R4,[SP, #+1]
+   \       0x84   0xFA06 0xF60A      LSL      R6,R6,R10
+   \       0x88   0xF817 0x300C      LDRB     R3,[R7, R12]
+   \       0x8C   0xF88D 0x3000      STRB     R3,[SP, #+0]
+   \       0x90   0xEA13 0x0F09      TST      R3,R9
+   \       0x94   0xD011             BEQ.N    ??OSTaskChangePrio_5
+    125                   OSRdyTbl[y_old] &= ~bitx_old;
+   \       0x96   0x461C             MOV      R4,R3
+   \       0x98   0xF89D 0x3001      LDRB     R3,[SP, #+1]
+   \       0x9C   0x4023             ANDS     R3,R3,R4
+   \       0x9E   0xF807 0x300C      STRB     R3,[R7, R12]
+    126                   if (OSRdyTbl[y_old] == 0) {
+   \       0xA2   0x....'....        LDR.W    R4,??DataTable12_2
+   \       0xA6   0xD102             BNE.N    ??OSTaskChangePrio_6
+    127                       OSRdyGrp &= ~bity_old;
+   \       0xA8   0x7823             LDRB     R3,[R4, #+0]
+   \       0xAA   0x43AB             BICS     R3,R3,R5
+   \       0xAC   0x7023             STRB     R3,[R4, #+0]
+    128                   }
+    129                   OSRdyGrp        |= bity_new;                       /* Make new priority ready to run          */
+   \                     ??OSTaskChangePrio_6: (+1)
+   \       0xAE   0x7823             LDRB     R3,[R4, #+0]
+   \       0xB0   0x4313             ORRS     R3,R2,R3
+   \       0xB2   0x7023             STRB     R3,[R4, #+0]
+    130                   OSRdyTbl[y_new] |= bitx_new;
+   \       0xB4   0x5C7C             LDRB     R4,[R7, R1]
+   \       0xB6   0x4334             ORRS     R4,R6,R4
+   \       0xB8   0x547C             STRB     R4,[R7, R1]
+    131              }
+    132          
+    133          #if (OS_EVENT_EN)
+    134              pevent = ptcb->OSTCBEventPtr;
+    135              if (pevent != (OS_EVENT *)0) {
+   \                     ??OSTaskChangePrio_5: (+1)
+   \       0xBA   0x43EB             MVNS     R3,R5
+   \       0xBC   0xF8DE 0x401C      LDR      R4,[LR, #+28]
+   \       0xC0   0xB1BC             CBZ.N    R4,??OSTaskChangePrio_7
+    136                  pevent->OSEventTbl[y_old] &= ~bitx_old;             /* Remove old task prio from wait list     */
+   \       0xC2   0xF104 0x070B      ADD      R7,R4,#+11
+   \       0xC6   0xF89D 0x5001      LDRB     R5,[SP, #+1]
+   \       0xCA   0xF817 0x700C      LDRB     R7,[R7, R12]
+   \       0xCE   0x402F             ANDS     R7,R5,R7
+   \       0xD0   0xF104 0x050B      ADD      R5,R4,#+11
+   \       0xD4   0xF805 0x700C      STRB     R7,[R5, R12]
+    137                  if (pevent->OSEventTbl[y_old] == 0) {
+   \       0xD8   0xD102             BNE.N    ??OSTaskChangePrio_8
+    138                      pevent->OSEventGrp    &= ~bity_old;
+   \       0xDA   0x7AA5             LDRB     R5,[R4, #+10]
+   \       0xDC   0x401D             ANDS     R5,R3,R5
+   \       0xDE   0x72A5             STRB     R5,[R4, #+10]
+    139                  }
+    140                  pevent->OSEventGrp        |= bity_new;              /* Add    new task prio to   wait list     */
+    141                  pevent->OSEventTbl[y_new] |= bitx_new;
+   \                     ??OSTaskChangePrio_8: (+1)
+   \       0xE0   0xF104 0x070B      ADD      R7,R4,#+11
+   \       0xE4   0x7AA5             LDRB     R5,[R4, #+10]
+   \       0xE6   0x4315             ORRS     R5,R2,R5
+   \       0xE8   0x72A5             STRB     R5,[R4, #+10]
+   \       0xEA   0x340B             ADDS     R4,R4,#+11
+   \       0xEC   0x5C7D             LDRB     R5,[R7, R1]
+   \       0xEE   0x4335             ORRS     R5,R6,R5
+   \       0xF0   0x5465             STRB     R5,[R4, R1]
+    142              }
+    143          #if (OS_EVENT_MULTI_EN > 0)
+    144              if (ptcb->OSTCBEventMultiPtr != (OS_EVENT **)0) {
+   \                     ??OSTaskChangePrio_7: (+1)
+   \       0xF2   0xF8DE 0xE020      LDR      LR,[LR, #+32]
+   \       0xF6   0xF1BE 0x0F00      CMP      LR,#+0
+   \       0xFA   0xD01D             BEQ.N    ??OSTaskChangePrio_9
+    145                  pevents =  ptcb->OSTCBEventMultiPtr;
+    146                  pevent  = *pevents;
+   \       0xFC   0xF8DE 0x4000      LDR      R4,[LR, #+0]
+   \      0x100   0xEA6F 0x0909      MVN      R9,R9
+   \      0x104   0xE016             B.N      ??OSTaskChangePrio_10
+    147                  while (pevent != (OS_EVENT *)0) {
+    148                      pevent->OSEventTbl[y_old] &= ~bitx_old;         /* Remove old task prio from wait lists    */
+   \                     ??OSTaskChangePrio_11: (+1)
+   \      0x106   0xF104 0x050B      ADD      R5,R4,#+11
+   \      0x10A   0xF104 0x070B      ADD      R7,R4,#+11
+   \      0x10E   0xF815 0x500C      LDRB     R5,[R5, R12]
+   \      0x112   0xEA19 0x0505      ANDS     R5,R9,R5
+   \      0x116   0xF807 0x500C      STRB     R5,[R7, R12]
+    149                      if (pevent->OSEventTbl[y_old] == 0) {
+   \      0x11A   0xD102             BNE.N    ??OSTaskChangePrio_12
+    150                          pevent->OSEventGrp    &= ~bity_old;
+   \      0x11C   0x7AA5             LDRB     R5,[R4, #+10]
+   \      0x11E   0x401D             ANDS     R5,R3,R5
+   \      0x120   0x72A5             STRB     R5,[R4, #+10]
+    151                      }
+    152                      pevent->OSEventGrp        |= bity_new;          /* Add    new task prio to   wait lists    */
+   \                     ??OSTaskChangePrio_12: (+1)
+   \      0x122   0x7AA5             LDRB     R5,[R4, #+10]
+   \      0x124   0x4315             ORRS     R5,R2,R5
+   \      0x126   0x72A5             STRB     R5,[R4, #+10]
+    153                      pevent->OSEventTbl[y_new] |= bitx_new;
+   \      0x128   0x340B             ADDS     R4,R4,#+11
+   \      0x12A   0x5C7D             LDRB     R5,[R7, R1]
+   \      0x12C   0x4335             ORRS     R5,R6,R5
+   \      0x12E   0x5465             STRB     R5,[R4, R1]
+    154                      pevents++;
+    155                      pevent                     = *pevents;
+   \      0x130   0xF85E 0x4F04      LDR      R4,[LR, #+4]!
+    156                  }
+   \                     ??OSTaskChangePrio_10: (+1)
+   \      0x134   0x2C00             CMP      R4,#+0
+   \      0x136   0xD1E6             BNE.N    ??OSTaskChangePrio_11
+    157              }
+    158          #endif
+    159          #endif
+    160          
+    161              ptcb->OSTCBPrio = newprio;                              /* Set new task priority                   */
+    162              ptcb->OSTCBY    = y_new;
+   \                     ??OSTaskChangePrio_9: (+1)
+   \      0x138   0xF88B 0x1002      STRB     R1,[R11, #+2]
+    163              ptcb->OSTCBX    = x_new;
+    164              ptcb->OSTCBBitY = bity_new;
+   \      0x13C   0xF88B 0x2004      STRB     R2,[R11, #+4]
+   \      0x140   0xF88B 0x8000      STRB     R8,[R11, #+0]
+   \      0x144   0xF88B 0xA001      STRB     R10,[R11, #+1]
+    165              ptcb->OSTCBBitX = bitx_new;
+   \      0x148   0xF88B 0x6003      STRB     R6,[R11, #+3]
+    166              OS_EXIT_CRITICAL();
+   \      0x14C   0x....'....        BL       OS_CPU_SR_Restore
+    167              if (OSRunning == OS_TRUE) {
+   \      0x150   0x....'....        LDR.W    R0,??DataTable12_3
+   \      0x154   0x7801             LDRB     R1,[R0, #+0]
+   \      0x156   0x2901             CMP      R1,#+1
+   \      0x158   0xBF08             IT       EQ 
+    168                  OS_Sched();                                         /* Find new highest priority task          */
+   \      0x15A   0x....'....        BLEQ     OS_Sched
+    169              }
+    170              return (OS_ERR_NONE);
+   \      0x15E   0x2000             MOVS     R0,#+0
+   \                     ??OSTaskChangePrio_1: (+1)
+   \      0x160   0xE8BD 0x8FF2      POP      {R1,R4-R11,PC}   ;; return
+    171          }
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine4: (+1)
+   \        0x0   0x....             LDR.N    R1,??DataTable12_5
+   \        0x2   0x680A             LDR      R2,[R1, #+0]
+   \        0x4   0x4770             BX       LR
+    172          #endif
+    173          /*$PAGE*/
+    174          /*
+    175          *********************************************************************************************************
+    176          *                                            CREATE A TASK
+    177          *
+    178          * Description: This function is used to have uC/OS-II manage the execution of a task.  Tasks can either
+    179          *              be created prior to the start of multitasking or by a running task.  A task cannot be
+    180          *              created by an ISR.
+    181          *
+    182          * Arguments  : task     is a pointer to the task's code
+    183          *
+    184          *              p_arg    is a pointer to an optional data area which can be used to pass parameters to
+    185          *                       the task when the task first executes.  Where the task is concerned it thinks
+    186          *                       it was invoked and passed the argument 'p_arg' as follows:
+    187          *
+    188          *                           void Task (void *p_arg)
+    189          *                           {
+    190          *                               for (;;) {
+    191          *                                   Task code;
+    192          *                               }
+    193          *                           }
+    194          *
+    195          *              ptos     is a pointer to the task's top of stack.  If the configuration constant
+    196          *                       OS_STK_GROWTH is set to 1, the stack is assumed to grow downward (i.e. from high
+    197          *                       memory to low memory).  'pstk' will thus point to the highest (valid) memory
+    198          *                       location of the stack.  If OS_STK_GROWTH is set to 0, 'pstk' will point to the
+    199          *                       lowest memory location of the stack and the stack will grow with increasing
+    200          *                       memory locations.
+    201          *
+    202          *              prio     is the task's priority.  A unique priority MUST be assigned to each task and the
+    203          *                       lower the number, the higher the priority.
+    204          *
+    205          * Returns    : OS_ERR_NONE             if the function was successful.
+    206          *              OS_PRIO_EXIT            if the task priority already exist
+    207          *                                      (each task MUST have a unique priority).
+    208          *              OS_ERR_PRIO_INVALID     if the priority you specify is higher that the maximum allowed
+    209          *                                      (i.e. >= OS_LOWEST_PRIO)
+    210          *              OS_ERR_TASK_CREATE_ISR  if you tried to create a task from an ISR.
+    211          *********************************************************************************************************
+    212          */
+    213          
+    214          #if OS_TASK_CREATE_EN > 0
+
+   \                                 In section .text, align 2, keep-with-next
+    215          INT8U  OSTaskCreate (void (*task)(void *p_arg), void *p_arg, OS_STK *ptos, INT8U prio)
+    216          {
+   \                     OSTaskCreate: (+1)
+   \        0x0   0xE92D 0x43FE      PUSH     {R1-R9,LR}
+   \        0x4   0x4607             MOV      R7,R0
+   \        0x6   0x4688             MOV      R8,R1
+   \        0x8   0x4691             MOV      R9,R2
+   \        0xA   0x461C             MOV      R4,R3
+    217              OS_STK    *psp;
+    218              INT8U      err;
+    219          #if OS_CRITICAL_METHOD == 3                  /* Allocate storage for CPU status register               */
+    220              OS_CPU_SR  cpu_sr = 0;
+    221          #endif
+    222          
+    223          
+    224          
+    225          #if OS_ARG_CHK_EN > 0
+    226              if (prio > OS_LOWEST_PRIO) {             /* Make sure priority is within allowable range           */
+    227                  return (OS_ERR_PRIO_INVALID);
+    228              }
+    229          #endif
+    230              OS_ENTER_CRITICAL();
+   \        0xC   0x....'....        BL       OS_CPU_SR_Save
+    231              if (OSIntNesting > 0) {                  /* Make sure we don't create the task from within an ISR  */
+   \       0x10   0x....'....        LDR.W    R2,??DataTable12_4
+   \       0x14   0x7811             LDRB     R1,[R2, #+0]
+   \       0x16   0xB119             CBZ.N    R1,??OSTaskCreate_0
+    232                  OS_EXIT_CRITICAL();
+   \       0x18   0x....'....        BL       OS_CPU_SR_Restore
+    233                  return (OS_ERR_TASK_CREATE_ISR);
+   \       0x1C   0x203C             MOVS     R0,#+60
+   \       0x1E   0xE02E             B.N      ??OSTaskCreate_1
+    234              }
+    235              if (OSTCBPrioTbl[prio] == (OS_TCB *)0) { /* Make sure task doesn't already exist at this priority  */
+   \                     ??OSTaskCreate_0: (+1)
+   \       0x20   0x....'....        LDR.W    R6,??DataTable12
+   \       0x24   0x4625             MOV      R5,R4
+   \       0x26   0xF856 0x1025      LDR      R1,[R6, R5, LSL #+2]
+   \       0x2A   0xBB29             CBNZ.N   R1,??OSTaskCreate_2
+    236                  OSTCBPrioTbl[prio] = OS_TCB_RESERVED;/* Reserve the priority to prevent others from doing ...  */
+   \       0x2C   0x2101             MOVS     R1,#+1
+   \       0x2E   0xF846 0x1025      STR      R1,[R6, R5, LSL #+2]
+    237                                                       /* ... the same thing until task is created.              */
+    238                  OS_EXIT_CRITICAL();
+   \       0x32   0x....'....        BL       OS_CPU_SR_Restore
+    239                  psp = OSTaskStkInit(task, p_arg, ptos, 0);              /* Initialize the task's stack         */
+   \       0x36   0x2300             MOVS     R3,#+0
+   \       0x38   0x464A             MOV      R2,R9
+   \       0x3A   0x4641             MOV      R1,R8
+   \       0x3C   0x4638             MOV      R0,R7
+   \       0x3E   0x....'....        BL       OSTaskStkInit
+    240                  err = OS_TCBInit(prio, psp, (OS_STK *)0, 0, 0, (void *)0, 0);
+   \       0x42   0x2100             MOVS     R1,#+0
+   \       0x44   0x9102             STR      R1,[SP, #+8]
+   \       0x46   0x2200             MOVS     R2,#+0
+   \       0x48   0x2300             MOVS     R3,#+0
+   \       0x4A   0x9201             STR      R2,[SP, #+4]
+   \       0x4C   0x9300             STR      R3,[SP, #+0]
+   \       0x4E   0x4601             MOV      R1,R0
+   \       0x50   0x4620             MOV      R0,R4
+   \       0x52   0x....'....        BL       OS_TCBInit
+   \       0x56   0x0004             MOVS     R4,R0
+    241                  if (err == OS_ERR_NONE) {
+   \       0x58   0xD105             BNE.N    ??OSTaskCreate_3
+    242                      if (OSRunning == OS_TRUE) {      /* Find highest priority task if multitasking has started */
+   \       0x5A   0x....'....        BL       ?Subroutine5
+   \                     ??CrossCallReturnLabel_14: (+1)
+   \       0x5E   0xD109             BNE.N    ??OSTaskCreate_4
+    243                          OS_Sched();
+   \       0x60   0x....'....        BL       OS_Sched
+   \       0x64   0xE006             B.N      ??OSTaskCreate_4
+    244                      }
+    245                  } else {
+    246                      OS_ENTER_CRITICAL();
+   \                     ??OSTaskCreate_3: (+1)
+   \       0x66   0x....'....        BL       OS_CPU_SR_Save
+    247                      OSTCBPrioTbl[prio] = (OS_TCB *)0;/* Make this priority available to others                 */
+   \       0x6A   0x2100             MOVS     R1,#+0
+   \       0x6C   0xF846 0x1025      STR      R1,[R6, R5, LSL #+2]
+    248                      OS_EXIT_CRITICAL();
+   \       0x70   0x....'....        BL       OS_CPU_SR_Restore
+    249                  }
+    250                  return (err);
+   \                     ??OSTaskCreate_4: (+1)
+   \       0x74   0x4620             MOV      R0,R4
+   \       0x76   0xE002             B.N      ??OSTaskCreate_1
+    251              }
+    252              OS_EXIT_CRITICAL();
+   \                     ??OSTaskCreate_2: (+1)
+   \       0x78   0x....'....        BL       OS_CPU_SR_Restore
+    253              return (OS_ERR_PRIO_EXIST);
+   \       0x7C   0x2028             MOVS     R0,#+40
+   \                     ??OSTaskCreate_1: (+1)
+   \       0x7E   0xE8BD 0x83FE      POP      {R1-R9,PC}       ;; return
+    254          }
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine5: (+1)
+   \        0x0   0x....'....        LDR.W    R0,??DataTable12_3
+   \        0x4   0x7801             LDRB     R1,[R0, #+0]
+   \        0x6   0x2901             CMP      R1,#+1
+   \        0x8   0x4770             BX       LR
+    255          #endif
+    256          /*$PAGE*/
+    257          /*
+    258          *********************************************************************************************************
+    259          *                                     CREATE A TASK (Extended Version)
+    260          *
+    261          * Description: This function is used to have uC/OS-II manage the execution of a task.  Tasks can either
+    262          *              be created prior to the start of multitasking or by a running task.  A task cannot be
+    263          *              created by an ISR.  This function is similar to OSTaskCreate() except that it allows
+    264          *              additional information about a task to be specified.
+    265          *
+    266          * Arguments  : task      is a pointer to the task's code
+    267          *
+    268          *              p_arg     is a pointer to an optional data area which can be used to pass parameters to
+    269          *                        the task when the task first executes.  Where the task is concerned it thinks
+    270          *                        it was invoked and passed the argument 'p_arg' as follows:
+    271          *
+    272          *                            void Task (void *p_arg)
+    273          *                            {
+    274          *                                for (;;) {
+    275          *                                    Task code;
+    276          *                                }
+    277          *                            }
+    278          *
+    279          *              ptos      is a pointer to the task's top of stack.  If the configuration constant
+    280          *                        OS_STK_GROWTH is set to 1, the stack is assumed to grow downward (i.e. from high
+    281          *                        memory to low memory).  'ptos' will thus point to the highest (valid) memory
+    282          *                        location of the stack.  If OS_STK_GROWTH is set to 0, 'ptos' will point to the
+    283          *                        lowest memory location of the stack and the stack will grow with increasing
+    284          *                        memory locations.  'ptos' MUST point to a valid 'free' data item.
+    285          *
+    286          *              prio      is the task's priority.  A unique priority MUST be assigned to each task and the
+    287          *                        lower the number, the higher the priority.
+    288          *
+    289          *              id        is the task's ID (0..65535)
+    290          *
+    291          *              pbos      is a pointer to the task's bottom of stack.  If the configuration constant
+    292          *                        OS_STK_GROWTH is set to 1, the stack is assumed to grow downward (i.e. from high
+    293          *                        memory to low memory).  'pbos' will thus point to the LOWEST (valid) memory
+    294          *                        location of the stack.  If OS_STK_GROWTH is set to 0, 'pbos' will point to the
+    295          *                        HIGHEST memory location of the stack and the stack will grow with increasing
+    296          *                        memory locations.  'pbos' MUST point to a valid 'free' data item.
+    297          *
+    298          *              stk_size  is the size of the stack in number of elements.  If OS_STK is set to INT8U,
+    299          *                        'stk_size' corresponds to the number of bytes available.  If OS_STK is set to
+    300          *                        INT16U, 'stk_size' contains the number of 16-bit entries available.  Finally, if
+    301          *                        OS_STK is set to INT32U, 'stk_size' contains the number of 32-bit entries
+    302          *                        available on the stack.
+    303          *
+    304          *              pext      is a pointer to a user supplied memory location which is used as a TCB extension.
+    305          *                        For example, this user memory can hold the contents of floating-point registers
+    306          *                        during a context switch, the time each task takes to execute, the number of times
+    307          *                        the task has been switched-in, etc.
+    308          *
+    309          *              opt       contains additional information (or options) about the behavior of the task.  The
+    310          *                        LOWER 8-bits are reserved by uC/OS-II while the upper 8 bits can be application
+    311          *                        specific.  See OS_TASK_OPT_??? in uCOS-II.H.  Current choices are:
+    312          *
+    313          *                        OS_TASK_OPT_STK_CHK      Stack checking to be allowed for the task
+    314          *                        OS_TASK_OPT_STK_CLR      Clear the stack when the task is created
+    315          *                        OS_TASK_OPT_SAVE_FP      If the CPU has floating-point registers, save them
+    316          *                                                 during a context switch.
+    317          *
+    318          * Returns    : OS_ERR_NONE             if the function was successful.
+    319          *              OS_PRIO_EXIT            if the task priority already exist
+    320          *                                      (each task MUST have a unique priority).
+    321          *              OS_ERR_PRIO_INVALID     if the priority you specify is higher that the maximum allowed
+    322          *                                      (i.e. > OS_LOWEST_PRIO)
+    323          *              OS_ERR_TASK_CREATE_ISR  if you tried to create a task from an ISR.
+    324          *********************************************************************************************************
+    325          */
+    326          /*$PAGE*/
+    327          #if OS_TASK_CREATE_EXT_EN > 0
+
+   \                                 In section .text, align 2, keep-with-next
+    328          INT8U  OSTaskCreateExt (void   (*task)(void *p_arg),
+    329                                  void    *p_arg,
+    330                                  OS_STK  *ptos,
+    331                                  INT8U    prio,
+    332                                  INT16U   id,
+    333                                  OS_STK  *pbos,
+    334                                  INT32U   stk_size,
+    335                                  void    *pext,
+    336                                  INT16U   opt)
+    337          {
+   \                     OSTaskCreateExt: (+1)
+   \        0x0   0xE92D 0x4FF8      PUSH     {R3-R11,LR}
+   \        0x4   0xB084             SUB      SP,SP,#+16
+   \        0x6   0x4605             MOV      R5,R0
+   \        0x8   0x468B             MOV      R11,R1
+   \        0xA   0x4692             MOV      R10,R2
+   \        0xC   0x461C             MOV      R4,R3
+    338              OS_STK    *psp;
+    339              INT8U      err;
+    340          #if OS_CRITICAL_METHOD == 3                  /* Allocate storage for CPU status register               */
+    341              OS_CPU_SR  cpu_sr = 0;
+    342          #endif
+    343          
+    344          
+    345          
+    346          #if OS_ARG_CHK_EN > 0
+    347              if (prio > OS_LOWEST_PRIO) {             /* Make sure priority is within allowable range           */
+    348                  return (OS_ERR_PRIO_INVALID);
+    349              }
+    350          #endif
+    351              OS_ENTER_CRITICAL();
+   \        0xE   0x....'....        BL       OS_CPU_SR_Save
+    352              if (OSIntNesting > 0) {                  /* Make sure we don't create the task from within an ISR  */
+   \       0x12   0x....'....        LDR.W    R2,??DataTable12_4
+   \       0x16   0x7811             LDRB     R1,[R2, #+0]
+   \       0x18   0xB119             CBZ.N    R1,??OSTaskCreateExt_0
+    353                  OS_EXIT_CRITICAL();
+   \       0x1A   0x....'....        BL       OS_CPU_SR_Restore
+    354                  return (OS_ERR_TASK_CREATE_ISR);
+   \       0x1E   0x203C             MOVS     R0,#+60
+   \       0x20   0xE03A             B.N      ??OSTaskCreateExt_1
+    355              }
+    356              if (OSTCBPrioTbl[prio] == (OS_TCB *)0) { /* Make sure task doesn't already exist at this priority  */
+   \                     ??OSTaskCreateExt_0: (+1)
+   \       0x22   0x....'....        LDR.W    R9,??DataTable12
+   \       0x26   0xF88D 0x400C      STRB     R4,[SP, #+12]
+   \       0x2A   0x46A0             MOV      R8,R4
+   \       0x2C   0xF859 0x1028      LDR      R1,[R9, R8, LSL #+2]
+   \       0x30   0xBB79             CBNZ.N   R1,??OSTaskCreateExt_2
+   \       0x32   0x9C12             LDR      R4,[SP, #+72]
+   \       0x34   0x9E10             LDR      R6,[SP, #+64]
+   \       0x36   0x9F0F             LDR      R7,[SP, #+60]
+    357                  OSTCBPrioTbl[prio] = OS_TCB_RESERVED;/* Reserve the priority to prevent others from doing ...  */
+   \       0x38   0x2201             MOVS     R2,#+1
+   \       0x3A   0xF849 0x2028      STR      R2,[R9, R8, LSL #+2]
+    358                                                       /* ... the same thing until task is created.              */
+    359                  OS_EXIT_CRITICAL();
+   \       0x3E   0x....'....        BL       OS_CPU_SR_Restore
+    360          
+    361          #if (OS_TASK_STAT_STK_CHK_EN > 0)
+    362                  OS_TaskStkClr(pbos, stk_size, opt);                    /* Clear the task stack (if needed)     */
+   \       0x42   0x4622             MOV      R2,R4
+   \       0x44   0x4631             MOV      R1,R6
+   \       0x46   0x4638             MOV      R0,R7
+   \       0x48   0x....'....        BL       OS_TaskStkClr
+    363          #endif
+    364          
+    365                  psp = OSTaskStkInit(task, p_arg, ptos, opt);           /* Initialize the task's stack          */
+   \       0x4C   0x4623             MOV      R3,R4
+   \       0x4E   0x4652             MOV      R2,R10
+   \       0x50   0x4659             MOV      R1,R11
+   \       0x52   0x4628             MOV      R0,R5
+   \       0x54   0x....'....        BL       OSTaskStkInit
+    366                  err = OS_TCBInit(prio, psp, pbos, id, stk_size, pext, opt);
+   \       0x58   0x9911             LDR      R1,[SP, #+68]
+   \       0x5A   0x9402             STR      R4,[SP, #+8]
+   \       0x5C   0x9101             STR      R1,[SP, #+4]
+   \       0x5E   0x9600             STR      R6,[SP, #+0]
+   \       0x60   0x4601             MOV      R1,R0
+   \       0x62   0xF8BD 0x3038      LDRH     R3,[SP, #+56]
+   \       0x66   0xF89D 0x000C      LDRB     R0,[SP, #+12]
+   \       0x6A   0x463A             MOV      R2,R7
+   \       0x6C   0x....'....        BL       OS_TCBInit
+   \       0x70   0x0004             MOVS     R4,R0
+    367                  if (err == OS_ERR_NONE) {
+   \       0x72   0xD105             BNE.N    ??OSTaskCreateExt_3
+    368                      if (OSRunning == OS_TRUE) {                        /* Find HPT if multitasking has started */
+   \       0x74   0x....'....        BL       ?Subroutine5
+   \                     ??CrossCallReturnLabel_15: (+1)
+   \       0x78   0xD109             BNE.N    ??OSTaskCreateExt_4
+    369                          OS_Sched();
+   \       0x7A   0x....'....        BL       OS_Sched
+   \       0x7E   0xE006             B.N      ??OSTaskCreateExt_4
+    370                      }
+    371                  } else {
+    372                      OS_ENTER_CRITICAL();
+   \                     ??OSTaskCreateExt_3: (+1)
+   \       0x80   0x....'....        BL       OS_CPU_SR_Save
+    373                      OSTCBPrioTbl[prio] = (OS_TCB *)0;                  /* Make this priority avail. to others  */
+   \       0x84   0x2100             MOVS     R1,#+0
+   \       0x86   0xF849 0x1028      STR      R1,[R9, R8, LSL #+2]
+    374                      OS_EXIT_CRITICAL();
+   \       0x8A   0x....'....        BL       OS_CPU_SR_Restore
+    375                  }
+    376                  return (err);
+   \                     ??OSTaskCreateExt_4: (+1)
+   \       0x8E   0x4620             MOV      R0,R4
+   \       0x90   0xE002             B.N      ??OSTaskCreateExt_1
+    377              }
+    378              OS_EXIT_CRITICAL();
+   \                     ??OSTaskCreateExt_2: (+1)
+   \       0x92   0x....'....        BL       OS_CPU_SR_Restore
+    379              return (OS_ERR_PRIO_EXIST);
+   \       0x96   0x2028             MOVS     R0,#+40
+   \                     ??OSTaskCreateExt_1: (+1)
+   \       0x98   0xB005             ADD      SP,SP,#+20
+   \       0x9A   0xE8BD 0x8FF0      POP      {R4-R11,PC}      ;; return
+    380          }
+    381          #endif
+    382          /*$PAGE*/
+    383          /*
+    384          *********************************************************************************************************
+    385          *                                            DELETE A TASK
+    386          *
+    387          * Description: This function allows you to delete a task.  The calling task can delete itself by
+    388          *              its own priority number.  The deleted task is returned to the dormant state and can be
+    389          *              re-activated by creating the deleted task again.
+    390          *
+    391          * Arguments  : prio    is the priority of the task to delete.  Note that you can explicitely delete
+    392          *                      the current task without knowing its priority level by setting 'prio' to
+    393          *                      OS_PRIO_SELF.
+    394          *
+    395          * Returns    : OS_ERR_NONE             if the call is successful
+    396          *              OS_ERR_TASK_DEL_IDLE    if you attempted to delete uC/OS-II's idle task
+    397          *              OS_ERR_PRIO_INVALID     if the priority you specify is higher that the maximum allowed
+    398          *                                      (i.e. >= OS_LOWEST_PRIO) or, you have not specified OS_PRIO_SELF.
+    399          *              OS_ERR_TASK_DEL         if the task is assigned to a Mutex PIP.   
+    400          *              OS_ERR_TASK_NOT_EXIST   if the task you want to delete does not exist.
+    401          *              OS_ERR_TASK_DEL_ISR     if you tried to delete a task from an ISR
+    402          *
+    403          * Notes      : 1) To reduce interrupt latency, OSTaskDel() 'disables' the task:
+    404          *                    a) by making it not ready
+    405          *                    b) by removing it from any wait lists
+    406          *                    c) by preventing OSTimeTick() from making the task ready to run.
+    407          *                 The task can then be 'unlinked' from the miscellaneous structures in uC/OS-II.
+    408          *              2) The function OS_Dummy() is called after OS_EXIT_CRITICAL() because, on most processors,
+    409          *                 the next instruction following the enable interrupt instruction is ignored.
+    410          *              3) An ISR cannot delete a task.
+    411          *              4) The lock nesting counter is incremented because, for a brief instant, if the current
+    412          *                 task is being deleted, the current task would not be able to be rescheduled because it
+    413          *                 is removed from the ready list.  Incrementing the nesting counter prevents another task
+    414          *                 from being schedule.  This means that an ISR would return to the current task which is
+    415          *                 being deleted.  The rest of the deletion would thus be able to be completed.
+    416          *********************************************************************************************************
+    417          */
+    418          
+    419          #if OS_TASK_DEL_EN > 0
+
+   \                                 In section .text, align 2, keep-with-next
+    420          INT8U  OSTaskDel (INT8U prio)
+    421          {
+   \                     OSTaskDel: (+1)
+   \        0x0   0xE92D 0x43F8      PUSH     {R3-R9,LR}
+    422          #if (OS_FLAG_EN > 0) && (OS_MAX_FLAGS > 0)
+    423              OS_FLAG_NODE *pnode;
+    424          #endif
+    425              OS_TCB       *ptcb;
+    426          #if OS_CRITICAL_METHOD == 3                             /* Allocate storage for CPU status register    */
+    427              OS_CPU_SR     cpu_sr = 0;
+    428          #endif
+    429          
+    430          
+    431          
+    432              if (OSIntNesting > 0) {                             /* See if trying to delete from ISR            */
+   \        0x4   0x....'....        LDR.W    R1,??DataTable12_4
+   \        0x8   0x4606             MOV      R6,R0
+   \        0xA   0x7808             LDRB     R0,[R1, #+0]
+   \        0xC   0xB108             CBZ.N    R0,??OSTaskDel_0
+    433                  return (OS_ERR_TASK_DEL_ISR);
+   \        0xE   0x2040             MOVS     R0,#+64
+   \       0x10   0xE078             B.N      ??OSTaskDel_1
+    434              }
+    435              if (prio == OS_TASK_IDLE_PRIO) {                    /* Not allowed to delete idle task             */
+   \                     ??OSTaskDel_0: (+1)
+   \       0x12   0x2E1F             CMP      R6,#+31
+   \       0x14   0xBF08             IT       EQ 
+   \       0x16   0x203E             MOVEQ    R0,#+62
+    436                  return (OS_ERR_TASK_DEL_IDLE);
+   \       0x18   0xD074             BEQ.N    ??OSTaskDel_1
+    437              }
+    438          #if OS_ARG_CHK_EN > 0
+    439              if (prio >= OS_LOWEST_PRIO) {                       /* Task priority valid ?                       */
+    440                  if (prio != OS_PRIO_SELF) {
+    441                      return (OS_ERR_PRIO_INVALID);
+    442                  }
+    443              }
+    444          #endif
+    445          
+    446          /*$PAGE*/
+    447              OS_ENTER_CRITICAL();
+   \       0x1A   0x....'....        BL       OS_CPU_SR_Save
+    448              if (prio == OS_PRIO_SELF) {                         /* See if requesting to delete self            */
+   \       0x1E   0x2EFF             CMP      R6,#+255
+   \       0x20   0x4680             MOV      R8,R0
+   \       0x22   0xD104             BNE.N    ??OSTaskDel_2
+    449                  prio = OSTCBCur->OSTCBPrio;                     /* Set priority to delete to current           */
+   \       0x24   0x....'....        LDR.W    R0,??DataTable12_5
+   \       0x28   0x6801             LDR      R1,[R0, #+0]
+   \       0x2A   0xF891 0x6032      LDRB     R6,[R1, #+50]
+    450              }
+    451              ptcb = OSTCBPrioTbl[prio];
+   \                     ??OSTaskDel_2: (+1)
+   \       0x2E   0x....'....        LDR.W    R9,??DataTable12
+   \       0x32   0xF859 0x4026      LDR      R4,[R9, R6, LSL #+2]
+    452              if (ptcb == (OS_TCB *)0) {                          /* Task to delete must exist                   */
+   \       0x36   0xB91C             CBNZ.N   R4,??OSTaskDel_3
+    453                  OS_EXIT_CRITICAL();
+   \       0x38   0x....'....        BL       ?Subroutine1
+    454                  return (OS_ERR_TASK_NOT_EXIST);
+   \                     ??CrossCallReturnLabel_3: (+1)
+   \       0x3C   0x2043             MOVS     R0,#+67
+   \       0x3E   0xE061             B.N      ??OSTaskDel_1
+    455              }
+    456              if (ptcb == OS_TCB_RESERVED) {                      /* Must not be assigned to Mutex               */
+   \                     ??OSTaskDel_3: (+1)
+   \       0x40   0x2C01             CMP      R4,#+1
+   \       0x42   0xD103             BNE.N    ??OSTaskDel_4
+    457                  OS_EXIT_CRITICAL();
+   \       0x44   0x....'....        BL       ?Subroutine1
+    458                  return (OS_ERR_TASK_DEL);
+   \                     ??CrossCallReturnLabel_2: (+1)
+   \       0x48   0x203D             MOVS     R0,#+61
+   \       0x4A   0xE05B             B.N      ??OSTaskDel_1
+    459              }
+    460          
+    461              OSRdyTbl[ptcb->OSTCBY] &= ~ptcb->OSTCBBitX;
+   \                     ??OSTaskDel_4: (+1)
+   \       0x4C   0xF104 0x0530      ADD      R5,R4,#+48
+   \       0x50   0x....'....        LDR.W    R2,??DataTable12_1
+   \       0x54   0x7928             LDRB     R0,[R5, #+4]
+   \       0x56   0x7969             LDRB     R1,[R5, #+5]
+   \       0x58   0x5C13             LDRB     R3,[R2, R0]
+   \       0x5A   0x438B             BICS     R3,R3,R1
+   \       0x5C   0x5413             STRB     R3,[R2, R0]
+    462              if (OSRdyTbl[ptcb->OSTCBY] == 0) {                  /* Make task not ready                         */
+   \       0x5E   0x792B             LDRB     R3,[R5, #+4]
+   \       0x60   0x5CD0             LDRB     R0,[R2, R3]
+   \       0x62   0xB928             CBNZ.N   R0,??OSTaskDel_5
+    463                  OSRdyGrp           &= ~ptcb->OSTCBBitY;
+   \       0x64   0x....'....        LDR.W    R1,??DataTable12_2
+   \       0x68   0x79A8             LDRB     R0,[R5, #+6]
+   \       0x6A   0x780A             LDRB     R2,[R1, #+0]
+   \       0x6C   0x4382             BICS     R2,R2,R0
+   \       0x6E   0x700A             STRB     R2,[R1, #+0]
+    464              }
+    465              
+    466          #if (OS_EVENT_EN)
+    467              if (ptcb->OSTCBEventPtr != (OS_EVENT *)0) {
+   \                     ??OSTaskDel_5: (+1)
+   \       0x70   0x69E1             LDR      R1,[R4, #+28]
+   \       0x72   0xB111             CBZ.N    R1,??OSTaskDel_6
+    468                  OS_EventTaskRemove(ptcb, ptcb->OSTCBEventPtr);  /* Remove this task from any event   wait list */
+   \       0x74   0x4620             MOV      R0,R4
+   \       0x76   0x....'....        BL       OS_EventTaskRemove
+    469              }
+    470          #if (OS_EVENT_MULTI_EN > 0)
+    471              if (ptcb->OSTCBEventMultiPtr != (OS_EVENT **)0) {   /* Remove this task from any events' wait lists*/
+   \                     ??OSTaskDel_6: (+1)
+   \       0x7A   0x6A21             LDR      R1,[R4, #+32]
+   \       0x7C   0xB111             CBZ.N    R1,??OSTaskDel_7
+    472                  OS_EventTaskRemoveMulti(ptcb, ptcb->OSTCBEventMultiPtr);
+   \       0x7E   0x4620             MOV      R0,R4
+   \       0x80   0x....'....        BL       OS_EventTaskRemoveMulti
+    473              }
+    474          #endif
+    475          #endif
+    476          
+    477          #if (OS_FLAG_EN > 0) && (OS_MAX_FLAGS > 0)
+    478              pnode = ptcb->OSTCBFlagNode;
+   \                     ??OSTaskDel_7: (+1)
+   \       0x84   0x6AA0             LDR      R0,[R4, #+40]
+    479              if (pnode != (OS_FLAG_NODE *)0) {                   /* If task is waiting on event flag            */
+   \       0x86   0xB108             CBZ.N    R0,??OSTaskDel_8
+    480                  OS_FlagUnlink(pnode);                           /* Remove from wait list                       */
+   \       0x88   0x....'....        BL       OS_FlagUnlink
+    481              }
+    482          #endif
+    483          
+    484              ptcb->OSTCBDly      = 0;                            /* Prevent OSTimeTick() from updating          */
+   \                     ??OSTaskDel_8: (+1)
+   \       0x8C   0x2000             MOVS     R0,#+0
+   \       0x8E   0x85E0             STRH     R0,[R4, #+46]
+    485              ptcb->OSTCBStat     = OS_STAT_RDY;                  /* Prevent task from being resumed             */
+   \       0x90   0x7028             STRB     R0,[R5, #+0]
+    486              ptcb->OSTCBStatPend = OS_STAT_PEND_OK;
+   \       0x92   0x7068             STRB     R0,[R5, #+1]
+    487              if (OSLockNesting < 255u) {                         /* Make sure we don't context switch           */
+   \       0x94   0x....             LDR.N    R7,??DataTable12_6
+   \       0x96   0x7838             LDRB     R0,[R7, #+0]
+   \       0x98   0x28FF             CMP      R0,#+255
+   \       0x9A   0xBF1C             ITT      NE 
+   \       0x9C   0x1C40             ADDNE    R0,R0,#+1
+   \       0x9E   0x7038             STRBNE   R0,[R7, #+0]
+    488                  OSLockNesting++;
+    489              }
+    490              OS_EXIT_CRITICAL();                                 /* Enabling INT. ignores next instruc.         */
+   \       0xA0   0x....'....        BL       ?Subroutine1
+    491              OS_Dummy();                                         /* ... Dummy ensures that INTs will be         */
+   \                     ??CrossCallReturnLabel_1: (+1)
+   \       0xA4   0x....'....        BL       OS_Dummy
+    492              OS_ENTER_CRITICAL();                                /* ... disabled HERE!                          */
+   \       0xA8   0x....'....        BL       OS_CPU_SR_Save
+   \       0xAC   0x4680             MOV      R8,R0
+    493              if (OSLockNesting > 0) {                            /* Remove context switch lock                  */
+   \       0xAE   0x7838             LDRB     R0,[R7, #+0]
+   \       0xB0   0xB108             CBZ.N    R0,??OSTaskDel_9
+    494                  OSLockNesting--;
+   \       0xB2   0x1E40             SUBS     R0,R0,#+1
+   \       0xB4   0x7038             STRB     R0,[R7, #+0]
+    495              }
+    496              OSTaskDelHook(ptcb);                                /* Call user defined hook                      */
+   \                     ??OSTaskDel_9: (+1)
+   \       0xB6   0x4620             MOV      R0,R4
+   \       0xB8   0x....'....        BL       OSTaskDelHook
+    497              OSTaskCtr--;                                        /* One less task being managed                 */
+   \       0xBC   0x....             LDR.N    R0,??DataTable12_7
+   \       0xBE   0x7801             LDRB     R1,[R0, #+0]
+   \       0xC0   0x1E4A             SUBS     R2,R1,#+1
+   \       0xC2   0x7002             STRB     R2,[R0, #+0]
+    498              OSTCBPrioTbl[prio] = (OS_TCB *)0;                   /* Clear old priority entry                    */
+   \       0xC4   0x2000             MOVS     R0,#+0
+   \       0xC6   0xF849 0x0026      STR      R0,[R9, R6, LSL #+2]
+    499              if (ptcb->OSTCBPrev == (OS_TCB *)0) {               /* Remove from TCB chain                       */
+   \       0xCA   0x6961             LDR      R1,[R4, #+20]
+   \       0xCC   0x69A0             LDR      R0,[R4, #+24]
+   \       0xCE   0xB920             CBNZ.N   R0,??OSTaskDel_10
+    500                  ptcb->OSTCBNext->OSTCBPrev = (OS_TCB *)0;
+   \       0xD0   0x6188             STR      R0,[R1, #+24]
+    501                  OSTCBList                  = ptcb->OSTCBNext;
+   \       0xD2   0x6961             LDR      R1,[R4, #+20]
+   \       0xD4   0x....             LDR.N    R0,??DataTable12_8
+   \       0xD6   0x6001             STR      R1,[R0, #+0]
+   \       0xD8   0xE003             B.N      ??OSTaskDel_11
+    502              } else {
+    503                  ptcb->OSTCBPrev->OSTCBNext = ptcb->OSTCBNext;
+   \                     ??OSTaskDel_10: (+1)
+   \       0xDA   0x6141             STR      R1,[R0, #+20]
+    504                  ptcb->OSTCBNext->OSTCBPrev = ptcb->OSTCBPrev;
+   \       0xDC   0x6961             LDR      R1,[R4, #+20]
+   \       0xDE   0x69A0             LDR      R0,[R4, #+24]
+   \       0xE0   0x6188             STR      R0,[R1, #+24]
+    505              }
+    506              ptcb->OSTCBNext   = OSTCBFreeList;                  /* Return TCB to free TCB list                 */
+   \                     ??OSTaskDel_11: (+1)
+   \       0xE2   0x....             LDR.N    R0,??DataTable12_9
+   \       0xE4   0x6801             LDR      R1,[R0, #+0]
+   \       0xE6   0x6161             STR      R1,[R4, #+20]
+    507              OSTCBFreeList     = ptcb;
+   \       0xE8   0x6004             STR      R4,[R0, #+0]
+    508          #if OS_TASK_NAME_SIZE > 1
+    509              ptcb->OSTCBTaskName[0] = '?';                       /* Unknown name                                */
+   \       0xEA   0x203F             MOVS     R0,#+63
+   \       0xEC   0x7728             STRB     R0,[R5, #+28]
+    510              ptcb->OSTCBTaskName[1] = OS_ASCII_NUL;
+   \       0xEE   0x2100             MOVS     R1,#+0
+   \       0xF0   0x7769             STRB     R1,[R5, #+29]
+    511          #endif
+    512              OS_EXIT_CRITICAL();
+   \       0xF2   0x....'....        BL       ?Subroutine1
+    513              if (OSRunning == OS_TRUE) {
+   \                     ??CrossCallReturnLabel_0: (+1)
+   \       0xF6   0x....             LDR.N    R0,??DataTable12_3
+   \       0xF8   0x7801             LDRB     R1,[R0, #+0]
+   \       0xFA   0x2901             CMP      R1,#+1
+   \       0xFC   0xBF08             IT       EQ 
+    514                  OS_Sched();                                     /* Find new highest priority task              */
+   \       0xFE   0x....'....        BLEQ     OS_Sched
+    515              }
+    516              return (OS_ERR_NONE);
+   \      0x102   0x2000             MOVS     R0,#+0
+   \                     ??OSTaskDel_1: (+1)
+   \      0x104   0xE8BD 0x83F2      POP      {R1,R4-R9,PC}    ;; return
+    517          }
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine1: (+1)
+   \        0x0   0x4640             MOV      R0,R8
+   \        0x2   0x....'....        B.W      OS_CPU_SR_Restore
+    518          #endif
+    519          /*$PAGE*/
+    520          /*
+    521          *********************************************************************************************************
+    522          *                                    REQUEST THAT A TASK DELETE ITSELF
+    523          *
+    524          * Description: This function is used to:
+    525          *                   a) notify a task to delete itself.
+    526          *                   b) to see if a task requested that the current task delete itself.
+    527          *              This function is a little tricky to understand.  Basically, you have a task that needs
+    528          *              to be deleted however, this task has resources that it has allocated (memory buffers,
+    529          *              semaphores, mailboxes, queues etc.).  The task cannot be deleted otherwise these
+    530          *              resources would not be freed.  The requesting task calls OSTaskDelReq() to indicate that
+    531          *              the task needs to be deleted.  Deleting of the task is however, deferred to the task to
+    532          *              be deleted.  For example, suppose that task #10 needs to be deleted.  The requesting task
+    533          *              example, task #5, would call OSTaskDelReq(10).  When task #10 gets to execute, it calls
+    534          *              this function by specifying OS_PRIO_SELF and monitors the returned value.  If the return
+    535          *              value is OS_ERR_TASK_DEL_REQ, another task requested a task delete.  Task #10 would look like
+    536          *              this:
+    537          *
+    538          *                   void Task(void *p_arg)
+    539          *                   {
+    540          *                       .
+    541          *                       .
+    542          *                       while (1) {
+    543          *                           OSTimeDly(1);
+    544          *                           if (OSTaskDelReq(OS_PRIO_SELF) == OS_ERR_TASK_DEL_REQ) {
+    545          *                               Release any owned resources;
+    546          *                               De-allocate any dynamic memory;
+    547          *                               OSTaskDel(OS_PRIO_SELF);
+    548          *                           }
+    549          *                       }
+    550          *                   }
+    551          *
+    552          * Arguments  : prio    is the priority of the task to request the delete from
+    553          *
+    554          * Returns    : OS_ERR_NONE            if the task exist and the request has been registered
+    555          *              OS_ERR_TASK_NOT_EXIST  if the task has been deleted.  This allows the caller to know whether
+    556          *                                     the request has been executed.
+    557          *              OS_ERR_TASK_DEL        if the task is assigned to a Mutex.
+    558          *              OS_ERR_TASK_DEL_IDLE   if you requested to delete uC/OS-II's idle task
+    559          *              OS_ERR_PRIO_INVALID    if the priority you specify is higher that the maximum allowed
+    560          *                                     (i.e. >= OS_LOWEST_PRIO) or, you have not specified OS_PRIO_SELF.
+    561          *              OS_ERR_TASK_DEL_REQ    if a task (possibly another task) requested that the running task be
+    562          *                                     deleted.
+    563          *********************************************************************************************************
+    564          */
+    565          /*$PAGE*/
+    566          #if OS_TASK_DEL_EN > 0
+
+   \                                 In section .text, align 2, keep-with-next
+    567          INT8U  OSTaskDelReq (INT8U prio)
+    568          {
+   \                     OSTaskDelReq: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+    569              INT8U      stat;
+    570              OS_TCB    *ptcb;
+    571          #if OS_CRITICAL_METHOD == 3                      /* Allocate storage for CPU status register           */
+    572              OS_CPU_SR  cpu_sr = 0;
+    573          #endif
+    574          
+    575          
+    576          
+    577              if (prio == OS_TASK_IDLE_PRIO) {                            /* Not allowed to delete idle task     */
+   \        0x2   0x281F             CMP      R0,#+31
+   \        0x4   0x4604             MOV      R4,R0
+   \        0x6   0xD101             BNE.N    ??OSTaskDelReq_0
+    578                  return (OS_ERR_TASK_DEL_IDLE);
+   \        0x8   0x203E             MOVS     R0,#+62
+   \        0xA   0xBD10             POP      {R4,PC}
+    579              }
+    580          #if OS_ARG_CHK_EN > 0
+    581              if (prio >= OS_LOWEST_PRIO) {                               /* Task priority valid ?               */
+    582                  if (prio != OS_PRIO_SELF) {
+    583                      return (OS_ERR_PRIO_INVALID);
+    584                  }
+    585              }
+    586          #endif
+    587              if (prio == OS_PRIO_SELF) {                                 /* See if a task is requesting to ...  */
+   \                     ??OSTaskDelReq_0: (+1)
+   \        0xC   0x28FF             CMP      R0,#+255
+   \        0xE   0xD109             BNE.N    ??OSTaskDelReq_1
+    588                  OS_ENTER_CRITICAL();                                    /* ... this task to delete itself      */
+   \       0x10   0x....'....        BL       OS_CPU_SR_Save
+    589                  stat = OSTCBCur->OSTCBDelReq;                           /* Return request status to caller     */
+   \       0x14   0x....'....        BL       ?Subroutine4
+   \                     ??CrossCallReturnLabel_11: (+1)
+   \       0x18   0xF892 0x4037      LDRB     R4,[R2, #+55]
+    590                  OS_EXIT_CRITICAL();
+   \       0x1C   0x....'....        BL       OS_CPU_SR_Restore
+    591                  return (stat);
+   \       0x20   0x4620             MOV      R0,R4
+   \       0x22   0xBD10             POP      {R4,PC}
+    592              }
+    593              OS_ENTER_CRITICAL();
+   \                     ??OSTaskDelReq_1: (+1)
+   \       0x24   0x....'....        BL       OS_CPU_SR_Save
+    594              ptcb = OSTCBPrioTbl[prio];
+   \       0x28   0x....             LDR.N    R1,??DataTable12
+   \       0x2A   0xF851 0x1024      LDR      R1,[R1, R4, LSL #+2]
+    595              if (ptcb == (OS_TCB *)0) {                                  /* Task to delete must exist           */
+   \       0x2E   0xB919             CBNZ.N   R1,??OSTaskDelReq_2
+    596                  OS_EXIT_CRITICAL();
+   \       0x30   0x....'....        BL       OS_CPU_SR_Restore
+    597                  return (OS_ERR_TASK_NOT_EXIST);                         /* Task must already be deleted        */
+   \       0x34   0x2043             MOVS     R0,#+67
+   \       0x36   0xBD10             POP      {R4,PC}
+    598              }
+    599              if (ptcb == OS_TCB_RESERVED) {                              /* Must NOT be assigned to a Mutex     */
+   \                     ??OSTaskDelReq_2: (+1)
+   \       0x38   0x2901             CMP      R1,#+1
+   \       0x3A   0xD103             BNE.N    ??OSTaskDelReq_3
+    600                  OS_EXIT_CRITICAL();
+   \       0x3C   0x....'....        BL       OS_CPU_SR_Restore
+    601                  return (OS_ERR_TASK_DEL);
+   \       0x40   0x203D             MOVS     R0,#+61
+   \       0x42   0xBD10             POP      {R4,PC}
+    602              }
+    603              ptcb->OSTCBDelReq = OS_ERR_TASK_DEL_REQ;                    /* Set flag indicating task to be DEL. */
+   \                     ??OSTaskDelReq_3: (+1)
+   \       0x44   0x223F             MOVS     R2,#+63
+   \       0x46   0xF881 0x2037      STRB     R2,[R1, #+55]
+    604              OS_EXIT_CRITICAL();
+   \       0x4A   0x....'....        BL       OS_CPU_SR_Restore
+    605              return (OS_ERR_NONE);
+   \       0x4E   0x2000             MOVS     R0,#+0
+   \       0x50   0xBD10             POP      {R4,PC}          ;; return
+    606          }
+    607          #endif
+    608          /*$PAGE*/
+    609          /*
+    610          *********************************************************************************************************
+    611          *                                        GET THE NAME OF A TASK
+    612          *
+    613          * Description: This function is called to obtain the name of a task.
+    614          *
+    615          * Arguments  : prio      is the priority of the task that you want to obtain the name from.
+    616          *
+    617          *              pname     is a pointer to an ASCII string that will receive the name of the task.  The
+    618          *                        string must be able to hold at least OS_TASK_NAME_SIZE characters.
+    619          *
+    620          *              perr      is a pointer to an error code that can contain one of the following values:
+    621          *
+    622          *                        OS_ERR_NONE                if the requested task is resumed
+    623          *                        OS_ERR_TASK_NOT_EXIST      if the task has not been created or is assigned to a Mutex
+    624          *                        OS_ERR_PRIO_INVALID        if you specified an invalid priority:
+    625          *                                                   A higher value than the idle task or not OS_PRIO_SELF.
+    626          *                        OS_ERR_PNAME_NULL          You passed a NULL pointer for 'pname'
+    627          *                        OS_ERR_NAME_GET_ISR        You called this function from an ISR
+    628          *                        
+    629          *
+    630          * Returns    : The length of the string or 0 if the task does not exist.
+    631          *********************************************************************************************************
+    632          */
+    633          
+    634          #if OS_TASK_NAME_SIZE > 1
+
+   \                                 In section .text, align 2, keep-with-next
+    635          INT8U  OSTaskNameGet (INT8U prio, INT8U *pname, INT8U *perr)
+    636          {
+   \                     OSTaskNameGet: (+1)
+   \        0x0   0xB5F8             PUSH     {R3-R7,LR}
+   \        0x2   0x460D             MOV      R5,R1
+    637              OS_TCB    *ptcb;
+    638              INT8U      len;
+    639          #if OS_CRITICAL_METHOD == 3                              /* Allocate storage for CPU status register   */
+    640              OS_CPU_SR  cpu_sr = 0;
+    641          #endif
+    642          
+    643          
+    644          
+    645          #if OS_ARG_CHK_EN > 0
+    646              if (perr == (INT8U *)0) {                            /* Validate 'perr'                            */
+    647                  return (0);
+    648              }
+    649              if (prio > OS_LOWEST_PRIO) {                         /* Task priority valid ?                      */
+    650                  if (prio != OS_PRIO_SELF) {
+    651                      *perr = OS_ERR_PRIO_INVALID;                 /* No                                         */
+    652                      return (0);
+    653                  }
+    654              }
+    655              if (pname == (INT8U *)0) {                           /* Is 'pname' a NULL pointer?                 */
+    656                  *perr = OS_ERR_PNAME_NULL;                       /* Yes                                        */
+    657                  return (0);
+    658              }
+    659          #endif
+    660              if (OSIntNesting > 0) {                              /* See if trying to call from an ISR          */
+   \        0x4   0x....             LDR.N    R1,??DataTable12_4
+   \        0x6   0x4607             MOV      R7,R0
+   \        0x8   0x7808             LDRB     R0,[R1, #+0]
+   \        0xA   0x4614             MOV      R4,R2
+   \        0xC   0xB110             CBZ.N    R0,??OSTaskNameGet_0
+    661                  *perr = OS_ERR_NAME_GET_ISR;
+   \        0xE   0x2111             MOVS     R1,#+17
+   \       0x10   0x7021             STRB     R1,[R4, #+0]
+    662                  return (0);
+   \       0x12   0xE013             B.N      ??OSTaskNameGet_1
+    663              }
+    664              OS_ENTER_CRITICAL();
+   \                     ??OSTaskNameGet_0: (+1)
+   \       0x14   0x....'....        BL       OS_CPU_SR_Save
+    665              if (prio == OS_PRIO_SELF) {                          /* See if caller desires it's own name        */
+   \       0x18   0x2FFF             CMP      R7,#+255
+   \       0x1A   0x4606             MOV      R6,R0
+   \       0x1C   0xD103             BNE.N    ??OSTaskNameGet_2
+    666                  prio = OSTCBCur->OSTCBPrio;
+   \       0x1E   0x....             LDR.N    R0,??DataTable12_5
+   \       0x20   0x6801             LDR      R1,[R0, #+0]
+   \       0x22   0xF891 0x7032      LDRB     R7,[R1, #+50]
+    667              }
+    668              ptcb = OSTCBPrioTbl[prio];
+   \                     ??OSTaskNameGet_2: (+1)
+   \       0x26   0x....             LDR.N    R0,??DataTable12
+   \       0x28   0xF850 0x0027      LDR      R0,[R0, R7, LSL #+2]
+    669              if (ptcb == (OS_TCB *)0) {                           /* Does task exist?                           */
+   \       0x2C   0x2800             CMP      R0,#+0
+   \       0x2E   0xBF18             IT       NE 
+   \       0x30   0x2801             CMPNE    R0,#+1
+    670                  OS_EXIT_CRITICAL();                              /* No                                         */
+    671                  *perr = OS_ERR_TASK_NOT_EXIST;
+    672                  return (0);
+    673              }
+    674              if (ptcb == OS_TCB_RESERVED) {                       /* Task assigned to a Mutex?                  */
+   \       0x32   0xD105             BNE.N    ??OSTaskNameGet_3
+    675                  OS_EXIT_CRITICAL();                              /* Yes                                        */
+   \       0x34   0x....'....        BL       ?Subroutine2
+    676                  *perr = OS_ERR_TASK_NOT_EXIST;
+   \                     ??CrossCallReturnLabel_7: (+1)
+   \       0x38   0x2043             MOVS     R0,#+67
+   \       0x3A   0x7020             STRB     R0,[R4, #+0]
+    677                  return (0);
+   \                     ??OSTaskNameGet_1: (+1)
+   \       0x3C   0x2000             MOVS     R0,#+0
+   \       0x3E   0xBDF2             POP      {R1,R4-R7,PC}
+    678              }
+    679              len   = OS_StrCopy(pname, ptcb->OSTCBTaskName);      /* Yes, copy name from TCB                    */
+   \                     ??OSTaskNameGet_3: (+1)
+   \       0x40   0xF100 0x014C      ADD      R1,R0,#+76
+   \       0x44   0x4628             MOV      R0,R5
+   \       0x46   0x....'....        BL       OS_StrCopy
+   \       0x4A   0x4605             MOV      R5,R0
+    680              OS_EXIT_CRITICAL();
+   \       0x4C   0x....'....        BL       ?Subroutine2
+    681              *perr = OS_ERR_NONE;
+   \                     ??CrossCallReturnLabel_6: (+1)
+   \       0x50   0x2000             MOVS     R0,#+0
+   \       0x52   0x7020             STRB     R0,[R4, #+0]
+    682              return (len);
+   \       0x54   0x4628             MOV      R0,R5
+   \       0x56   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+    683          }
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine2: (+1)
+   \        0x0   0x4630             MOV      R0,R6
+   \        0x2   0x....'....        B.W      OS_CPU_SR_Restore
+    684          #endif
+    685          
+    686          /*$PAGE*/
+    687          /*
+    688          *********************************************************************************************************
+    689          *                                        ASSIGN A NAME TO A TASK
+    690          *
+    691          * Description: This function is used to set the name of a task.
+    692          *
+    693          * Arguments  : prio      is the priority of the task that you want the assign a name to.
+    694          *
+    695          *              pname     is a pointer to an ASCII string that contains the name of the task.  The ASCII
+    696          *                        string must be NUL terminated.
+    697          *
+    698          *              perr       is a pointer to an error code that can contain one of the following values:
+    699          *
+    700          *                        OS_ERR_NONE                if the requested task is resumed
+    701          *                        OS_ERR_TASK_NOT_EXIST      if the task has not been created or is assigned to a Mutex
+    702          *                        OS_ERR_TASK_NAME_TOO_LONG  if the name you are giving to the task exceeds the
+    703          *                                                   storage capacity of a task name as specified by
+    704          *                                                   OS_TASK_NAME_SIZE.
+    705          *                        OS_ERR_PNAME_NULL          You passed a NULL pointer for 'pname'
+    706          *                        OS_ERR_PRIO_INVALID        if you specified an invalid priority:
+    707          *                                                   A higher value than the idle task or not OS_PRIO_SELF.
+    708          *                        OS_ERR_NAME_SET_ISR        if you called this function from an ISR
+    709          *
+    710          * Returns    : None
+    711          *********************************************************************************************************
+    712          */
+    713          #if OS_TASK_NAME_SIZE > 1
+
+   \                                 In section .text, align 2, keep-with-next
+    714          void  OSTaskNameSet (INT8U prio, INT8U *pname, INT8U *perr)
+    715          {
+   \                     OSTaskNameSet: (+1)
+   \        0x0   0xB5F8             PUSH     {R3-R7,LR}
+   \        0x2   0x460E             MOV      R6,R1
+    716              INT8U      len;
+    717              OS_TCB    *ptcb;
+    718          #if OS_CRITICAL_METHOD == 3                          /* Allocate storage for CPU status register       */
+    719              OS_CPU_SR  cpu_sr = 0;
+    720          #endif
+    721          
+    722          
+    723          
+    724          #if OS_ARG_CHK_EN > 0
+    725              if (perr == (INT8U *)0) {                        /* Validate 'perr'                                */
+    726                  return;
+    727              }
+    728              if (prio > OS_LOWEST_PRIO) {                     /* Task priority valid ?                          */
+    729                  if (prio != OS_PRIO_SELF) {
+    730                      *perr = OS_ERR_PRIO_INVALID;             /* No                                             */
+    731                      return;
+    732                  }
+    733              }
+    734              if (pname == (INT8U *)0) {                       /* Is 'pname' a NULL pointer?                     */
+    735                  *perr = OS_ERR_PNAME_NULL;                   /* Yes                                            */
+    736                  return;
+    737              }
+    738          #endif
+    739              if (OSIntNesting > 0) {                          /* See if trying to call from an ISR              */
+   \        0x4   0x....             LDR.N    R1,??DataTable12_4
+   \        0x6   0x4604             MOV      R4,R0
+   \        0x8   0x7808             LDRB     R0,[R1, #+0]
+   \        0xA   0x4615             MOV      R5,R2
+   \        0xC   0xB110             CBZ.N    R0,??OSTaskNameSet_0
+    740                  *perr = OS_ERR_NAME_SET_ISR;
+   \        0xE   0x2112             MOVS     R1,#+18
+   \       0x10   0x7029             STRB     R1,[R5, #+0]
+    741                  return;
+   \       0x12   0xBDF1             POP      {R0,R4-R7,PC}
+    742              }
+    743              OS_ENTER_CRITICAL();
+   \                     ??OSTaskNameSet_0: (+1)
+   \       0x14   0x....'....        BL       OS_CPU_SR_Save
+    744              if (prio == OS_PRIO_SELF) {                      /* See if caller desires to set it's own name     */
+   \       0x18   0x2CFF             CMP      R4,#+255
+   \       0x1A   0x4607             MOV      R7,R0
+   \       0x1C   0x....'....        BL       ?Subroutine3
+    745                  prio = OSTCBCur->OSTCBPrio;
+    746              }
+    747              ptcb = OSTCBPrioTbl[prio];
+   \                     ??CrossCallReturnLabel_8: (+1)
+   \       0x20   0xF850 0x4024      LDR      R4,[R0, R4, LSL #+2]
+    748              if (ptcb == (OS_TCB *)0) {                       /* Does task exist?                               */
+   \       0x24   0x2C00             CMP      R4,#+0
+   \       0x26   0xBF18             IT       NE 
+   \       0x28   0x2C01             CMPNE    R4,#+1
+    749                  OS_EXIT_CRITICAL();                          /* No                                             */
+    750                  *perr = OS_ERR_TASK_NOT_EXIST;
+    751                  return;
+    752              }
+    753              if (ptcb == OS_TCB_RESERVED) {                   /* Task assigned to a Mutex?                      */
+   \       0x2A   0xD104             BNE.N    ??OSTaskNameSet_1
+    754                  OS_EXIT_CRITICAL();                          /* Yes                                            */
+   \       0x2C   0x4638             MOV      R0,R7
+   \       0x2E   0x....'....        BL       OS_CPU_SR_Restore
+    755                  *perr = OS_ERR_TASK_NOT_EXIST;
+   \       0x32   0x2043             MOVS     R0,#+67
+   \       0x34   0xE012             B.N      ??OSTaskNameSet_2
+    756                  return;
+    757              }
+    758              len = OS_StrLen(pname);                          /* Yes, Can we fit the string in the TCB?         */
+    759              if (len > (OS_TASK_NAME_SIZE - 1)) {             /*      No                                        */
+   \                     ??OSTaskNameSet_1: (+1)
+   \       0x36   0x4630             MOV      R0,R6
+   \       0x38   0x....'....        BL       OS_StrLen
+   \       0x3C   0x2810             CMP      R0,#+16
+   \       0x3E   0xDB04             BLT.N    ??OSTaskNameSet_3
+    760                  OS_EXIT_CRITICAL();
+   \       0x40   0x4638             MOV      R0,R7
+   \       0x42   0x....'....        BL       OS_CPU_SR_Restore
+    761                  *perr = OS_ERR_TASK_NAME_TOO_LONG;
+   \       0x46   0x2041             MOVS     R0,#+65
+   \       0x48   0xE008             B.N      ??OSTaskNameSet_2
+    762                  return;
+    763              }
+    764              (void)OS_StrCopy(ptcb->OSTCBTaskName, pname);    /*      Yes, copy to TCB                          */
+   \                     ??OSTaskNameSet_3: (+1)
+   \       0x4A   0x4631             MOV      R1,R6
+   \       0x4C   0xF104 0x004C      ADD      R0,R4,#+76
+   \       0x50   0x....'....        BL       OS_StrCopy
+    765              OS_EXIT_CRITICAL();
+   \       0x54   0x4638             MOV      R0,R7
+   \       0x56   0x....'....        BL       OS_CPU_SR_Restore
+    766              *perr = OS_ERR_NONE;
+   \       0x5A   0x2000             MOVS     R0,#+0
+   \                     ??OSTaskNameSet_2: (+1)
+   \       0x5C   0x7028             STRB     R0,[R5, #+0]
+    767          }
+   \       0x5E   0xBDF1             POP      {R0,R4-R7,PC}    ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine3: (+1)
+   \        0x0   0xD103             BNE.N    ??Subroutine3_0
+   \        0x2   0x....             LDR.N    R0,??DataTable12_5
+   \        0x4   0x6801             LDR      R1,[R0, #+0]
+   \        0x6   0xF891 0x4032      LDRB     R4,[R1, #+50]
+   \                     ??Subroutine3_0: (+1)
+   \        0xA   0x....             LDR.N    R0,??DataTable12
+   \        0xC   0x4770             BX       LR
+    768          #endif
+    769          
+    770          /*$PAGE*/
+    771          /*
+    772          *********************************************************************************************************
+    773          *                                        RESUME A SUSPENDED TASK
+    774          *
+    775          * Description: This function is called to resume a previously suspended task.  This is the only call that
+    776          *              will remove an explicit task suspension.
+    777          *
+    778          * Arguments  : prio     is the priority of the task to resume.
+    779          *
+    780          * Returns    : OS_ERR_NONE                if the requested task is resumed
+    781          *              OS_ERR_PRIO_INVALID        if the priority you specify is higher that the maximum allowed
+    782          *                                         (i.e. >= OS_LOWEST_PRIO)
+    783          *              OS_ERR_TASK_RESUME_PRIO    if the task to resume does not exist
+    784          *              OS_ERR_TASK_NOT_EXIST      if the task is assigned to a Mutex PIP
+    785          *              OS_ERR_TASK_NOT_SUSPENDED  if the task to resume has not been suspended
+    786          *********************************************************************************************************
+    787          */
+    788          
+    789          #if OS_TASK_SUSPEND_EN > 0
+
+   \                                 In section .text, align 2, keep-with-next
+    790          INT8U  OSTaskResume (INT8U prio)
+    791          {
+   \                     OSTaskResume: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+   \        0x2   0x4604             MOV      R4,R0
+    792              OS_TCB    *ptcb;
+    793          #if OS_CRITICAL_METHOD == 3                                   /* Storage for CPU status register       */
+    794              OS_CPU_SR  cpu_sr = 0;
+    795          #endif
+    796          
+    797          
+    798          
+    799          #if OS_ARG_CHK_EN > 0
+    800              if (prio >= OS_LOWEST_PRIO) {                             /* Make sure task priority is valid      */
+    801                  return (OS_ERR_PRIO_INVALID);
+    802              }
+    803          #endif
+    804              OS_ENTER_CRITICAL();
+   \        0x4   0x....'....        BL       OS_CPU_SR_Save
+    805              ptcb = OSTCBPrioTbl[prio];
+   \        0x8   0x....             LDR.N    R1,??DataTable12
+   \        0xA   0xF851 0x1024      LDR      R1,[R1, R4, LSL #+2]
+    806              if (ptcb == (OS_TCB *)0) {                                /* Task to suspend must exist            */
+   \        0xE   0xB919             CBNZ.N   R1,??OSTaskResume_0
+    807                  OS_EXIT_CRITICAL();
+   \       0x10   0x....'....        BL       OS_CPU_SR_Restore
+    808                  return (OS_ERR_TASK_RESUME_PRIO);
+   \       0x14   0x2046             MOVS     R0,#+70
+   \       0x16   0xBD32             POP      {R1,R4,R5,PC}
+    809              }
+    810              if (ptcb == OS_TCB_RESERVED) {                            /* See if assigned to Mutex              */
+   \                     ??OSTaskResume_0: (+1)
+   \       0x18   0x2901             CMP      R1,#+1
+   \       0x1A   0xD103             BNE.N    ??OSTaskResume_1
+    811                  OS_EXIT_CRITICAL();
+   \       0x1C   0x....'....        BL       OS_CPU_SR_Restore
+    812                  return (OS_ERR_TASK_NOT_EXIST);
+   \       0x20   0x2043             MOVS     R0,#+67
+   \       0x22   0xBD32             POP      {R1,R4,R5,PC}
+    813              }
+    814              if ((ptcb->OSTCBStat & OS_STAT_SUSPEND) != OS_STAT_RDY) { /* Task must be suspended                */
+   \                     ??OSTaskResume_1: (+1)
+   \       0x24   0xF101 0x022E      ADD      R2,R1,#+46
+   \       0x28   0x7891             LDRB     R1,[R2, #+2]
+   \       0x2A   0x070B             LSLS     R3,R1,#+28
+   \       0x2C   0xD51D             BPL.N    ??OSTaskResume_2
+    815                  ptcb->OSTCBStat &= ~(INT8U)OS_STAT_SUSPEND;           /* Remove suspension                     */
+   \       0x2E   0xF011 0x01F7      ANDS     R1,R1,#0xF7
+   \       0x32   0x7091             STRB     R1,[R2, #+2]
+    816                  if (ptcb->OSTCBStat == OS_STAT_RDY) {                 /* See if task is now ready              */
+   \       0x34   0xBF04             ITT      EQ 
+   \       0x36   0x8811             LDRHEQ   R1,[R2, #+0]
+   \       0x38   0x2900             CMPEQ    R1,#+0
+    817                      if (ptcb->OSTCBDly == 0) {
+   \       0x3A   0xD112             BNE.N    ??OSTaskResume_3
+    818                          OSRdyGrp               |= ptcb->OSTCBBitY;    /* Yes, Make task ready to run           */
+   \       0x3C   0x....             LDR.N    R3,??DataTable12_2
+   \       0x3E   0x7A11             LDRB     R1,[R2, #+8]
+   \       0x40   0x781C             LDRB     R4,[R3, #+0]
+   \       0x42   0x430C             ORRS     R4,R1,R4
+   \       0x44   0x701C             STRB     R4,[R3, #+0]
+    819                          OSRdyTbl[ptcb->OSTCBY] |= ptcb->OSTCBBitX;
+   \       0x46   0x7993             LDRB     R3,[R2, #+6]
+   \       0x48   0x....             LDR.N    R4,??DataTable12_1
+   \       0x4A   0x79D1             LDRB     R1,[R2, #+7]
+   \       0x4C   0x5CE5             LDRB     R5,[R4, R3]
+   \       0x4E   0x430D             ORRS     R5,R1,R5
+   \       0x50   0x54E5             STRB     R5,[R4, R3]
+    820                          OS_EXIT_CRITICAL();
+   \       0x52   0x....'....        BL       OS_CPU_SR_Restore
+    821                          if (OSRunning == OS_TRUE) {
+   \       0x56   0x....'....        BL       ?Subroutine5
+   \                     ??CrossCallReturnLabel_16: (+1)
+   \       0x5A   0xD104             BNE.N    ??OSTaskResume_4
+    822                              OS_Sched();                               /* Find new highest priority task        */
+   \       0x5C   0x....'....        BL       OS_Sched
+   \       0x60   0xE001             B.N      ??OSTaskResume_4
+    823                          }
+    824                      } else {
+    825                          OS_EXIT_CRITICAL();
+    826                      }
+    827                  } else {                                              /* Must be pending on event              */
+    828                      OS_EXIT_CRITICAL();
+   \                     ??OSTaskResume_3: (+1)
+   \       0x62   0x....'....        BL       OS_CPU_SR_Restore
+    829                  }
+    830                  return (OS_ERR_NONE);
+   \                     ??OSTaskResume_4: (+1)
+   \       0x66   0x2000             MOVS     R0,#+0
+   \       0x68   0xBD32             POP      {R1,R4,R5,PC}
+    831              }
+    832              OS_EXIT_CRITICAL();
+   \                     ??OSTaskResume_2: (+1)
+   \       0x6A   0x....'....        BL       OS_CPU_SR_Restore
+    833              return (OS_ERR_TASK_NOT_SUSPENDED);
+   \       0x6E   0x2044             MOVS     R0,#+68
+   \       0x70   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    834          }
+    835          #endif
+    836          /*$PAGE*/
+    837          /*
+    838          *********************************************************************************************************
+    839          *                                             STACK CHECKING
+    840          *
+    841          * Description: This function is called to check the amount of free memory left on the specified task's
+    842          *              stack.
+    843          *
+    844          * Arguments  : prio          is the task priority
+    845          *
+    846          *              p_stk_data    is a pointer to a data structure of type OS_STK_DATA.
+    847          *
+    848          * Returns    : OS_ERR_NONE            upon success
+    849          *              OS_ERR_PRIO_INVALID    if the priority you specify is higher that the maximum allowed
+    850          *                                     (i.e. > OS_LOWEST_PRIO) or, you have not specified OS_PRIO_SELF.
+    851          *              OS_ERR_TASK_NOT_EXIST  if the desired task has not been created or is assigned to a Mutex PIP
+    852          *              OS_ERR_TASK_OPT        if you did NOT specified OS_TASK_OPT_STK_CHK when the task was created
+    853          *              OS_ERR_PDATA_NULL      if 'p_stk_data' is a NULL pointer
+    854          *********************************************************************************************************
+    855          */
+    856          #if (OS_TASK_STAT_STK_CHK_EN > 0) && (OS_TASK_CREATE_EXT_EN > 0)
+
+   \                                 In section .text, align 2, keep-with-next
+    857          INT8U  OSTaskStkChk (INT8U prio, OS_STK_DATA *p_stk_data)
+    858          {
+   \                     OSTaskStkChk: (+1)
+   \        0x0   0xB5F8             PUSH     {R3-R7,LR}
+   \        0x2   0x4605             MOV      R5,R0
+   \        0x4   0x460C             MOV      R4,R1
+    859              OS_TCB    *ptcb;
+    860              OS_STK    *pchk;
+    861              INT32U     nfree;
+    862              INT32U     size;
+    863          #if OS_CRITICAL_METHOD == 3                            /* Allocate storage for CPU status register     */
+    864              OS_CPU_SR  cpu_sr = 0;
+    865          #endif
+    866          
+    867          
+    868          
+    869          #if OS_ARG_CHK_EN > 0
+    870              if (prio > OS_LOWEST_PRIO) {                       /* Make sure task priority is valid             */
+    871                  if (prio != OS_PRIO_SELF) {
+    872                      return (OS_ERR_PRIO_INVALID);
+    873                  }
+    874              }
+    875              if (p_stk_data == (OS_STK_DATA *)0) {              /* Validate 'p_stk_data'                        */
+    876                  return (OS_ERR_PDATA_NULL);
+    877              }
+    878          #endif
+    879              p_stk_data->OSFree = 0;                            /* Assume failure, set to 0 size                */
+   \        0x6   0x2000             MOVS     R0,#+0
+   \        0x8   0x6020             STR      R0,[R4, #+0]
+    880              p_stk_data->OSUsed = 0;
+   \        0xA   0x6060             STR      R0,[R4, #+4]
+    881              OS_ENTER_CRITICAL();
+   \        0xC   0x....'....        BL       OS_CPU_SR_Save
+    882              if (prio == OS_PRIO_SELF) {                        /* See if check for SELF                        */
+   \       0x10   0x2DFF             CMP      R5,#+255
+   \       0x12   0xD103             BNE.N    ??OSTaskStkChk_0
+    883                  prio = OSTCBCur->OSTCBPrio;
+   \       0x14   0x....'....        BL       ?Subroutine4
+    884              }
+   \                     ??CrossCallReturnLabel_12: (+1)
+   \       0x18   0xF892 0x5032      LDRB     R5,[R2, #+50]
+    885              ptcb = OSTCBPrioTbl[prio];
+   \                     ??OSTaskStkChk_0: (+1)
+   \       0x1C   0x....             LDR.N    R1,??DataTable12
+   \       0x1E   0xF851 0x1025      LDR      R1,[R1, R5, LSL #+2]
+    886              if (ptcb == (OS_TCB *)0) {                         /* Make sure task exist                         */
+   \       0x22   0x2900             CMP      R1,#+0
+   \       0x24   0xBF18             IT       NE 
+   \       0x26   0x2901             CMPNE    R1,#+1
+    887                  OS_EXIT_CRITICAL();
+    888                  return (OS_ERR_TASK_NOT_EXIST);
+    889              }
+    890              if (ptcb == OS_TCB_RESERVED) {
+   \       0x28   0xD103             BNE.N    ??OSTaskStkChk_1
+    891                  OS_EXIT_CRITICAL();
+   \       0x2A   0x....'....        BL       OS_CPU_SR_Restore
+    892                  return (OS_ERR_TASK_NOT_EXIST);
+   \       0x2E   0x2043             MOVS     R0,#+67
+   \       0x30   0xBDF2             POP      {R1,R4-R7,PC}
+    893              }
+    894              if ((ptcb->OSTCBOpt & OS_TASK_OPT_STK_CHK) == 0) { /* Make sure stack checking option is set       */
+   \                     ??OSTaskStkChk_1: (+1)
+   \       0x32   0x7C0A             LDRB     R2,[R1, #+16]
+   \       0x34   0x07D3             LSLS     R3,R2,#+31
+   \       0x36   0xD403             BMI.N    ??OSTaskStkChk_2
+    895                  OS_EXIT_CRITICAL();
+   \       0x38   0x....'....        BL       OS_CPU_SR_Restore
+    896                  return (OS_ERR_TASK_OPT);
+   \       0x3C   0x2045             MOVS     R0,#+69
+   \       0x3E   0xBDF2             POP      {R1,R4-R7,PC}
+    897              }
+    898              nfree = 0;
+    899              size  = ptcb->OSTCBStkSize;
+   \                     ??OSTaskStkChk_2: (+1)
+   \       0x40   0x68CE             LDR      R6,[R1, #+12]
+    900              pchk  = ptcb->OSTCBStkBottom;
+   \       0x42   0x688F             LDR      R7,[R1, #+8]
+    901              OS_EXIT_CRITICAL();
+   \       0x44   0x....'....        BL       OS_CPU_SR_Restore
+   \       0x48   0x2500             MOVS     R5,#+0
+   \       0x4A   0xE000             B.N      ??OSTaskStkChk_3
+    902          #if OS_STK_GROWTH == 1
+    903              while (*pchk++ == (OS_STK)0) {                    /* Compute the number of zero entries on the stk */
+    904                  nfree++;
+   \                     ??OSTaskStkChk_4: (+1)
+   \       0x4C   0x1C6D             ADDS     R5,R5,#+1
+    905              }
+   \                     ??OSTaskStkChk_3: (+1)
+   \       0x4E   0xF857 0x0B04      LDR      R0,[R7], #+4
+   \       0x52   0x2800             CMP      R0,#+0
+   \       0x54   0xD0FA             BEQ.N    ??OSTaskStkChk_4
+    906          #else
+    907              while (*pchk-- == (OS_STK)0) {
+    908                  nfree++;
+    909              }
+    910          #endif
+    911              p_stk_data->OSFree = nfree * sizeof(OS_STK);          /* Compute number of free bytes on the stack */
+   \       0x56   0x00A9             LSLS     R1,R5,#+2
+    912              p_stk_data->OSUsed = (size - nfree) * sizeof(OS_STK); /* Compute number of bytes used on the stack */
+   \       0x58   0x1B75             SUBS     R5,R6,R5
+   \       0x5A   0x6021             STR      R1,[R4, #+0]
+   \       0x5C   0x00AD             LSLS     R5,R5,#+2
+   \       0x5E   0x6065             STR      R5,[R4, #+4]
+    913              return (OS_ERR_NONE);
+   \       0x60   0x2000             MOVS     R0,#+0
+   \       0x62   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
+    914          }
+    915          #endif
+    916          /*$PAGE*/
+    917          /*
+    918          *********************************************************************************************************
+    919          *                                            SUSPEND A TASK
+    920          *
+    921          * Description: This function is called to suspend a task.  The task can be the calling task if the
+    922          *              priority passed to OSTaskSuspend() is the priority of the calling task or OS_PRIO_SELF.
+    923          *
+    924          * Arguments  : prio     is the priority of the task to suspend.  If you specify OS_PRIO_SELF, the
+    925          *                       calling task will suspend itself and rescheduling will occur.
+    926          *
+    927          * Returns    : OS_ERR_NONE               if the requested task is suspended
+    928          *              OS_ERR_TASK_SUSPEND_IDLE  if you attempted to suspend the idle task which is not allowed.
+    929          *              OS_ERR_PRIO_INVALID       if the priority you specify is higher that the maximum allowed
+    930          *                                        (i.e. >= OS_LOWEST_PRIO) or, you have not specified OS_PRIO_SELF.
+    931          *              OS_ERR_TASK_SUSPEND_PRIO  if the task to suspend does not exist
+    932          *              OS_ERR_TASK_NOT_EXITS     if the task is assigned to a Mutex PIP
+    933          *
+    934          * Note       : You should use this function with great care.  If you suspend a task that is waiting for
+    935          *              an event (i.e. a message, a semaphore, a queue ...) you will prevent this task from
+    936          *              running when the event arrives.
+    937          *********************************************************************************************************
+    938          */
+    939          
+    940          #if OS_TASK_SUSPEND_EN > 0
+
+   \                                 In section .text, align 2, keep-with-next
+    941          INT8U  OSTaskSuspend (INT8U prio)
+    942          {
+   \                     OSTaskSuspend: (+1)
+   \        0x0   0xB570             PUSH     {R4-R6,LR}
+   \        0x2   0x4605             MOV      R5,R0
+    943              BOOLEAN    self;
+    944              OS_TCB    *ptcb;
+    945              INT8U      y;
+    946          #if OS_CRITICAL_METHOD == 3                      /* Allocate storage for CPU status register           */
+    947              OS_CPU_SR  cpu_sr = 0;
+    948          #endif
+    949          
+    950          
+    951          
+    952          #if OS_ARG_CHK_EN > 0
+    953              if (prio == OS_TASK_IDLE_PRIO) {                            /* Not allowed to suspend idle task    */
+    954                  return (OS_ERR_TASK_SUSPEND_IDLE);
+    955              }
+    956              if (prio >= OS_LOWEST_PRIO) {                               /* Task priority valid ?               */
+    957                  if (prio != OS_PRIO_SELF) {
+    958                      return (OS_ERR_PRIO_INVALID);
+    959                  }
+    960              }
+    961          #endif
+    962              OS_ENTER_CRITICAL();
+   \        0x4   0x....'....        BL       OS_CPU_SR_Save
+    963              if (prio == OS_PRIO_SELF) {                                 /* See if suspend SELF                 */
+   \        0x8   0x....'....        BL       ?Subroutine4
+   \                     ??CrossCallReturnLabel_13: (+1)
+   \        0xC   0xF892 0x1032      LDRB     R1,[R2, #+50]
+   \       0x10   0x2DFF             CMP      R5,#+255
+   \       0x12   0xBF0C             ITE      EQ 
+   \       0x14   0x460D             MOVEQ    R5,R1
+   \       0x16   0x428D             CMPNE    R5,R1
+    964                  prio = OSTCBCur->OSTCBPrio;
+    965                  self = OS_TRUE;
+    966              } else if (prio == OSTCBCur->OSTCBPrio) {                   /* See if suspending self              */
+   \       0x18   0xD101             BNE.N    ??OSTaskSuspend_0
+    967                  self = OS_TRUE;
+   \       0x1A   0x2401             MOVS     R4,#+1
+   \       0x1C   0xE000             B.N      ??OSTaskSuspend_1
+    968              } else {
+    969                  self = OS_FALSE;                                        /* No suspending another task          */
+   \                     ??OSTaskSuspend_0: (+1)
+   \       0x1E   0x2400             MOVS     R4,#+0
+    970              }
+    971              ptcb = OSTCBPrioTbl[prio];
+   \                     ??OSTaskSuspend_1: (+1)
+   \       0x20   0x....             LDR.N    R1,??DataTable12
+   \       0x22   0xF851 0x1025      LDR      R1,[R1, R5, LSL #+2]
+    972              if (ptcb == (OS_TCB *)0) {                                  /* Task to suspend must exist          */
+   \       0x26   0xB919             CBNZ.N   R1,??OSTaskSuspend_2
+    973                  OS_EXIT_CRITICAL();
+   \       0x28   0x....'....        BL       OS_CPU_SR_Restore
+    974                  return (OS_ERR_TASK_SUSPEND_PRIO);
+   \       0x2C   0x2048             MOVS     R0,#+72
+   \       0x2E   0xBD70             POP      {R4-R6,PC}
+    975              }
+    976              if (ptcb == OS_TCB_RESERVED) {                              /* See if assigned to Mutex            */
+   \                     ??OSTaskSuspend_2: (+1)
+   \       0x30   0x2901             CMP      R1,#+1
+   \       0x32   0xD100             BNE.N    ??OSTaskSuspend_3
+    977                  OS_EXIT_CRITICAL();
+   \       0x34   0x....             B.N      ?Subroutine0
+    978                  return (OS_ERR_TASK_NOT_EXIST);
+    979              }
+    980              y            = ptcb->OSTCBY;
+   \                     ??OSTaskSuspend_3: (+1)
+   \       0x36   0xF101 0x0230      ADD      R2,R1,#+48
+    981              OSRdyTbl[y] &= ~ptcb->OSTCBBitX;                            /* Make task not ready                 */
+   \       0x3A   0x....             LDR.N    R3,??DataTable12_1
+   \       0x3C   0x7911             LDRB     R1,[R2, #+4]
+   \       0x3E   0x7955             LDRB     R5,[R2, #+5]
+   \       0x40   0x5C5E             LDRB     R6,[R3, R1]
+   \       0x42   0xEA36 0x0505      BICS     R5,R6,R5
+   \       0x46   0x545D             STRB     R5,[R3, R1]
+    982              if (OSRdyTbl[y] == 0) {
+   \       0x48   0xD104             BNE.N    ??OSTaskSuspend_4
+    983                  OSRdyGrp &= ~ptcb->OSTCBBitY;
+   \       0x4A   0x....             LDR.N    R3,??DataTable12_2
+   \       0x4C   0x7991             LDRB     R1,[R2, #+6]
+   \       0x4E   0x781D             LDRB     R5,[R3, #+0]
+   \       0x50   0x438D             BICS     R5,R5,R1
+   \       0x52   0x701D             STRB     R5,[R3, #+0]
+    984              }
+    985              ptcb->OSTCBStat |= OS_STAT_SUSPEND;                         /* Status of task is 'SUSPENDED'       */
+   \                     ??OSTaskSuspend_4: (+1)
+   \       0x54   0x7813             LDRB     R3,[R2, #+0]
+   \       0x56   0xF043 0x0308      ORR      R3,R3,#0x8
+   \       0x5A   0x7013             STRB     R3,[R2, #+0]
+    986              OS_EXIT_CRITICAL();
+   \       0x5C   0x....'....        BL       OS_CPU_SR_Restore
+    987              if (self == OS_TRUE) {                                      /* Context switch only if SELF         */
+   \       0x60   0xB10C             CBZ.N    R4,??OSTaskSuspend_5
+    988                  OS_Sched();                                             /* Find new highest priority task      */
+   \       0x62   0x....'....        BL       OS_Sched
+    989              }
+    990              return (OS_ERR_NONE);
+   \                     ??OSTaskSuspend_5: (+1)
+   \       0x66   0x2000             MOVS     R0,#+0
+   \       0x68   0xBD70             POP      {R4-R6,PC}       ;; return
+    991          }
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine0: (+1)
+   \        0x0   0x....'....        BL       OS_CPU_SR_Restore
+   \        0x4   0x2043             MOVS     R0,#+67
+   \        0x6   0xBD70             POP      {R4-R6,PC}
+    992          #endif
+    993          /*$PAGE*/
+    994          /*
+    995          *********************************************************************************************************
+    996          *                                            QUERY A TASK
+    997          *
+    998          * Description: This function is called to obtain a copy of the desired task's TCB.
+    999          *
+   1000          * Arguments  : prio         is the priority of the task to obtain information from.
+   1001          *
+   1002          *              p_task_data  is a pointer to where the desired task's OS_TCB will be stored.
+   1003          *
+   1004          * Returns    : OS_ERR_NONE            if the requested task is suspended
+   1005          *              OS_ERR_PRIO_INVALID    if the priority you specify is higher that the maximum allowed
+   1006          *                                     (i.e. > OS_LOWEST_PRIO) or, you have not specified OS_PRIO_SELF.
+   1007          *              OS_ERR_PRIO            if the desired task has not been created
+   1008          *              OS_ERR_TASK_NOT_EXIST  if the task is assigned to a Mutex PIP
+   1009          *              OS_ERR_PDATA_NULL      if 'p_task_data' is a NULL pointer
+   1010          *********************************************************************************************************
+   1011          */
+   1012          
+   1013          #if OS_TASK_QUERY_EN > 0
+
+   \                                 In section .text, align 2, keep-with-next
+   1014          INT8U  OSTaskQuery (INT8U prio, OS_TCB *p_task_data)
+   1015          {
+   \                     OSTaskQuery: (+1)
+   \        0x0   0xB570             PUSH     {R4-R6,LR}
+   \        0x2   0x4604             MOV      R4,R0
+   \        0x4   0x460D             MOV      R5,R1
+   1016              OS_TCB    *ptcb;
+   1017          #if OS_CRITICAL_METHOD == 3                      /* Allocate storage for CPU status register           */
+   1018              OS_CPU_SR  cpu_sr = 0;
+   1019          #endif
+   1020          
+   1021          
+   1022          
+   1023          #if OS_ARG_CHK_EN > 0
+   1024              if (prio > OS_LOWEST_PRIO) {                 /* Task priority valid ?                              */
+   1025                  if (prio != OS_PRIO_SELF) {
+   1026                      return (OS_ERR_PRIO_INVALID);
+   1027                  }
+   1028              }
+   1029              if (p_task_data == (OS_TCB *)0) {            /* Validate 'p_task_data'                             */
+   1030                  return (OS_ERR_PDATA_NULL);
+   1031              }
+   1032          #endif
+   1033              OS_ENTER_CRITICAL();
+   \        0x6   0x....'....        BL       OS_CPU_SR_Save
+   1034              if (prio == OS_PRIO_SELF) {                  /* See if suspend SELF                                */
+   \        0xA   0x2CFF             CMP      R4,#+255
+   \        0xC   0x4606             MOV      R6,R0
+   \        0xE   0x....'....        BL       ?Subroutine3
+   1035                  prio = OSTCBCur->OSTCBPrio;
+   1036              }
+   1037              ptcb = OSTCBPrioTbl[prio];
+   \                     ??CrossCallReturnLabel_9: (+1)
+   \       0x12   0xF850 0x1024      LDR      R1,[R0, R4, LSL #+2]
+   1038              if (ptcb == (OS_TCB *)0) {                   /* Task to query must exist                           */
+   \       0x16   0xB919             CBNZ.N   R1,??OSTaskQuery_0
+   1039                  OS_EXIT_CRITICAL();
+   \       0x18   0x....'....        BL       ?Subroutine2
+   1040                  return (OS_ERR_PRIO);
+   \                     ??CrossCallReturnLabel_5: (+1)
+   \       0x1C   0x2029             MOVS     R0,#+41
+   \       0x1E   0xBD70             POP      {R4-R6,PC}
+   1041              }
+   1042              if (ptcb == OS_TCB_RESERVED) {               /* Task to query must not be assigned to a Mutex      */
+   \                     ??OSTaskQuery_0: (+1)
+   \       0x20   0x2901             CMP      R1,#+1
+   \       0x22   0xD101             BNE.N    ??OSTaskQuery_1
+   1043                  OS_EXIT_CRITICAL();
+   \       0x24   0x4630             MOV      R0,R6
+   \       0x26   0x....             B.N      ?Subroutine0
+   1044                  return (OS_ERR_TASK_NOT_EXIST);
+   1045              }
+   1046                                                           /* Copy TCB into user storage area                    */
+   1047              OS_MemCopy((INT8U *)p_task_data, (INT8U *)ptcb, sizeof(OS_TCB));
+   \                     ??OSTaskQuery_1: (+1)
+   \       0x28   0x225C             MOVS     R2,#+92
+   \       0x2A   0x4628             MOV      R0,R5
+   \       0x2C   0x....'....        BL       OS_MemCopy
+   1048              OS_EXIT_CRITICAL();
+   \       0x30   0x....'....        BL       ?Subroutine2
+   1049              return (OS_ERR_NONE);
+   \                     ??CrossCallReturnLabel_4: (+1)
+   \       0x34   0x2000             MOVS     R0,#+0
+   \       0x36   0xBD70             POP      {R4-R6,PC}       ;; return
+   1050          }
+   1051          #endif
+   1052          /*$PAGE*/
+   1053          /*
+   1054          *********************************************************************************************************
+   1055          *                                        CLEAR TASK STACK
+   1056          *
+   1057          * Description: This function is used to clear the stack of a task (i.e. write all zeros)
+   1058          *
+   1059          * Arguments  : pbos     is a pointer to the task's bottom of stack.  If the configuration constant
+   1060          *                       OS_STK_GROWTH is set to 1, the stack is assumed to grow downward (i.e. from high
+   1061          *                       memory to low memory).  'pbos' will thus point to the lowest (valid) memory
+   1062          *                       location of the stack.  If OS_STK_GROWTH is set to 0, 'pbos' will point to the
+   1063          *                       highest memory location of the stack and the stack will grow with increasing
+   1064          *                       memory locations.  'pbos' MUST point to a valid 'free' data item.
+   1065          *
+   1066          *              size     is the number of 'stack elements' to clear.
+   1067          *
+   1068          *              opt      contains additional information (or options) about the behavior of the task.  The
+   1069          *                       LOWER 8-bits are reserved by uC/OS-II while the upper 8 bits can be application
+   1070          *                       specific.  See OS_TASK_OPT_??? in uCOS-II.H.
+   1071          *
+   1072          * Returns    : none
+   1073          *********************************************************************************************************
+   1074          */
+   1075          #if (OS_TASK_STAT_STK_CHK_EN > 0) && (OS_TASK_CREATE_EXT_EN > 0)
+
+   \                                 In section .text, align 2, keep-with-next
+   1076          void  OS_TaskStkClr (OS_STK *pbos, INT32U size, INT16U opt)
+   1077          {
+   1078              if ((opt & OS_TASK_OPT_STK_CHK) != 0x0000) {       /* See if stack checking has been enabled       */
+   \                     OS_TaskStkClr: (+1)
+   \        0x0   0xF002 0x0203      AND      R2,R2,#0x3
+   \        0x4   0x2A03             CMP      R2,#+3
+   \        0x6   0xD104             BNE.N    ??OS_TaskStkClr_0
+   1079                  if ((opt & OS_TASK_OPT_STK_CLR) != 0x0000) {   /* See if stack needs to be cleared             */
+   1080          #if OS_STK_GROWTH == 1
+   1081                      while (size > 0) {                         /* Stack grows from HIGH to LOW memory          */
+   \        0x8   0x2900             CMP      R1,#+0
+   \        0xA   0xBF1C             ITT      NE 
+   1082                          size--;
+   1083                          *pbos++ = (OS_STK)0;                   /* Clear from bottom of stack and up!           */
+   \        0xC   0x0089             LSLNE    R1,R1,#+2
+   \        0xE   0x....'....        BNE.W    __aeabi_memclr4
+   1084                      }
+   1085          #else
+   1086                      while (size > 0) {                         /* Stack grows from LOW to HIGH memory          */
+   1087                          size--;
+   1088                          *pbos-- = (OS_STK)0;                   /* Clear from bottom of stack and down          */
+   1089                      }
+   1090          #endif
+   1091                  }
+   1092              }
+   1093          }
+   \                     ??OS_TaskStkClr_0: (+1)
+   \       0x12   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12:
+   \        0x0   0x....'....        DC32     OSTCBPrioTbl
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12_1:
+   \        0x0   0x....'....        DC32     OSRdyTbl
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12_2:
+   \        0x0   0x....'....        DC32     OSRdyGrp
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12_3:
+   \        0x0   0x....'....        DC32     OSRunning
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12_4:
+   \        0x0   0x....'....        DC32     OSIntNesting
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12_5:
+   \        0x0   0x....'....        DC32     OSTCBCur
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12_6:
+   \        0x0   0x....'....        DC32     OSLockNesting
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12_7:
+   \        0x0   0x....'....        DC32     OSTaskCtr
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12_8:
+   \        0x0   0x....'....        DC32     OSTCBList
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable12_9:
+   \        0x0   0x....'....        DC32     OSTCBFreeList
+   1094          
+   1095          #endif
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      40   OSTaskChangePrio
+        40   -> OS_CPU_SR_Restore
+        40   -> OS_CPU_SR_Save
+        40   -> OS_Sched
+      40   OSTaskCreate
+        40   -> OSTaskStkInit
+        40   -> OS_CPU_SR_Restore
+        40   -> OS_CPU_SR_Save
+        40   -> OS_Sched
+        40   -> OS_TCBInit
+      56   OSTaskCreateExt
+        56   -> OSTaskStkInit
+        56   -> OS_CPU_SR_Restore
+        56   -> OS_CPU_SR_Save
+        56   -> OS_Sched
+        56   -> OS_TCBInit
+        56   -> OS_TaskStkClr
+      32   OSTaskDel
+        32   -> OSTaskDelHook
+        32   -> OS_CPU_SR_Restore
+        32   -> OS_CPU_SR_Save
+        32   -> OS_Dummy
+        32   -> OS_EventTaskRemove
+        32   -> OS_EventTaskRemoveMulti
+        32   -> OS_FlagUnlink
+        32   -> OS_Sched
+       8   OSTaskDelReq
+         8   -> OS_CPU_SR_Restore
+         8   -> OS_CPU_SR_Save
+      24   OSTaskNameGet
+        24   -> OS_CPU_SR_Restore
+        24   -> OS_CPU_SR_Save
+        24   -> OS_StrCopy
+      24   OSTaskNameSet
+        24   -> OS_CPU_SR_Restore
+        24   -> OS_CPU_SR_Save
+        24   -> OS_StrCopy
+        24   -> OS_StrLen
+      16   OSTaskQuery
+        16   -> OS_CPU_SR_Restore
+        16   -> OS_CPU_SR_Save
+        16   -> OS_MemCopy
+      16   OSTaskResume
+        16   -> OS_CPU_SR_Restore
+        16   -> OS_CPU_SR_Save
+        16   -> OS_Sched
+      24   OSTaskStkChk
+        24   -> OS_CPU_SR_Restore
+        24   -> OS_CPU_SR_Save
+      16   OSTaskSuspend
+        16   -> OS_CPU_SR_Restore
+        16   -> OS_CPU_SR_Save
+        16   -> OS_Sched
+       0   OS_TaskStkClr
+         0   -> __aeabi_memclr4
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable12
+       4  ??DataTable12_1
+       4  ??DataTable12_2
+       4  ??DataTable12_3
+       4  ??DataTable12_4
+       4  ??DataTable12_5
+       4  ??DataTable12_6
+       4  ??DataTable12_7
+       4  ??DataTable12_8
+       4  ??DataTable12_9
+       8  ?Subroutine0
+       6  ?Subroutine1
+       6  ?Subroutine2
+      14  ?Subroutine3
+       6  ?Subroutine4
+      10  ?Subroutine5
+     356  OSTaskChangePrio
+     130  OSTaskCreate
+     158  OSTaskCreateExt
+     264  OSTaskDel
+      82  OSTaskDelReq
+      88  OSTaskNameGet
+      96  OSTaskNameSet
+      56  OSTaskQuery
+     114  OSTaskResume
+     100  OSTaskStkChk
+     106  OSTaskSuspend
+      20  OS_TaskStkClr
+
+ 
+ 1'660 bytes in section .text
+ 
+ 1'660 bytes of CODE memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,1103 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.50.1.10123/W32 for ARM       17/Nov/2015  10:45:25
+# Copyright 1999-2015 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\stm32f100\Micrium\Software\uC-Probe\Target\Communication\Generic\RS-232\Source\probe_rs232.c
+#    Command line =  
+#        C:\stm32f100\Micrium\Software\uC-Probe\Target\Communication\Generic\RS-232\Source\probe_rs232.c
+#        -lCN
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List
+#        -o
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj
+#        --debug --endian=little --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.3\arm\INC\c\DLib_Config_Normal.h" -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\ports\arm-cortex-m3\generic\iar\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\source\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-lib\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\ARM-Cortex-M3\IAR\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\cpu\st\stm32\inc\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\BSP\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Ports\ST\STM32\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\Source\
+#        -I
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Plugins\uCOS-II\
+#        -Ohz --use_c++_inline
+#    List file    =  
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List\probe_rs232.lst
+#    Object file  =  
+#        C:\stm32f100\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj\probe_rs232.o
+#
+###############################################################################
+
+C:\stm32f100\Micrium\Software\uC-Probe\Target\Communication\Generic\RS-232\Source\probe_rs232.c
+      1          /*
+      2          *********************************************************************************************************
+      3          *                                         uC/Probe Communication
+      4          *
+      5          *                           (c) Copyright 2007; Micrium, Inc.; Weston, FL
+      6          *
+      7          *               All rights reserved.  Protected by international copyright laws.
+      8          *               Knowledge of the source code may NOT be used to develop a similar product.
+      9          *               Please help us continue to provide the Embedded community with the finest
+     10          *               software available.  Your honesty is greatly appreciated.
+     11          *********************************************************************************************************
+     12          */
+     13          
+     14          /*
+     15          *********************************************************************************************************
+     16          *
+     17          *                                                uC/Probe
+     18          *
+     19          *                                         Communication: RS-232
+     20          *
+     21          * Filename      : probe_rs232.c
+     22          * Version       : V2.00
+     23          * Programmer(s) : BAN
+     24          * Note(s)       : (1) The abbreviations RX and TX refer to communication from the target's perspective.
+     25          *
+     26          *                 (2) The abbreviations RD and WR refer to reading data from the target memory and
+     27          *                     writing data to the target memory, respectively.
+     28          *********************************************************************************************************
+     29          */
+     30          
+     31          /*
+     32          *********************************************************************************************************
+     33          *                                              INCLUDE FILES
+     34          *********************************************************************************************************
+     35          */
+     36          
+     37          #define   PROBE_RS232_MODULE
+     38          #include  <probe_com.h>
+     39          #include  <probe_rs232.h>
+
+   \                                 In section .bss, align 4
+     40          
+     41          #if (PROBE_COM_METHOD_RS232 == DEF_ENABLED)
+     42          
+     43          /*
+     44          *********************************************************************************************************
+     45          *                                              LOCAL DEFINES
+     46          *********************************************************************************************************
+     47          */
+     48          
+     49          /*
+     50          *********************************************************************************************************
+     51          *                                          RS-232 PACKET FORMAT
+     52          *
+     53          * Note(s):  (1) All packets include the following parts:
+     54          *
+     55          *                   (A)  4 1-byte start delimiters, forming the ASCII representation of "uCPr".  These
+     56          *                        are the constants PROBE_RS232_PROTOCOL_RX_SD0-PROBE_RS232_PROTOCOL_?X_SD4;
+     57          *                   (B)  1 2-byte length, the length of the data segment;
+     58          *                   (C)  1 2-byte padding, unused;
+     59          *                   (D)  n   bytes of data; and
+     60          *                   (E)  1 1-byte checksum; and
+     61          *                   (F)  1 1-byte end delimiter, the character '/', which is the constant PROBE_RS232_PROTOCOL_?X_ED.
+     62          *
+     63          *                                       +-------------------+-------------------+
+     64          *                                       |   'u'   |   'C'   |   'P'   |   'r'   |
+     65          *                                       +-------------------+-------------------+
+     66          *                                       |       Length      |     Padding       |
+     67          *                                       +-------------------+-------------------+
+     68          *                                       |                  Data                 |   The data segment does not need to end on
+     69          *                                       |                   .                   |   a four-byte boundary, as might be inferred
+     70          *                                       |                   .                   |   from this diagram.
+     71          *                                       |                   .                   |
+     72          *                                       +-------------------+-------------------+
+     73          *                                       | Checksum|   '/'   |
+     74          *                                       +-------------------+
+     75          *********************************************************************************************************
+     76          */
+     77          
+     78                                                                          /* ------------- INBOUND PACKET DELIMITERS ------------ */
+     79          #define  PROBE_RS232_PROTOCOL_RX_SD0                    0x75    /* Start delimiters.                                    */
+     80          #define  PROBE_RS232_PROTOCOL_RX_SD1                    0x43
+     81          #define  PROBE_RS232_PROTOCOL_RX_SD2                    0x50
+     82          #define  PROBE_RS232_PROTOCOL_RX_SD3                    0x72
+     83          #define  PROBE_RS232_PROTOCOL_RX_ED                     0x2F    /* End   delimiter.                                     */
+     84          
+     85                                                                          /* ------------ OUTBOUND PACKET DELIMITERS ------------ */
+     86          #define  PROBE_RS232_PROTOCOL_TX_SD0                    0x75    /* Start delimiters.                                    */
+     87          #define  PROBE_RS232_PROTOCOL_TX_SD1                    0x43
+     88          #define  PROBE_RS232_PROTOCOL_TX_SD2                    0x50
+     89          #define  PROBE_RS232_PROTOCOL_TX_SD3                    0x72
+     90          #define  PROBE_RS232_PROTOCOL_TX_ED                     0x2F    /* End   delimiter.                                     */
+     91          
+     92                                                                          /* ----------- RECEIVE STATE MACHINE STATES ----------- */
+     93          #define  PROBE_RS232_RX_STATE_SD0                          0    /* Waiting for start first  start delimiter (SD0).      */
+     94          #define  PROBE_RS232_RX_STATE_SD1                          1    /* Waiting for start second start delimiter (SD1).      */
+     95          #define  PROBE_RS232_RX_STATE_SD2                          2    /* Waiting for start third  start delimiter (SD2).      */
+     96          #define  PROBE_RS232_RX_STATE_SD3                          3    /* Waiting for start fourth start delimiter (SD3).      */
+     97          #define  PROBE_RS232_RX_STATE_LEN1                         4    /* Waiting for length,  first  byte.                    */
+     98          #define  PROBE_RS232_RX_STATE_LEN2                         5    /* Waiting for length,  second byte.                    */
+     99          #define  PROBE_RS232_RX_STATE_PAD1                         6    /* Waiting for padding, first  byte.                    */
+    100          #define  PROBE_RS232_RX_STATE_PAD2                         7    /* Waiting for padding, second byte.                    */
+    101          #define  PROBE_RS232_RX_STATE_DATA                         8    /* Waiting for data.                                    */
+    102          #define  PROBE_RS232_RX_STATE_CHKSUM                       9    /* Waiting for checksum.                                */
+    103          #define  PROBE_RS232_RX_STATE_ED                          10    /* Waiting for end delimiter.                           */
+    104          
+    105                                                                          /* ---------- TRANSMIT STATE MACHINE STATES ----------- */
+    106          #define  PROBE_RS232_TX_STATE_SD0                          0    /* Waiting to send start first  start delim. (SD0).     */
+    107          #define  PROBE_RS232_TX_STATE_SD1                          1    /* Waiting to send start second start delim. (SD1).     */
+    108          #define  PROBE_RS232_TX_STATE_SD2                          2    /* Waiting to send start third  start delim. (SD2).     */
+    109          #define  PROBE_RS232_TX_STATE_SD3                          3    /* Waiting to send start fourth start delim. (SD3).     */
+    110          #define  PROBE_RS232_TX_STATE_LEN1                         4    /* Waiting to send length,  first  byte.                */
+    111          #define  PROBE_RS232_TX_STATE_LEN2                         5    /* Waiting to send length,  second byte.                */
+    112          #define  PROBE_RS232_TX_STATE_PAD1                         6    /* Waiting to send padding, first  byte.                */
+    113          #define  PROBE_RS232_TX_STATE_PAD2                         7    /* Waiting to send padding, second byte.                */
+    114          #define  PROBE_RS232_TX_STATE_DATA                         8    /* Waiting to send data.                                */
+    115          #define  PROBE_RS232_TX_STATE_CHKSUM                       9    /* Waiting to send checksum.                            */
+    116          #define  PROBE_RS232_TX_STATE_ED                          10    /* Waiting to send end delimiter.                       */
+    117          
+    118          #define  PROBE_RS232_USE_CHECKSUM                  DEF_FALSE    /* DO NOT CHANGE                                        */
+    119          
+    120          /*
+    121          *********************************************************************************************************
+    122          *                                             LOCAL CONSTANTS
+    123          *********************************************************************************************************
+    124          */
+    125          
+    126          
+    127          /*
+    128          *********************************************************************************************************
+    129          *                                            LOCAL DATA TYPES
+    130          *********************************************************************************************************
+    131          */
+    132          
+    133          
+    134          /*
+    135          *********************************************************************************************************
+    136          *                                              LOCAL TABLES
+    137          *********************************************************************************************************
+    138          */
+    139          
+    140          
+    141          /*
+    142          *********************************************************************************************************
+    143          *                                         LOCAL GLOBAL VARIABLES
+    144          *********************************************************************************************************
+    145          */
+    146          
+    147                                                                          /* ---------------- RX STATE VARIABLES ---------------- */
+    148          static  CPU_INT08U   ProbeRS232_RxState;                        /* Current state of RX state machine.                   */
+   \                     ProbeRS232_RxState:
+   \   00000000                      DS8 1
+   \   00000001                      DS8 1
+   \   00000002                      DS8 1
+   \   00000003                      DS8 1
+   \   00000004                      DS8 2
+   \   00000006                      DS8 2
+   \   00000008                      DS8 2
+   \   0000000A                      DS8 2
+   \   0000000C                      DS8 2
+   \   0000000E                      DS8 2
+   \   __absolute CPU_INT32U ProbeRS232_RxCtr
+   \                     ProbeRS232_RxCtr:
+   \   00000010                      DS8 4
+   \   __absolute CPU_INT32U ProbeRS232_TxCtr
+   \                     ProbeRS232_TxCtr:
+   \   00000014                      DS8 4
+    149          static  CPU_INT16U   ProbeRS232_RxRemainLen;                    /* Remaining bytes of data to read.                     */
+    150          
+    151                                                                          /* ----------------- RX PKT VARIABLES ----------------- */
+    152          static  CPU_INT16U   ProbeRS232_RxLen;                          /* Length  of data in current pkt.                      */
+
+   \                                 In section .bss, align 4
+    153          static  CPU_INT08U   ProbeRS232_RxBuf[PROBE_RS232_RX_BUF_SIZE]; /* Data    of current pkt.                              */
+   \                     ProbeRS232_RxBuf:
+   \   00000000                      DS8 128
+    154          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    155          static  CPU_INT08U   ProbeRS232_RxChkSum;                       /* Checksum of current pkt.                             */
+    156          #endif
+    157          
+    158                                                                          /* --------------- RX DATA BUF VARIABLE --------------- */
+    159          static  CPU_INT16U   ProbeRS232_RxBufWrIx;                      /* Index of next write; also number of bytes in buf.    */
+    160          
+    161                                                                          /* ---------------- TX STATE VARIABLES ---------------- */
+    162          static  CPU_INT08U   ProbeRS232_TxState;                        /* Current state of TX state machine.                   */
+    163          static  CPU_BOOLEAN  ProbeRS232_TxActiveFlag;                   /* Indicates TX is currently active.                    */
+    164          
+    165                                                                          /* ----------------- TX PKT VARIABLES ----------------- */
+    166          static  CPU_INT16U   ProbeRS232_TxLen;                          /* Length  of data in current pkt.                      */
+
+   \                                 In section .bss, align 4
+    167          static  CPU_INT08U   ProbeRS232_TxBuf[PROBE_RS232_TX_BUF_SIZE]; /* Data    of current pkt.                              */
+   \                     ProbeRS232_TxBuf:
+   \   00000000                      DS8 128
+    168          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    169          static  CPU_INT08U   ProbeRS232_TxChkSum;                       /* Checksum of current pkt.                             */
+    170          #endif
+    171          
+    172                                                                          /* --------------- TX DATA BUF VARIABLES -------------- */
+    173          static  CPU_BOOLEAN  ProbeRS232_TxBufInUse;                     /* Indicates TX buf currently holds a pkt.              */
+    174          static  CPU_INT16U   ProbeRS232_TxBufRdIx;                      /* Index of next read.                                  */
+    175          
+    176          
+    177          
+    178          /*
+    179          *********************************************************************************************************
+    180          *                                        LOCAL FUNCTION PROTOTYPES
+    181          *********************************************************************************************************
+    182          */
+    183          
+    184          static  CPU_INT16U  ProbeRS232_ParseRxPkt(void);
+    185          
+    186          static  void        ProbeRS232_RxPkt     (void);
+    187          
+    188          static  void        ProbeRS232_RxStoINT8U(CPU_INT08U  rx_data);
+    189          
+    190          static  void        ProbeRS232_RxBufClr  (void);
+    191          
+    192          static  void        ProbeRS232_TxStart   (void);
+    193          
+    194          
+    195          /*
+    196          *********************************************************************************************************
+    197          *                                       LOCAL CONFIGURATION ERRORS
+    198          *********************************************************************************************************
+    199          */
+    200          
+    201          
+    202          /*
+    203          *********************************************************************************************************
+    204          *                                            ProbeRS232_Init()
+    205          *
+    206          * Description : Initialize the RS-232 communication module.
+    207          *
+    208          * Argument(s) : baud_rate       The RS-232 baud rate which will be passed to the hardware initialization.
+    209          *
+    210          * Return(s)   : none.
+    211          *
+    212          * Caller(s)   : Application.
+    213          *
+    214          * Note(s)     : none.
+    215          *********************************************************************************************************
+    216          */
+    217          
+
+   \                                 In section .text, align 2, keep-with-next
+    218          void  ProbeRS232_Init (CPU_INT32U baud_rate)
+    219          {
+   \                     ProbeRS232_Init: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    220              ProbeRS232_RxState      = PROBE_RS232_RX_STATE_SD0;         /* Setup Rx and Tx state machines.                      */
+   \   00000004   0x....             LDR.N    R0,??DataTable3
+   \   00000006   0x2100             MOVS     R1,#+0
+   \   00000008   0x7001             STRB     R1,[R0, #+0]
+    221              ProbeRS232_TxState      = PROBE_RS232_TX_STATE_SD0;
+   \   0000000A   0x7041             STRB     R1,[R0, #+1]
+    222          
+    223              ProbeRS232_TxLen        = 0;
+   \   0000000C   0x8141             STRH     R1,[R0, #+10]
+    224              ProbeRS232_TxActiveFlag = DEF_FALSE;
+   \   0000000E   0x7081             STRB     R1,[R0, #+2]
+    225              ProbeRS232_TxBufInUse   = DEF_FALSE;
+   \   00000010   0x70C1             STRB     R1,[R0, #+3]
+    226          
+    227          #if (PROBE_COM_STAT_EN     == DEF_ENABLED)
+    228              ProbeRS232_RxCtr        = 0;
+   \   00000012   0x6101             STR      R1,[R0, #+16]
+    229              ProbeRS232_TxCtr        = 0;
+   \   00000014   0x6141             STR      R1,[R0, #+20]
+    230          #endif
+    231          
+    232          #if (PROBE_RS232_PARSE_TASK == DEF_TRUE)
+    233              ProbeRS232_OS_Init();
+   \   00000016   0x.... 0x....      BL       ProbeRS232_OS_Init
+    234          #endif
+    235          
+    236              ProbeRS232_InitTarget(baud_rate);                           /* Initialize target specific code.                     */
+   \   0000001A   0x4620             MOV      R0,R4
+   \   0000001C   0xE8BD 0x4010      POP      {R4,LR}
+   \   00000020   0x.... 0x....      B.W      ProbeRS232_InitTarget
+    237          }
+    238          
+    239          
+    240          /*
+    241          *********************************************************************************************************
+    242          *                                            ProbeRS232_Task()
+    243          *
+    244          * Description : The task which parses the received packet, forms a response, and begins transmission.
+    245          *
+    246          * Argument(s) : p_arg           The argument passed to 'ProbeRS232_Task()' by  'ProbeRS232_OS_Task()'.
+    247          *
+    248          * Return(s)   : none.
+    249          *
+    250          * Caller(s)   : ProbeRS232_OS_Task().
+    251          *
+    252          * Note(s)     : none.
+    253          *********************************************************************************************************
+    254          */
+    255          
+    256          #if (PROBE_RS232_PARSE_TASK == DEF_TRUE)
+
+   \                                 In section .text, align 2, keep-with-next
+    257          void  ProbeRS232_Task (void *p_arg)
+    258          {
+   \                     ProbeRS232_Task: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+    259              CPU_INT16U  len;
+    260          
+    261          
+    262              (void)p_arg;
+   \   00000002   0x....             LDR.N    R4,??DataTable3_1
+   \   00000004   0x....             LDR.N    R5,??DataTable3_2
+   \   00000006   0x....             LDR.N    R6,??DataTable3
+    263          
+    264              while (DEF_TRUE) {
+    265                  ProbeRS232_OS_Pend();                                   /* Wait for a packet to be received.                    */
+   \                     ??ProbeRS232_Task_0: (+1)
+   \   00000008   0x.... 0x....      BL       ProbeRS232_OS_Pend
+    266          
+    267                  len = ProbeRS232_ParseRxPkt();                          /* Parse packet and formulate a response.               */
+   \   0000000C   0x78F0             LDRB     R0,[R6, #+3]
+   \   0000000E   0x2801             CMP      R0,#+1
+   \   00000010   0xD0FA             BEQ.N    ??ProbeRS232_Task_0
+   \   00000012   0x2001             MOVS     R0,#+1
+   \   00000014   0x70F0             STRB     R0,[R6, #+3]
+   \   00000016   0x2380             MOVS     R3,#+128
+   \   00000018   0x88F2             LDRH     R2,[R6, #+6]
+   \   0000001A   0x4629             MOV      R1,R5
+   \   0000001C   0x4620             MOV      R0,R4
+   \   0000001E   0x.... 0x....      BL       ProbeCom_ParseRxPkt
+    268          
+    269                  if (len > 0) {                                          /* If we have a response.                               */
+   \   00000022   0x2800             CMP      R0,#+0
+   \   00000024   0xD0F0             BEQ.N    ??ProbeRS232_Task_0
+    270                      ProbeRS232_TxLen = len;
+   \   00000026   0x8170             STRH     R0,[R6, #+10]
+    271                      ProbeRS232_TxStart();
+   \   00000028   0x78B0             LDRB     R0,[R6, #+2]
+   \   0000002A   0x2800             CMP      R0,#+0
+   \   0000002C   0xD1EC             BNE.N    ??ProbeRS232_Task_0
+   \   0000002E   0x.... 0x....      BL       ProbeRS232_TxHandler
+   \   00000032   0x.... 0x....      BL       ProbeRS232_TxIntEn
+   \   00000036   0xE7E7             B.N      ??ProbeRS232_Task_0
+    272                  }
+    273              }
+    274          }
+    275          #endif
+    276          
+    277          
+    278          /*
+    279          *********************************************************************************************************
+    280          *********************************************************************************************************
+    281          *                                            RX & TX HANDLERS
+    282          *********************************************************************************************************
+    283          *********************************************************************************************************
+    284          */
+    285          
+    286          /*
+    287          *********************************************************************************************************
+    288          *                                         ProbeRS232_RxHandler()
+    289          *
+    290          * Description : Handle a received byte.
+    291          *
+    292          * Argument(s) : rx_data         Received data byte.
+    293          *
+    294          * Return(s)   : none.
+    295          *
+    296          * Caller(s)   : Rx ISR.
+    297          *
+    298          * Note(s)     : none.
+    299          *********************************************************************************************************
+    300          */
+    301          
+
+   \                                 In section .text, align 4, keep-with-next
+    302          void  ProbeRS232_RxHandler (CPU_INT08U rx_data)
+    303          {
+   \                     ProbeRS232_RxHandler: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+    304          #if (PROBE_COM_STAT_EN == DEF_ENABLED)
+    305              ProbeRS232_RxCtr++;
+   \   00000002   0x....             LDR.N    R4,??DataTable3
+   \   00000004   0x6921             LDR      R1,[R4, #+16]
+    306          #endif
+    307          
+    308              switch (ProbeRS232_RxState) {
+   \   00000006   0x7822             LDRB     R2,[R4, #+0]
+   \   00000008   0x1C49             ADDS     R1,R1,#+1
+   \   0000000A   0x6121             STR      R1,[R4, #+16]
+   \   0000000C   0x2A0A             CMP      R2,#+10
+   \   0000000E   0x88A1             LDRH     R1,[R4, #+4]
+   \   00000010   0xD83D             BHI.N    ??ProbeRS232_RxHandler_1
+   \   00000012   0xE8DF 0xF002      TBB      [PC, R2]
+   \                     ??ProbeRS232_RxHandler_0:
+   \   00000016   0x06 0x0D          DC8      0x6,0xD,0x11,0x15
+   \              0x11 0x15    
+   \   0000001A   0x19 0x1C          DC8      0x19,0x1C,0x25,0x27
+   \              0x25 0x27    
+   \   0000001E   0x29 0x36          DC8      0x29,0x36,0x38,0x0
+   \              0x38 0x00    
+    309                  case PROBE_RS232_RX_STATE_SD0:                          /* Rx'd the start 1st start delimiter (SD0).            */
+    310                       if (rx_data == PROBE_RS232_PROTOCOL_RX_SD0) {
+   \                     ??ProbeRS232_RxHandler_2: (+1)
+   \   00000022   0x2875             CMP      R0,#+117
+   \   00000024   0xD135             BNE.N    ??ProbeRS232_RxHandler_3
+    311                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD1;
+   \   00000026   0x2001             MOVS     R0,#+1
+   \   00000028   0x7020             STRB     R0,[R4, #+0]
+    312                           ProbeRS232_RxBufClr();
+   \   0000002A   0x2000             MOVS     R0,#+0
+   \   0000002C   0x8120             STRH     R0,[R4, #+8]
+    313                       }
+   \   0000002E   0xBD31             POP      {R0,R4,R5,PC}
+    314                       break;
+    315          
+    316          
+    317                  case PROBE_RS232_RX_STATE_SD1:                          /* Rx'd the start 2nd start delimiter (SD1).            */
+    318                       if (rx_data == PROBE_RS232_PROTOCOL_RX_SD1) {
+   \                     ??ProbeRS232_RxHandler_4: (+1)
+   \   00000030   0x2843             CMP      R0,#+67
+   \   00000032   0xD12C             BNE.N    ??ProbeRS232_RxHandler_1
+    319                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD2;
+   \   00000034   0x2002             MOVS     R0,#+2
+   \   00000036   0xE02B             B.N      ??ProbeRS232_RxHandler_5
+    320                       } else {
+    321                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+    322                       }
+    323                       break;
+    324          
+    325          
+    326                  case PROBE_RS232_RX_STATE_SD2:                          /* Rx'd the start 3rd start delimiter (SD2).            */
+    327                       if (rx_data == PROBE_RS232_PROTOCOL_RX_SD2) {
+   \                     ??ProbeRS232_RxHandler_6: (+1)
+   \   00000038   0x2850             CMP      R0,#+80
+   \   0000003A   0xD128             BNE.N    ??ProbeRS232_RxHandler_1
+    328                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD3;
+   \   0000003C   0x2003             MOVS     R0,#+3
+   \   0000003E   0xE027             B.N      ??ProbeRS232_RxHandler_5
+    329                       } else {
+    330                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+    331                       }
+    332                       break;
+    333          
+    334          
+    335                  case PROBE_RS232_RX_STATE_SD3:                          /* Rx'd the start 4th start delimiter (SD3).            */
+    336                       if (rx_data == PROBE_RS232_PROTOCOL_RX_SD3) {
+   \                     ??ProbeRS232_RxHandler_7: (+1)
+   \   00000040   0x2872             CMP      R0,#+114
+   \   00000042   0xD124             BNE.N    ??ProbeRS232_RxHandler_1
+    337                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_LEN1;
+   \   00000044   0x2004             MOVS     R0,#+4
+   \   00000046   0xE023             B.N      ??ProbeRS232_RxHandler_5
+    338                       } else {
+    339                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+    340                       }
+    341                       break;
+    342          
+    343          
+    344                  case PROBE_RS232_RX_STATE_LEN1:                         /* Rx'd the 1st len byte.                               */
+    345          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    346                       ProbeRS232_RxChkSum    = rx_data;
+    347          #endif
+    348                       ProbeRS232_RxRemainLen = rx_data;
+   \                     ??ProbeRS232_RxHandler_8: (+1)
+   \   00000048   0x80A0             STRH     R0,[R4, #+4]
+    349                       ProbeRS232_RxState     = PROBE_RS232_RX_STATE_LEN2;
+   \   0000004A   0x2005             MOVS     R0,#+5
+   \   0000004C   0xE020             B.N      ??ProbeRS232_RxHandler_5
+    350                       break;
+    351          
+    352          
+    353                  case PROBE_RS232_RX_STATE_LEN2:                         /* Rx'd the 2nd len byte.                               */
+    354          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    355                       ProbeRS232_RxChkSum    += rx_data;
+    356          #endif
+    357                       ProbeRS232_RxRemainLen |= rx_data << 8;
+   \                     ??ProbeRS232_RxHandler_9: (+1)
+   \   0000004E   0xEA51 0x2000      ORRS     R0,R1,R0, LSL #+8
+   \   00000052   0x80A0             STRH     R0,[R4, #+4]
+    358          
+    359                                                                          /* Chk len.                                             */
+    360                       if ((ProbeRS232_RxRemainLen == 0) || (ProbeRS232_RxRemainLen > PROBE_RS232_RX_BUF_SIZE)) {
+   \   00000054   0xD01B             BEQ.N    ??ProbeRS232_RxHandler_1
+   \   00000056   0x2881             CMP      R0,#+129
+   \   00000058   0xDA19             BGE.N    ??ProbeRS232_RxHandler_1
+    361                           ProbeRS232_RxState  = PROBE_RS232_RX_STATE_SD0;
+    362                       } else {
+    363                           ProbeRS232_RxLen    = ProbeRS232_RxRemainLen;
+   \   0000005A   0x80E0             STRH     R0,[R4, #+6]
+    364                           ProbeRS232_RxState  = PROBE_RS232_RX_STATE_PAD1;
+   \   0000005C   0x2006             MOVS     R0,#+6
+   \   0000005E   0xE017             B.N      ??ProbeRS232_RxHandler_5
+    365                       }
+    366                       break;
+    367          
+    368          
+    369                  case PROBE_RS232_RX_STATE_PAD1:                         /* Rx'd the 1st padding byte.                           */
+    370                       ProbeRS232_RxState = PROBE_RS232_RX_STATE_PAD2;
+   \                     ??ProbeRS232_RxHandler_10: (+1)
+   \   00000060   0x2007             MOVS     R0,#+7
+   \   00000062   0xE015             B.N      ??ProbeRS232_RxHandler_5
+    371                       break;
+    372          
+    373          
+    374                  case PROBE_RS232_RX_STATE_PAD2:                         /* Rx'd the 2nd  padding byte.                          */
+    375                       ProbeRS232_RxState = PROBE_RS232_RX_STATE_DATA;
+   \                     ??ProbeRS232_RxHandler_11: (+1)
+   \   00000064   0x2008             MOVS     R0,#+8
+   \   00000066   0xE013             B.N      ??ProbeRS232_RxHandler_5
+    376                       break;
+    377          
+    378          
+    379                  case PROBE_RS232_RX_STATE_DATA:                         /* Rx'd data.                                           */
+    380                       ProbeRS232_RxStoINT8U(rx_data);
+   \                     ??ProbeRS232_RxHandler_12: (+1)
+   \   00000068   0x8922             LDRH     R2,[R4, #+8]
+   \   0000006A   0x2A80             CMP      R2,#+128
+   \   0000006C   0xDA03             BGE.N    ??ProbeRS232_RxHandler_13
+   \   0000006E   0x....             LDR.N    R5,??DataTable3_1
+   \   00000070   0x5550             STRB     R0,[R2, R5]
+   \   00000072   0x1C50             ADDS     R0,R2,#+1
+   \   00000074   0x8120             STRH     R0,[R4, #+8]
+    381          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    382                       ProbeRS232_RxChkSum += rx_data;
+    383          #endif
+    384                       if (--ProbeRS232_RxRemainLen == 0) {
+   \                     ??ProbeRS232_RxHandler_13: (+1)
+   \   00000076   0x1E48             SUBS     R0,R1,#+1
+   \   00000078   0x80A0             STRH     R0,[R4, #+4]
+   \   0000007A   0xB280             UXTH     R0,R0
+   \   0000007C   0xB948             CBNZ.N   R0,??ProbeRS232_RxHandler_3
+    385                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_CHKSUM;
+   \   0000007E   0x2009             MOVS     R0,#+9
+   \   00000080   0xE006             B.N      ??ProbeRS232_RxHandler_5
+    386                       }
+    387                       break;
+    388          
+    389          
+    390                  case PROBE_RS232_RX_STATE_CHKSUM:                       /* Rx'd the checksum.                                   */
+    391          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    392                       ProbeRS232_RxChkSum += rx_data;
+    393                       if ((ProbeRS232_RxChkSum & 0xFF) == 0x00) {
+    394                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_ED;
+    395                       } else {
+    396                           ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+    397                       }
+    398          #else
+    399                       ProbeRS232_RxState = PROBE_RS232_RX_STATE_ED;
+   \                     ??ProbeRS232_RxHandler_14: (+1)
+   \   00000082   0x200A             MOVS     R0,#+10
+   \   00000084   0xE004             B.N      ??ProbeRS232_RxHandler_5
+    400          #endif
+    401                       break;
+    402          
+    403          
+    404                  case PROBE_RS232_RX_STATE_ED:                           /* Rx'd the end delimiter.                              */
+    405                       if (rx_data == PROBE_RS232_PROTOCOL_RX_ED) {
+   \                     ??ProbeRS232_RxHandler_15: (+1)
+   \   00000086   0x282F             CMP      R0,#+47
+   \   00000088   0xBF08             IT       EQ 
+    406                           ProbeRS232_RxPkt();                            /* Parse rx'd pkt.                                      */
+   \   0000008A   0x.... 0x....      BLEQ     ProbeRS232_OS_Post
+    407                       }
+    408                       ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+    409                       break;
+    410          
+    411          
+    412                  default:
+    413                       ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+   \                     ??ProbeRS232_RxHandler_1: (+1)
+   \   0000008E   0x2000             MOVS     R0,#+0
+   \                     ??ProbeRS232_RxHandler_5: (+1)
+   \   00000090   0x7020             STRB     R0,[R4, #+0]
+    414                       break;
+    415              }
+    416          }
+   \                     ??ProbeRS232_RxHandler_3: (+1)
+   \   00000092   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+    417          
+    418          
+    419          /*
+    420          *********************************************************************************************************
+    421          *                                         ProbeRS232_TxHandler()
+    422          *
+    423          * Description : Handle a byte transmission.
+    424          *
+    425          * Argument(s) : none.
+    426          *
+    427          * Return(s)   : none.
+    428          *
+    429          * Caller(s)   : Tx ISR.
+    430          *
+    431          * Note(s)     : none.
+    432          *********************************************************************************************************
+    433          */
+    434          
+
+   \                                 In section .text, align 4, keep-with-next
+    435          void  ProbeRS232_TxHandler (void)
+    436          {
+   \                     ProbeRS232_TxHandler: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+    437              CPU_INT08U  tx_data;
+    438          
+    439          
+    440          #if (PROBE_COM_STAT_EN == DEF_ENABLED)
+    441              if ((ProbeRS232_TxState != PROBE_RS232_TX_STATE_SD0) ||
+    442                  (ProbeRS232_TxLen    > 0                       )) {
+   \   00000002   0x....             LDR.N    R4,??DataTable3
+   \   00000004   0x7861             LDRB     R1,[R4, #+1]
+   \   00000006   0x8960             LDRH     R0,[R4, #+10]
+   \   00000008   0x2900             CMP      R1,#+0
+   \   0000000A   0xBF08             IT       EQ 
+   \   0000000C   0x2800             CMPEQ    R0,#+0
+   \   0000000E   0xD016             BEQ.N    ??ProbeRS232_TxHandler_1
+    443                  ProbeRS232_TxCtr++;
+   \   00000010   0x6962             LDR      R2,[R4, #+20]
+   \   00000012   0x1C52             ADDS     R2,R2,#+1
+    444              }
+    445          #endif
+    446          
+    447              switch (ProbeRS232_TxState) {
+   \   00000014   0x290A             CMP      R1,#+10
+   \   00000016   0x6162             STR      R2,[R4, #+20]
+   \   00000018   0xD854             BHI.N    ??ProbeRS232_TxHandler_2
+   \   0000001A   0xE8DF 0xF001      TBB      [PC, R1]
+   \                     ??ProbeRS232_TxHandler_0:
+   \   0000001E   0x06 0x12          DC8      0x6,0x12,0x17,0x1C
+   \              0x17 0x1C    
+   \   00000022   0x21 0x26          DC8      0x21,0x26,0x2B,0x30
+   \              0x2B 0x30    
+   \   00000026   0x35 0x46          DC8      0x35,0x46,0x4C,0x0
+   \              0x4C 0x00    
+    448                  case PROBE_RS232_TX_STATE_SD0:
+    449                       if (ProbeRS232_TxLen > 0) {                        /* If pkt is waiting to be sent ...                     */
+   \                     ??ProbeRS232_TxHandler_3: (+1)
+   \   0000002A   0xB140             CBZ.N    R0,??ProbeRS232_TxHandler_1
+    450                           ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_SD0);   /*  ... tx start 1st start delimiter (SD0).             */
+   \   0000002C   0x2075             MOVS     R0,#+117
+   \   0000002E   0x.... 0x....      BL       ProbeRS232_Tx1
+    451                           ProbeRS232_TxActiveFlag = DEF_TRUE;
+   \   00000032   0x2001             MOVS     R0,#+1
+   \   00000034   0x70A0             STRB     R0,[R4, #+2]
+    452                           ProbeRS232_TxState      = PROBE_RS232_TX_STATE_SD1;
+   \   00000036   0x7060             STRB     R0,[R4, #+1]
+    453                           ProbeRS232_TxBufRdIx    = 0;
+   \   00000038   0x2000             MOVS     R0,#+0
+   \   0000003A   0x81A0             STRH     R0,[R4, #+12]
+   \   0000003C   0xBD10             POP      {R4,PC}
+    454          
+    455                       } else {                                           /* If no pkt is waiting to be sent ...                  */
+    456                           ProbeRS232_TxActiveFlag = DEF_FALSE;
+   \                     ??ProbeRS232_TxHandler_1: (+1)
+   \   0000003E   0x2000             MOVS     R0,#+0
+   \   00000040   0xE042             B.N      ??ProbeRS232_TxHandler_4
+    457                           ProbeRS232_TxIntDis();                         /*  ... dis tx int's.                                   */
+    458                       }
+    459                       break;
+    460          
+    461          
+    462                  case PROBE_RS232_TX_STATE_SD1:                          /* Tx start 2nd start delimiter (SD1).                  */
+    463                       ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_SD1);
+   \                     ??ProbeRS232_TxHandler_5: (+1)
+   \   00000042   0x2043             MOVS     R0,#+67
+   \   00000044   0x.... 0x....      BL       ProbeRS232_Tx1
+    464                       ProbeRS232_TxState = PROBE_RS232_TX_STATE_SD2;
+   \   00000048   0x2002             MOVS     R0,#+2
+   \   0000004A   0xE032             B.N      ??ProbeRS232_TxHandler_6
+    465                       break;
+    466          
+    467          
+    468                  case PROBE_RS232_TX_STATE_SD2:                          /* Tx start 3rd start delimiter (SD2).                  */
+    469                       ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_SD2);
+   \                     ??ProbeRS232_TxHandler_7: (+1)
+   \   0000004C   0x2050             MOVS     R0,#+80
+   \   0000004E   0x.... 0x....      BL       ProbeRS232_Tx1
+    470                       ProbeRS232_TxState = PROBE_RS232_TX_STATE_SD3;
+   \   00000052   0x2003             MOVS     R0,#+3
+   \   00000054   0xE02D             B.N      ??ProbeRS232_TxHandler_6
+    471                       break;
+    472          
+    473          
+    474                  case PROBE_RS232_TX_STATE_SD3:                          /* Tx start 4th start delimiter (SD3).                  */
+    475                       ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_SD3);
+   \                     ??ProbeRS232_TxHandler_8: (+1)
+   \   00000056   0x2072             MOVS     R0,#+114
+   \   00000058   0x.... 0x....      BL       ProbeRS232_Tx1
+    476                       ProbeRS232_TxState = PROBE_RS232_TX_STATE_LEN1;
+   \   0000005C   0x2004             MOVS     R0,#+4
+   \   0000005E   0xE028             B.N      ??ProbeRS232_TxHandler_6
+    477                       break;
+    478          
+    479          
+    480                  case PROBE_RS232_TX_STATE_LEN1:                         /* Tx 1st len byte.                                     */
+    481                       tx_data             = ProbeRS232_TxLen & 0xFF;
+    482                       ProbeRS232_Tx1(tx_data);
+   \                     ??ProbeRS232_TxHandler_9: (+1)
+   \   00000060   0xB2C0             UXTB     R0,R0
+   \   00000062   0x.... 0x....      BL       ProbeRS232_Tx1
+    483                       ProbeRS232_TxState  = PROBE_RS232_TX_STATE_LEN2;
+   \   00000066   0x2005             MOVS     R0,#+5
+   \   00000068   0xE023             B.N      ??ProbeRS232_TxHandler_6
+    484          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    485                       ProbeRS232_TxChkSum = tx_data;
+    486          #endif
+    487                       break;
+    488          
+    489          
+    490                  case PROBE_RS232_TX_STATE_LEN2:                         /* Tx 2nd len byte.                                     */
+    491                       tx_data              = ProbeRS232_TxLen >> 8;
+    492                       ProbeRS232_Tx1(tx_data);
+   \                     ??ProbeRS232_TxHandler_10: (+1)
+   \   0000006A   0x0A00             LSRS     R0,R0,#+8
+   \   0000006C   0x.... 0x....      BL       ProbeRS232_Tx1
+    493                       ProbeRS232_TxState   = PROBE_RS232_TX_STATE_PAD1;
+   \   00000070   0x2006             MOVS     R0,#+6
+   \   00000072   0xE01E             B.N      ??ProbeRS232_TxHandler_6
+    494          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    495                       ProbeRS232_TxChkSum += tx_data;
+    496          #endif
+    497                       break;
+    498          
+    499          
+    500                  case PROBE_RS232_TX_STATE_PAD1:                         /* Tx 1st padding byte.                                 */
+    501                       ProbeRS232_Tx1(0);
+   \                     ??ProbeRS232_TxHandler_11: (+1)
+   \   00000074   0x2000             MOVS     R0,#+0
+   \   00000076   0x.... 0x....      BL       ProbeRS232_Tx1
+    502                       ProbeRS232_TxState = PROBE_RS232_TX_STATE_PAD2;
+   \   0000007A   0x2007             MOVS     R0,#+7
+   \   0000007C   0xE019             B.N      ??ProbeRS232_TxHandler_6
+    503                       break;
+    504          
+    505          
+    506                  case PROBE_RS232_TX_STATE_PAD2:                         /* Tx 2nd padding byte.                                 */
+    507                       ProbeRS232_Tx1(0);
+   \                     ??ProbeRS232_TxHandler_12: (+1)
+   \   0000007E   0x2000             MOVS     R0,#+0
+   \   00000080   0x.... 0x....      BL       ProbeRS232_Tx1
+    508                       ProbeRS232_TxState = PROBE_RS232_TX_STATE_DATA;
+   \   00000084   0x2008             MOVS     R0,#+8
+   \   00000086   0xE014             B.N      ??ProbeRS232_TxHandler_6
+    509                       break;
+    510          
+    511          
+    512                  case PROBE_RS232_TX_STATE_DATA:                         /* Tx data.                                             */
+    513                       tx_data = ProbeRS232_TxBuf[ProbeRS232_TxBufRdIx];
+    514                       ProbeRS232_Tx1(tx_data);
+   \                     ??ProbeRS232_TxHandler_13: (+1)
+   \   00000088   0x89A1             LDRH     R1,[R4, #+12]
+   \   0000008A   0x....             LDR.N    R0,??DataTable3_2
+   \   0000008C   0x5C08             LDRB     R0,[R1, R0]
+   \   0000008E   0x.... 0x....      BL       ProbeRS232_Tx1
+    515          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    516                       ProbeRS232_TxChkSum += tx_data;
+    517          #endif
+    518                       ProbeRS232_TxBufRdIx++;
+   \   00000092   0x89A0             LDRH     R0,[R4, #+12]
+    519                       if (ProbeRS232_TxBufRdIx >= ProbeRS232_TxLen) {
+   \   00000094   0x8961             LDRH     R1,[R4, #+10]
+   \   00000096   0x1C40             ADDS     R0,R0,#+1
+   \   00000098   0x81A0             STRH     R0,[R4, #+12]
+   \   0000009A   0xB280             UXTH     R0,R0
+   \   0000009C   0x4288             CMP      R0,R1
+   \   0000009E   0xD318             BCC.N    ??ProbeRS232_TxHandler_14
+    520                           ProbeRS232_TxState = PROBE_RS232_TX_STATE_CHKSUM;
+   \   000000A0   0x2009             MOVS     R0,#+9
+   \   000000A2   0x7060             STRB     R0,[R4, #+1]
+    521                           ProbeRS232_TxLen   = 0;
+   \   000000A4   0x2000             MOVS     R0,#+0
+   \   000000A6   0x8160             STRH     R0,[R4, #+10]
+   \   000000A8   0xBD10             POP      {R4,PC}
+    522                       }
+    523                       break;
+    524          
+    525          
+    526                  case PROBE_RS232_TX_STATE_CHKSUM:                       /* Tx checksum.                                         */
+    527          #if (PROBE_RS232_USE_CHECKSUM == DEF_TRUE)
+    528                       ProbeRS232_Tx1(ProbeRS232_TxChkSum);
+    529          #else
+    530                       ProbeRS232_Tx1(0);
+   \                     ??ProbeRS232_TxHandler_15: (+1)
+   \   000000AA   0x2000             MOVS     R0,#+0
+   \   000000AC   0x.... 0x....      BL       ProbeRS232_Tx1
+    531          #endif
+    532                       ProbeRS232_TxState = PROBE_RS232_TX_STATE_ED;
+   \   000000B0   0x200A             MOVS     R0,#+10
+   \                     ??ProbeRS232_TxHandler_6: (+1)
+   \   000000B2   0x7060             STRB     R0,[R4, #+1]
+    533                       break;
+   \   000000B4   0xBD10             POP      {R4,PC}
+    534          
+    535          
+    536                  case PROBE_RS232_TX_STATE_ED:                           /* Tx end delimiter.                                    */
+    537                       ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_ED);
+   \                     ??ProbeRS232_TxHandler_16: (+1)
+   \   000000B6   0x202F             MOVS     R0,#+47
+   \   000000B8   0x.... 0x....      BL       ProbeRS232_Tx1
+    538                       ProbeRS232_TxState    = PROBE_RS232_TX_STATE_SD0;
+   \   000000BC   0x2000             MOVS     R0,#+0
+   \   000000BE   0x7060             STRB     R0,[R4, #+1]
+    539                       ProbeRS232_TxBufInUse = DEF_FALSE;
+   \   000000C0   0x70E0             STRB     R0,[R4, #+3]
+    540                       break;
+   \   000000C2   0xBD10             POP      {R4,PC}
+    541          
+    542          
+    543                  default:
+    544                       ProbeRS232_TxState      = PROBE_RS232_TX_STATE_SD0;
+   \                     ??ProbeRS232_TxHandler_2: (+1)
+   \   000000C4   0x2000             MOVS     R0,#+0
+   \   000000C6   0x7060             STRB     R0,[R4, #+1]
+    545                       ProbeRS232_TxActiveFlag = DEF_FALSE;
+   \                     ??ProbeRS232_TxHandler_4: (+1)
+   \   000000C8   0x70A0             STRB     R0,[R4, #+2]
+    546                       ProbeRS232_TxIntDis();                             /* No more data to send, dis tx int's.                  */
+   \   000000CA   0xE8BD 0x4010      POP      {R4,LR}
+   \   000000CE   0x.... 0x....      B.W      ProbeRS232_TxIntDis
+    547                       break;
+    548              }
+    549          }
+   \                     ??ProbeRS232_TxHandler_14: (+1)
+   \   000000D2   0xBD10             POP      {R4,PC}          ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3:
+   \   00000000   0x........         DC32     ProbeRS232_RxState
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_1:
+   \   00000000   0x........         DC32     ProbeRS232_RxBuf
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_2:
+   \   00000000   0x........         DC32     ProbeRS232_TxBuf
+    550          
+    551          
+    552          /*
+    553          *********************************************************************************************************
+    554          *********************************************************************************************************
+    555          *                                             LOCAL FUNCTIONS
+    556          *********************************************************************************************************
+    557          *********************************************************************************************************
+    558          */
+    559          
+    560          /*
+    561          *********************************************************************************************************
+    562          *                                         ProbeRS232_ParseRxPkt()
+    563          *
+    564          * Description : Parse a received packet & formulate a response.
+    565          *
+    566          * Argument(s) : none.
+    567          *
+    568          * Return(s)   : The number of bytes in the data segment of the packet to transmit in response.
+    569          *
+    570          * Caller(s)   : ProbeRS232_Task(),
+    571          *               ProbeRS232_RxPkt().
+    572          *
+    573          * Note(s)     : none.
+    574          *********************************************************************************************************
+    575          */
+    576          
+    577          static  CPU_INT16U  ProbeRS232_ParseRxPkt (void)
+    578          {
+    579              CPU_INT16U  tx_len;
+    580          
+    581          
+    582              if (ProbeRS232_TxBufInUse == DEF_TRUE) {                    /* Do cmds only if Tx buffer is free.                   */
+    583                  return (0);
+    584              }
+    585          
+    586              ProbeRS232_TxBufInUse = DEF_TRUE;
+    587              tx_len                = ProbeCom_ParseRxPkt((void     *)ProbeRS232_RxBuf,
+    588                                                          (void     *)ProbeRS232_TxBuf,
+    589                                                          (CPU_INT16U)ProbeRS232_RxLen,
+    590                                                          (CPU_INT16U)PROBE_RS232_TX_BUF_SIZE);
+    591          
+    592              return (tx_len);
+    593          }
+    594          
+    595          
+    596          /*
+    597          *********************************************************************************************************
+    598          *                                           ProbeRS232_RxPkt()
+    599          *
+    600          * Description : Handle a received packet.
+    601          *
+    602          * Argument(s) : none.
+    603          *
+    604          * Return(s)   : none.
+    605          *
+    606          * Caller(s)   : ProbeRS232_RxHandler().
+    607          *
+    608          * Note(s)     : none.
+    609          *********************************************************************************************************
+    610          */
+    611          
+    612          static  void  ProbeRS232_RxPkt (void)
+    613          {
+    614          #if (PROBE_RS232_PARSE_TASK == DEF_TRUE)
+    615              ProbeRS232_OS_Post();                                       /* We have a whole packet, signal task to parse it.     */
+    616          
+    617          
+    618          
+    619          #else
+    620          
+    621          
+    622          
+    623          #if (CPU_CFG_CRITICAL_METHOD == CPU_CRITICAL_METHOD_STATUS_LOCAL)
+    624              CPU_SR      cpu_sr = 0;
+    625          #endif
+    626              CPU_INT16U  len;
+    627          
+    628          
+    629              len = ProbeRS232_ParseRxPkt();                              /* We have a whole packet, parse it.                    */
+    630              if (len > 0) {
+    631                  CPU_CRITICAL_ENTER();
+    632                  ProbeRS232_TxLen = len;
+    633                  ProbeRS232_TxStart();
+    634                  CPU_CRITICAL_EXIT();
+    635              }
+    636          #endif
+    637          }
+    638          
+    639          
+    640          /*
+    641          *********************************************************************************************************
+    642          *                                         ProbeRS232_RxStoINT8U()
+    643          *
+    644          * Description : Store a byte in the receive buffer.
+    645          *
+    646          * Argument(s) : rx_data     Byte of data to store in the buffer.
+    647          *
+    648          * Return(s)   : none.
+    649          *
+    650          * Caller(s)   : ProbeRS232_RxHandler().
+    651          *
+    652          * Note(s)     : none.
+    653          *********************************************************************************************************
+    654          */
+    655          
+    656          static  void  ProbeRS232_RxStoINT8U (CPU_INT08U rx_data)
+    657          {
+    658              if (ProbeRS232_RxBufWrIx < PROBE_RS232_RX_BUF_SIZE) {
+    659                  ProbeRS232_RxBuf[ProbeRS232_RxBufWrIx++] = rx_data;
+    660              }
+    661          }
+    662          
+    663          
+    664          /*
+    665          *********************************************************************************************************
+    666          *                                          ProbeRS232_RxBufClr()
+    667          *
+    668          * Description : Clear the data segment buffer write index.
+    669          *
+    670          * Argument(s) : none.
+    671          *
+    672          * Return(s)   : none.
+    673          *
+    674          * Caller(s)   : ProbeRS232_RxHandler().
+    675          *
+    676          * Note(s)     : none.
+    677          *********************************************************************************************************
+    678          */
+    679          
+    680          static  void  ProbeRS232_RxBufClr (void)
+    681          {
+    682              ProbeRS232_RxBufWrIx = 0;
+    683          }
+    684          
+    685          
+    686          /*
+    687          *********************************************************************************************************
+    688          *                                          ProbeRS232_TxStart()
+    689          *
+    690          * Description : Cause transmission to begin.
+    691          *
+    692          * Argument(s) : none.
+    693          *
+    694          * Return(s)   : none.
+    695          *
+    696          * Caller(s)   : ProbeRS232_Task(),
+    697          *               ProbeRS232_RxPkt().
+    698          *
+    699          * Note(s)     : none.
+    700          *********************************************************************************************************
+    701          */
+    702          
+    703          static  void  ProbeRS232_TxStart (void)
+    704          {
+    705              if (ProbeRS232_TxActiveFlag == DEF_FALSE) {                 /* If no other transmission is in progress ...          */
+    706                  ProbeRS232_TxHandler();                                 /*  ... Handle transmit                    ...          */
+    707                  ProbeRS232_TxIntEn();                                   /*  ... Enable transmit interrupts.                     */
+    708              }
+    709          }
+    710          
+    711          
+    712          #endif
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   ProbeRS232_Init
+         0   -> ProbeRS232_InitTarget
+         8   -> ProbeRS232_OS_Init
+      16   ProbeRS232_RxHandler
+        16   -> ProbeRS232_OS_Post
+      16   ProbeRS232_Task
+        16   -> ProbeCom_ParseRxPkt
+        16   -> ProbeRS232_OS_Pend
+        16   -> ProbeRS232_TxHandler
+        16   -> ProbeRS232_TxIntEn
+       8   ProbeRS232_TxHandler
+         8   -> ProbeRS232_Tx1
+         0   -> ProbeRS232_TxIntDis
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable3
+       4  ??DataTable3_1
+       4  ??DataTable3_2
+      36  ProbeRS232_Init
+     128  ProbeRS232_RxBuf
+     148  ProbeRS232_RxHandler
+      24  ProbeRS232_RxState
+          ProbeRS232_TxState
+          ProbeRS232_TxActiveFlag
+          ProbeRS232_TxBufInUse
+          ProbeRS232_RxRemainLen
+          ProbeRS232_RxLen
+          ProbeRS232_RxBufWrIx
+          ProbeRS232_TxLen
+          ProbeRS232_TxBufRdIx
+          ProbeRS232_RxCtr
+          ProbeRS232_TxCtr
+      56  ProbeRS232_Task
+     128  ProbeRS232_TxBuf
+     212  ProbeRS232_TxHandler
+
+ 
+ 280 bytes in section .bss
+ 464 bytes in section .text
+ 
+ 464 bytes of CODE memory
+ 280 bytes of DATA memory
+
+Errors: none
+Warnings: none

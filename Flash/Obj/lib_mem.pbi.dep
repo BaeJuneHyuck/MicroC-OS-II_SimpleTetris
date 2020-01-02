@@ -1,0 +1,6 @@
+lib_mem.pbi: C:\Baby\test02\exam\ett\Micrium\Software\uC-LIB\lib_mem.c \
+  C:\Baby\test02\exam\ett\Micrium\Software\uC-LIB\lib_mem.h \
+  C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\ARM-Cortex-M3\IAR\cpu.h \
+  C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\cpu_def.h \
+  C:\Baby\test02\exam\ett\Micrium\Software\uC-LIB\lib_def.h \
+  C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\app_cfg.h

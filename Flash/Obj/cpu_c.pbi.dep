@@ -1,0 +1,5 @@
+cpu_c.pbi: \
+  C:\Baby\test02\exam\ett\Micrium\Software\uC-CPU\ARM-Cortex-M3\IAR\cpu_c.c \
+  C:\Baby\test02\exam\ett\Micrium\Software\uC-CPU\ARM-Cortex-M3\IAR\cpu.h \
+  C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\cpu_def.h \
+  C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-lib\lib_def.h

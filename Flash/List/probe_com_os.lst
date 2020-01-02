@@ -1,0 +1,282 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.40.2.214/W32 for ARM         23/Dec/2019  21:46:50
+# Copyright 1999-2019 IAR Systems AB.
+#
+#    Cpu mode     =  
+#    Endian       =  little
+#    Source file  =
+#        C:\Baby\test02\exam\ett\Micrium\Software\uC-Probe\Target\Communication\Generic\OS\uCOS-II\probe_com_os.c
+#    Command line =
+#        -f C:\Users\hn829\AppData\Local\Temp\EW976C.tmp
+#        (C:\Baby\test02\exam\ett\Micrium\Software\uC-Probe\Target\Communication\Generic\OS\uCOS-II\probe_com_os.c
+#        -lCN
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List
+#        -o
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj
+#        --debug --endian=little --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.3\arm\inc\c\DLib_Config_Normal.h" -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\ports\arm-cortex-m3\generic\iar\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\ucos-ii\source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-lib\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uc-cpu\ARM-Cortex-M3\IAR\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\cpu\st\stm32\inc\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\BSP\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Ports\ST\STM32\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Communication\Generic\Source\
+#        -I
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\..\..\..\..\..\uC-Probe\Target\Plugins\uCOS-II\
+#        -Ohz --use_c++_inline)
+#    Locale       =  C
+#    List file    =
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\List\probe_com_os.lst
+#    Object file  =
+#        C:\Baby\test02\exam\ett\Micrium\Software\EvalBoards\ST\STM3210B-EVAL\IAR\OS-Probe\Flash\Obj\probe_com_os.o
+#
+###############################################################################
+
+C:\Baby\test02\exam\ett\Micrium\Software\uC-Probe\Target\Communication\Generic\OS\uCOS-II\probe_com_os.c
+      1          /*
+      2          *********************************************************************************************************
+      3          *                                      uC/Probe Communication
+      4          *
+      5          *                           (c) Copyright 2007; Micrium, Inc.; Weston, FL
+      6          *
+      7          *               All rights reserved.  Protected by international copyright laws.
+      8          *               Knowledge of the source code may NOT be used to develop a similar product.
+      9          *               Please help us continue to provide the Embedded community with the finest
+     10          *               software available.  Your honesty is greatly appreciated.
+     11          *********************************************************************************************************
+     12          */
+     13          
+     14          /*
+     15          *********************************************************************************************************
+     16          *
+     17          *                                              uC/Probe
+     18          *
+     19          *                                      Communication: Generic
+     20          *
+     21          * Filename      : probe_com_os.c
+     22          * Version       : V2.00
+     23          * Programmer(s) : BAN
+     24          * Note(s)       : (1) This file is the uC/OS-II layer for the uC/Probe Generic Communication Module.
+     25          *********************************************************************************************************
+     26          */
+     27          
+     28          /*
+     29          *********************************************************************************************************
+     30          *                                             INCLUDE FILES
+     31          *********************************************************************************************************
+     32          */
+     33          
+     34          #include  <probe_com.h>
+     35          #include  <ucos_ii.h>
+     36          
+     37          
+     38          /*
+     39          *********************************************************************************************************
+     40          *                                            LOCAL DEFINES
+     41          *********************************************************************************************************
+     42          */
+     43          
+     44          
+     45          /*
+     46          *********************************************************************************************************
+     47          *                                           LOCAL CONSTANTS
+     48          *********************************************************************************************************
+     49          */
+     50          
+     51          
+     52          /*
+     53          *********************************************************************************************************
+     54          *                                          LOCAL DATA TYPES
+     55          *********************************************************************************************************
+     56          */
+     57          
+     58          
+     59          /*
+     60          *********************************************************************************************************
+     61          *                                            LOCAL TABLES
+     62          *********************************************************************************************************
+     63          */
+     64          
+     65          
+     66          /*
+     67          *********************************************************************************************************
+     68          *                                       LOCAL GLOBAL VARIABLES
+     69          *********************************************************************************************************
+     70          */
+     71          
+     72          #if (PROBE_COM_SUPPORT_STR > 0) && (OS_SEM_EN > 0)
+     73          static  OS_EVENT  *ProbeCom_OS_Sem;
+     74          #endif
+     75          
+     76          
+     77          /*
+     78          *********************************************************************************************************
+     79          *                                      LOCAL FUNCTION PROTOTYPES
+     80          *********************************************************************************************************
+     81          */
+     82          
+     83          
+     84          /*
+     85          *********************************************************************************************************
+     86          *                                     LOCAL CONFIGURATION ERRORS
+     87          *********************************************************************************************************
+     88          */
+     89          
+     90          #if (PROBE_COM_SUPPORT_STR > 0) && (OS_SEM_EN == 0)
+     91            #error  "If PROBE_COM_SUPPORT_STR is set to DEF_TRUE, then semaphores MUST be enabled."
+     92          #endif
+     93          
+     94          
+     95          /*
+     96          *********************************************************************************************************
+     97          *********************************************************************************************************
+     98          **                                          GLOBAL FUNCTIONS
+     99          *********************************************************************************************************
+    100          *********************************************************************************************************
+    101          */
+    102          /*
+    103          *********************************************************************************************************
+    104          *                                          ProbeCom_OS_Init()
+    105          *
+    106          * Description : Create a semaphore to lock access to the string buffer.
+    107          *
+    108          * Argument(s) : none.
+    109          *
+    110          * Return(s)   : none.
+    111          *********************************************************************************************************
+    112          */
+    113          
+    114          #if (PROBE_COM_SUPPORT_STR > 0)
+    115          void  ProbeCom_OS_Init (void)
+    116          {
+    117          #if (OS_EVENT_NAME_SIZE > 10) && (OS_SEM_EN > 0)
+    118              CPU_INT08U  err;
+    119          #endif
+    120          
+    121          
+    122          #if   (OS_SEM_EN > 0)
+    123              ProbeCom_OS_Sem = OSSemCreate(1);
+    124          #if   (OS_EVENT_NAME_SIZE > 13)
+    125              OSEventNameSet(ProbeCom_OS_Sem, (CPU_INT08U *)"uC/Probe Com", &err);
+    126          #elif (OS_EVENT_NAME_SIZE > 10)
+    127              OSEventNameSet(ProbeCom_OS_Sem, (CPU_INT08U *)"Probe Com", &err);
+    128          #endif
+    129          #endif
+    130          }
+    131          #endif
+    132          
+    133          /*
+    134          *********************************************************************************************************
+    135          *                                      ProbeCom_OS_Dly()
+    136          *
+    137          * Description : Delay for a certain number of milliseconds.
+    138          *
+    139          * Argument(s) : none.
+    140          *
+    141          * Return(s)   : none.
+    142          *********************************************************************************************************
+    143          */
+    144          
+    145          #if (PROBE_COM_SUPPORT_STR > 0)
+    146          void  ProbeCom_OS_Dly (CPU_INT16U  dly)
+    147          {
+    148              if (dly >= 1000) {
+    149                  OSTimeDlyHMSM(0, 0, 1, 0);
+    150              } else {
+    151                  OSTimeDlyHMSM(0, 0, 0, dly);
+    152              }
+    153          }
+    154          #endif
+    155          
+    156          
+    157          /*
+    158          *********************************************************************************************************
+    159          *                                       ProbeCom_OS_Pend()
+    160          *
+    161          * Description : Obtain write access to the string buffer, waiting (if required) until it the
+    162          *               buffer has been released by another task.
+    163          *
+    164          * Argument(s) : wait         Specify whether the function should wait until the semaphore is available
+    165          *                            or just check if the semaphore is available and, if it is, then accept it.
+    166          *
+    167          * Return(s)   : DEF_TRUE  if the semaphore was     obtained
+    168          *               DEF_FALSE if the semaphore was NOT obtained
+    169          *********************************************************************************************************
+    170          */
+    171          
+    172          #if (PROBE_COM_SUPPORT_STR > 0)
+    173          CPU_BOOLEAN  ProbeCom_OS_Pend (CPU_BOOLEAN wait)
+    174          {
+    175          #if (OS_SEM_EN > 0)
+    176              CPU_INT08U  tmp;
+    177          
+    178          
+    179              if (wait == DEF_TRUE) {
+    180                  OSSemPend(ProbeCom_OS_Sem, 0, &tmp);                        /* Wait for string buffer to be released                */
+    181          
+    182                  if (tmp != OS_NO_ERR) {
+    183                      return (DEF_FALSE);
+    184                  } else {
+    185                      return (DEF_TRUE);
+    186                  }
+    187              } else {
+    188                  tmp = OSSemAccept(ProbeCom_OS_Sem);                         /* Wait for string buffer to be released                */
+    189          
+    190                  if (tmp == 0) {
+    191                      return (DEF_FALSE);
+    192                  } else {
+    193                      return (DEF_TRUE);
+    194                  }
+    195              }
+    196          #else
+    197              return (DEF_TRUE);
+    198          #endif
+    199          }
+    200          #endif
+    201          
+    202          
+    203          /*
+    204          *********************************************************************************************************
+    205          *                                       ProbeCom_OS_Post()
+    206          *
+    207          * Description : Release the lock on write access to the string buffer.
+    208          *
+    209          * Argument(s) : none.
+    210          *
+    211          * Return(s)   : none.
+    212          *********************************************************************************************************
+    213          */
+    214          
+    215          #if (PROBE_COM_SUPPORT_STR > 0)
+    216          void  ProbeCom_OS_Post (void)
+    217          {
+    218          #if (OS_SEM_EN > 0)
+    219              OSSemPost(ProbeCom_OS_Sem);                                     /* String buffer is being released                      */
+    220          #endif
+    221          }
+    222          #endif
+
+
+ 
+ 
+ 0 bytes of memory
+
+Errors: none
+Warnings: none
