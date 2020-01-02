@@ -24,20 +24,31 @@
  2) 사용한 모듈 및 센서 
 
  * MAX7219 Dot Matrix Module  
+ 
+ ![preview](https://github.com/BaeJuneHyuck/MicroC-OS-II_SimpleTetris/blob/master/capture/1.jpg?raw=true)
+ 
 5V의 전압에서 작동하는 8X8 도트 매트릭스이다. 도트 매트릭스는 버스 정류장, 간판등에서 일반적으로 사용되며 여러 LED를 2차원 배열의 형태로 연결하여 쉽게 사용할 수 있게 해준다. 해당 모듈은 VCC, GND, DIN, CS, CLK의 5개의 단자를 가지고 있다. clk을 low로 설정한 뒤 출력할 데이터를 레지스터에 입력, 다시 clk을 high로 설정하여 출력한다. 
  
 
  * 초음파 거리센서 모듈 HC-SR04P 
 
+ ![preview](https://github.com/BaeJuneHyuck/MicroC-OS-II_SimpleTetris/blob/master/capture/2.jpg?raw=true)
+ 
 초음파 거리센서 모듈은 초음파를 내보내고 다시 돌아오는 시간을 이용하여 대상과의 거리를 측정하는 센서이다. 해당 센서는 Vcc, Gnd, Trig, Echo 핀을 사용한다. Trig가 High일때 센서가 초음파를 내보낸다. 초음파를 내보낸 이후 Echo를 High상태로 유지하여 값을 듣는 상태가 된다. 초음파는 정면의 물체와 부딛힌 후 다시 돌아오며 이때 echo가 Low로 바뀌며 그 사이의 시간을 측정하여 값을 저장한다. 해당 시간이 소리의 속도로 물체와의 거리를 두 번 왕복하는데 걸린 시간이다. 
  
  3) 개발 시스템
 * STM32VL-DISCOVERY
+
+ ![preview](https://github.com/BaeJuneHyuck/MicroC-OS-II_SimpleTetris/blob/master/capture/3.png?raw=true)
+ 
 ARM의 Cortex-M3 CPU를 기반으로 하는 개발보드이다. 16개의 GPIO Pin을 지원하는 4개의Port를 가지고 있으며 3개의 USART채널, 2개의 SPI 채널, I2C채널 및 15개의 ADC 채널 5개의 타이머를 지원하는 보드이다. ST-Link를 지원하기 때문에 ST-Link 디버거를 내장하여 간단하게 USB 연결포트로 STM32 DISCOVERY를 디버깅 할 수 있다.
 
 # capture
 
 
+ ![preview](https://github.com/BaeJuneHyuck/MicroC-OS-II_SimpleTetris/blob/master/capture/4.png?raw=true)
+ 
+ ![preview](https://github.com/BaeJuneHyuck/MicroC-OS-II_SimpleTetris/blob/master/capture/5.png?raw=true)
 시연 영상
 
 https://drive.google.com/file/d/1PkvcmsW1Pm5LGX_8gmTtLpdBN8o9CABE/view?usp=sharing 
